@@ -1,0 +1,86 @@
+.sidebar-container {
+  width: 50px;
+  height: 100vh;
+  background-color: #2b303b;
+  position: relative;
+  z-index: 1;
+  margin-left: -1px;
+}
+.sidebar-container .imgContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.sidebar-container .imgContainer .line {
+  width: 50px;
+  border-top: 1px solid #FFFFFF1A;
+  margin-top: 21px;
+}
+.sidebar-container .imgContainer .logo {
+  margin-top: 15px;
+  margin-left: 10px;
+  display: flex;
+  gap: 10px;
+}
+.sidebar-container .imgContainer .home,
+.sidebar-container .imgContainer .mask,
+.sidebar-container .imgContainer .aws {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  margin-top: 14px;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+}
+.sidebar-container .imgContainer .home {
+  background-color: #ffffff;
+  color: #2B303B;
+}
+.sidebar-container .imgContainer .mask {
+  background-color: #FFFFFF1A;
+  color: white;
+}
+.sidebar-container .imgContainer .aws {
+  background-color: #FFFFFF1A;
+  color: white;
+}
+.sidebar-container:hover {
+  width: 169px;
+  transition: width 0.1s;
+}
+.sidebar-container:hover .imgContainer .line {
+  width: 169px;
+}
+.sidebar-container:hover .imgContainer .logo::after {
+  content: "Search Portal";
+  font-size: 15px;
+  font-weight: 600;
+  color: rgb(255, 255, 255);
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+}
+.sidebar-container:hover .imgContainer .home,
+.sidebar-container:hover .imgContainer .mask,
+.sidebar-container:hover .imgContainer .aws {
+  width: 145px;
+  padding-left: 8px;
+  align-items: center;
+  display: flex;
+  justify-content: start;
+  font-size: 13px;
+  font-weight: 400;
+  gap: 10px;
+  color: rgb(255, 255, 255);
+  white-space: nowrap;
+}
+.sidebar-container:hover .imgContainer .home::after {
+  content: "| Profile";
+}
+.sidebar-container:hover .imgContainer .mask::after {
+  content: "| Projects";
+}
+.sidebar-container:hover .imgContainer .aws::after {
+  content: "| Dashboard";
+}
