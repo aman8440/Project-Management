@@ -10,7 +10,7 @@ export const useUserData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost/truck_management/", {
+        const response = await axios.get("https://b211-2401-4900-1c2b-639e-f6ba-dfec-968c-8652.ngrok-free.app/truck_management/", {
           headers: {
             Authorization: localStorage.getItem("jwtToken"),
           },

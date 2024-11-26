@@ -14,6 +14,9 @@ import { DateRange } from '@mui/x-date-pickers-pro/models';
 import Button from "../../components/Button";
 import { ProjectData } from "../../interfaces";
 import { useAuth } from "../../routes/PrivateRoute";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { projectSchema } from "../../schema";
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -34,6 +37,7 @@ const PROJECT_MANAGEMENT_TOOLS = [
 
 const AddProjects = () => {
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<ProjectData>({
     projectName: '',
     projectTech: [] as string[],
@@ -53,29 +57,36 @@ const AddProjects = () => {
   const [techSearch, setTechSearch] = useState('');
   const [toolSearch, setToolSearch] = useState('');
 
-  const handleChange = (field: string, value: string | string[]) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProjectData>({
+    resolver: zodResolver(projectSchema),
+  });
+
+  const handleChange = (field: string, value: string | string[] | number) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
   };
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit : SubmitHandler<ProjectData> = async (data) => {
+    setIsLoading(true);
     const payload = {
-      project_name: formData.projectName,
-      project_tech: formData.projectTech,
-      project_startat: formData.projectStartAt?.toISOString(),
-      project_deadline: formData.projectDeadline?.toISOString(),
-      project_lead: formData.projectLead,
-      team_size: formData.teamSize,
-      project_client: formData.projectClient,
-      project_management_tool: formData.projectManagementTool,
-      project_management_url: formData.projectManagementUrl,
-      project_description: formData.projectDescription,
-      project_repo_tool: formData.projectRepoTool,
-      project_repo_url: formData.projectRepoUrl,
-      project_status: formData.projectStatus,
+      project_name: data.projectName,
+      project_tech: data.projectTech,
+      project_startat: data.projectStartAt?.toISOString(),
+      project_deadline: data.projectDeadline?.toISOString(),
+      project_lead: data.projectLead,
+      team_size: data.teamSize,
+      project_client: data.projectClient,
+      project_management_tool: data.projectManagementTool,
+      project_management_url: data.projectManagementUrl,
+      project_description: data.projectDescription,
+      project_repo_tool: data.projectRepoTool,
+      project_repo_url: data.projectRepoUrl,
+      project_status: data.projectStatus,
       created_by: user?.fname,
       updated_by: user?.fname
     };
@@ -92,6 +103,8 @@ const AddProjects = () => {
       console.log('Project created:', response.json());
     } catch (error) {
       console.error('Error creating project:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -114,15 +127,18 @@ const AddProjects = () => {
           <div className="container mt-5 mb-2">
             <div className="row">
               <div className="col-md-8 offset-md-2">
-                <form onSubmit={handleSubmit} className="bg-light p-4 rounded shadow">
+                <form onSubmit={handleSubmit(onSubmit)} className="bg-light p-4 rounded shadow">
                   <h2 className="text-center mb-4">Create New Project</h2>
                   <Input
                     label="Project Name" 
+                    type="text"
                     variant="outlined" 
                     name="projectName"
                     value={formData.projectName}
-                    onChange={()=>handleChange}
-                    className="mb-3"
+                    register={register}
+                    error={errors.projectName}
+                    onChange={(e) => handleChange('projectName', e.target.value)}
+                    className="mb-1"
                   />
                   <Autocomplete
                     multiple
@@ -130,11 +146,15 @@ const AddProjects = () => {
                     value={formData.projectTech}
                     onChange={(e, newValue) => handleChange('projectTech', newValue)}
                     options={filteredTechOptions}
+                    className="mb-3"
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Project Technologies"
+                        name="projectTech"
                         placeholder="Search technologies"
+                        error={!!errors.projectTech}
+                        helperText={errors.projectTech?.message}
                       />
                     )}
                     getOptionLabel={(option) => option}
@@ -166,34 +186,43 @@ const AddProjects = () => {
                           />
                       </DemoContainer>
                     </LocalizationProvider>
+                    {errors.projectStartAt && <p className="text-danger">{errors.projectStartAt.message}</p>}
+                    {errors.projectDeadline && <p className="text-danger">{errors.projectDeadline.message}</p>}
                   <Input
-                    label="Project Lead" 
+                    label="Project Lead"
+                    type="text" 
                     variant="outlined" 
                     name="projectLead"
+                    register={register}
+                    error={errors.projectLead}
                     value={formData.projectLead}
-                    onChange={()=>handleChange}
+                    onChange={(e) => handleChange('projectLead', e.target.value)}
                     className="mb-3 mt-4"
                   />
-                  <FormControl fullWidth={true}  className="mb-3">
+                  <FormControl fullWidth={true}  className="mb-3" error={!!errors.teamSize}>
                     <InputLabel>Team Size</InputLabel>
                     <Select
                       name="teamSize"
                       className="mb-3"
                       value={formData.teamSize}
                       label="Team Size"
-                      onChange={()=>handleChange}
+                      onChange={(e) => handleChange('teamSize', e.target.value)}
                     >
                       {[...Array(10)].map((_, i) => (
                         <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>
                       ))}
                     </Select>
+                    {errors.teamSize && <p className="text-danger">{errors.teamSize.message}</p>}
                   </FormControl>
                   <Input
-                    label="Project Client" 
+                    label="Project Client"
+                    type="text"
                     variant="outlined" 
                     name="projectClient"
+                    register={register}
+                    error={errors.projectClient}
                     value={formData.projectClient}
-                    onChange={()=>handleChange}
+                    onChange={(e) => handleChange('projectClient', e.target.value)}
                     className="mb-3"
                   />
                   <Autocomplete
@@ -208,52 +237,64 @@ const AddProjects = () => {
                       setToolSearch(newInputValue);
                     }}
                     options={filteredToolOptions}
-                    renderInput={(params) => <TextField {...params} label="Project Management Tool" />}
+                    renderInput={(params) => <TextField {...params} label="Project Management Tool" name="projectManagementTool"
+                      error={!!errors.projectManagementTool} helperText={errors.projectManagementTool?.message}/>}
                     getOptionLabel={(option) => option}
                   />
                   <Input
                     label="Project Management URL" 
+                    type="text"
                     variant="outlined" 
                     name="projectManagementUrl"
+                    register={register}
+                    error={errors.projectManagementUrl}
                     value={formData.projectManagementUrl}
-                    onChange={()=>handleChange}
+                    onChange={(e) => handleChange('projectManagementUrl', e.target.value)}
                     className="mb-3"
                   />
 
                   <Input
-                    label="Project Description" 
+                    label="Project Description"
+                    type="textarea" 
                     variant="outlined" 
                     multiline
-                    rows={4}
                     name="projectDescription"
+                    register={register}
+                    error={errors.projectDescription}
                     value={formData.projectDescription}
-                    onChange={()=>handleChange}
+                    onChange={(e) => handleChange('projectDescription', e.target.value)}
                     className="mb-3"
                   />
                   <Input
                     label="Project Repo Tool" 
+                    type="text"
                     variant="outlined" 
                     name="projectRepoTool"
+                    register={register}
+                    error={errors.projectRepoTool}
                     value={formData.projectRepoTool}
-                    onChange={()=>handleChange}
+                    onChange={(e) => handleChange('projectRepoTool', e.target.value)}
                     className="mb-3"
                   />
                   <Input
-                    label="Project Repo Url" 
+                    label="Project Repo Url"
+                    type="text"
                     variant="outlined" 
                     name="projectRepoUrl"
+                    register={register}
+                    error={errors.projectRepoUrl}
                     value={formData.projectRepoUrl}
-                    onChange={()=>handleChange}
+                    onChange={(e) => handleChange('projectRepoUrl', e.target.value)}
                     className="mb-3"
                   />
-                  <FormControl fullWidth={true}  className="mb-3">
+                  <FormControl fullWidth={true}  className="mb-3" error={!!errors.projectStatus}>
                     <InputLabel>Project Status</InputLabel>
                     <Select
                       className="mb-3"
                       name="projectStatus"
                       value={formData.projectStatus}
                       label="Project Status"
-                      onChange={()=>handleChange}
+                      onChange={(e) => handleChange('projectStatus', e.target.value)}
                     >
                       {[
                         'Planning', 
@@ -266,12 +307,9 @@ const AddProjects = () => {
                         <MenuItem key={status} value={status}>{status}</MenuItem>
                       ))}
                     </Select>
+                    {errors.projectStatus && <p className="text-danger">{errors.projectStatus.message}</p>}
                   </FormControl>
-                  <Button 
-                    type={"submit"}
-                    text="Create Project"
-                  >
-                  </Button>
+                  <Button text={isLoading ? "Submitting..." : "Submit"} type="submit" disabled={isLoading} />
                 </form>
               </div>
             </div>
