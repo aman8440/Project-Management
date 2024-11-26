@@ -1,9 +1,10 @@
 import Dashboard from "../pages/private_layout/Dashboard";
 import ProjectList from "../pages/private_layout/ProjectList"
 import { Navigate, Outlet } from "react-router-dom";
-import { getToken } from "../services/storageService";
+import { getToken, removeToken } from "../services/storageService";
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContextTypeData, AuthProviderProps } from "../interfaces";
+import AddProjects from "../pages/private_layout/AddProjects";
 
 const AuthContext = createContext<AuthContextTypeData>({user: null});
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
@@ -25,6 +26,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const data = await response.json();
           setAuthState({user: data.admin});
         } else {
+          removeToken();
           setAuthState({ user: null});
         }
       } catch (error) {
@@ -53,9 +55,15 @@ export const PrivateRoute = [
     ),
   },
   {
-    path: "/projects",
+    path: "/dashboard/projects",
     element: (
       <ProjectList />
+    ),
+  },
+  {
+    path: "/dashboard/projects/add-projects",
+    element: (
+      <AddProjects />
     ),
   },
 ];

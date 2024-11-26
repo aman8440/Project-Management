@@ -1,6 +1,6 @@
 .sidebar-container {
   width: 50px;
-  height: 100vh;
+  height: auto;
   background-color: #2b303b;
   position: relative;
   z-index: 1;
@@ -74,6 +74,7 @@
   gap: 10px;
   color: rgb(255, 255, 255);
   white-space: nowrap;
+  list-style: none;
 }
 .sidebar-container:hover .imgContainer .home::after {
   content: "| Profile";
@@ -82,5 +83,5 @@
   content: "| Projects";
 }
 .sidebar-container:hover .imgContainer .aws::after {
-  content: "| Dashboard";
+  content: "| Home";
 }
