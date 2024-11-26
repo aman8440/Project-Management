@@ -39,7 +39,7 @@ const Sidebar = () => {
             <img src={logo} alt="logo"/>
           </div>
           <hr className="line"/>
-          <Link to="/dashboard">   
+          <Link className='text-decoration-none' to="/dashboard">   
             <div className="aws d-flex text-white btn">
               <img src={dashboardIcon} alt="dashboardIcon" height='20' width='20'/>
             </div>
@@ -47,7 +47,7 @@ const Sidebar = () => {
           <div className="home d-flex btn" style={{color: '#2B303B'}}>
             <img src={profileIcon} alt="profileIcon" height='20' width='20' />
           </div>
-          <Link to="/projects">   
+          <Link className='text-decoration-none' to="/dashboard/projects">   
             <div className="mask d-flex text-white btn">
               <img src={projectIcon} alt="projectIcon" height='20' width='20'/>
             </div>

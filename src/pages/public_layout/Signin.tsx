@@ -40,8 +40,7 @@ export default function Signin() {
         message?: string;
       } = await response.json();
   
-      if (response.status === 201 && responseData?.token) {
-        console.log("Sign-in successful:", responseData);
+      if (response.status === 200 && responseData?.token) {
         setToken(responseData.token);
         navigate("/dashboard");
       } else {

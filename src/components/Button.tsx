@@ -7,10 +7,11 @@ const Button: React.FC<ButtonProps> = ({ text, type = "button", className, onCli
   return (
     <div className="d-flex justify-content-center align-items-center">
       <MuiButton
+        fullWidth={true}
         type={type}
         variant="contained"
         onClick={onClick} 
-        className={`bg-dark text-white w-100 ${className}`}
+        className={`btn bg-dark text-white w-100 ${className}`}
         style={{ backgroundColor: "black", color: "white", width: "100%" }} 
         {...rest}
       >

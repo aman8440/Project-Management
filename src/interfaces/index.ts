@@ -3,6 +3,7 @@ import { LoginSchema } from "../schema";
 import { z } from "zod";
 import { UseFormRegister } from 'react-hook-form';
 import { TextFieldProps } from "@mui/material/TextField";
+import { GridApi, GridColDef, GridRowId, GridKeyValue } from "@mui/x-data-grid";
 
 export type SignInData = z.infer<typeof LoginSchema>;
 
@@ -13,7 +14,53 @@ export interface UserData {
   email: string;
   gender: string;
 }
+export interface FilterType {
+  page: number;
+  pageSize: number;
+}
 
+export interface RowData {
+  id: number;
+  project_name: string;
+  project_tech: string;
+  project_startat: string;
+  project_deadline: string;
+  project_lead: string;
+  team_size: number;
+  project_client: string;
+  project_management_tool: string;
+  project_management_url: string;
+  project_description: string;
+  project_repo_tool: string;
+  project_repo_url: string;
+  project_status: string;
+}
+
+export interface ProjectData{
+  projectName: string;
+  projectTech: string[];
+  projectStartAt: Date | null;
+  projectDeadline: Date | null;
+  projectLead: string;
+  teamSize: number;
+  projectClient: string;
+  projectManagementTool: string;
+  projectManagementUrl: string;
+  projectDescription: string;
+  projectRepoTool: string;
+  projectRepoUrl: string;
+  projectStatus: string;
+}
+
+export interface GridValueGetterParams<V = any, R = any> {
+  field: string;
+  id: GridRowId;
+  row: R;
+  colDef: GridColDef;
+  value: V;
+  api: GridApi;
+  getValue: (id: GridRowId, field: string) => GridKeyValue;
+}
 export interface AuthContextTypeData {
   user?: UserData | null;
 }
@@ -44,7 +91,8 @@ export interface ButtonProps {
   type: "submit" | "button" | "reset" | undefined;
   disabled?: boolean;
   className?: string;
-  onClick?: () => void; 
+  onClick?: () => void;
+  fullWidth?: boolean;
 }
 
 export interface ErrorMessageProps {
@@ -57,9 +105,10 @@ export interface InputProps extends Omit<TextFieldProps, 'name' | 'value' | 'err
   type?: string;
   name: string;
   value?: string;
-  register: UseFormRegister<any>;
-  error?: { message?: string };
+  register?: UseFormRegister<any> | null;
+  error?: { message?: string } | null;
   className?: string;
+  fullWidth?: boolean;
 }
 
 export interface SearchInputProps {
