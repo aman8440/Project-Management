@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { Paper } from "@mui/material";
 import { Container } from "react-bootstrap";
@@ -14,9 +15,11 @@ import IconButton from "@mui/material/IconButton";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumb";
 import Button from "../../components/Button";
+import AlertDialogSlide from "../../components/AlertDialogSlide";
 
 const ProjectList = () => {
   const [rows, setRows] = useState<RowData[]>([]); 
+  const [open, setOpen] = React.useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate= useNavigate();
   const [columns] = useState([
@@ -28,7 +31,12 @@ const ProjectList = () => {
       value: "1"
     },
     { field: "project_name", headerName: "Project Name", width: 150 },
-    { field: "project_tech", headerName: "Technology", width: 150 },
+    { field: "project_tech", headerName: "Technology", width: 150, 
+      renderCell: (params: any) => {
+        const techArray = params.value;
+        return JSON.parse(techArray).join(', ')
+      },
+    },
     { field: "project_startat", headerName: "Start Date", width: 120 },
     { field: "project_deadline", headerName: "Deadline", width: 120 },
     { field: "project_lead", headerName: "Lead", width: 120 },
@@ -51,11 +59,34 @@ const ProjectList = () => {
 
         const handleEdit = () => {
           console.log("Edit project", params.row);
+          navigate(`/dashboard/projects/${params.row.id}`);
+        };
+        
+        const confirmDelete = () => {
+          console.log("Delete confirmed for project", params.row.id);
+          fetch(`/api/projects/delete/${params.row.id}`, { method: "PUT" })
+            .then((response) => {
+              if (response.ok) {
+                console.log("Project deleted successfully");
+                setOpen(true);
+              } else {
+                console.error("Failed to delete project");
+              }
+            })
+            .catch((error) => {
+              console.error("Error deleting project:", error);
+            });
         };
 
         const handleDelete = () => {
-          console.log("Delete project", params.row);
+          setOpen(true);
+          console.log("Delete project", params.row.id);
+          console.log("open", open);
         };
+
+        const handleClose= ()=>{
+          setOpen(false);
+        }
 
         return (
           <div>
@@ -68,6 +99,16 @@ const ProjectList = () => {
             <IconButton color="error" onClick={handleDelete}>
               <DeleteIcon />
             </IconButton>
+              <AlertDialogSlide
+                open={open}
+                onClose={handleClose}
+                title="Delete Project"
+                content="Are you sure you want to delete this project?"
+                actions={[
+                  { label: 'Cancel', onClick: handleClose },
+                  { label: 'Yes', onClick: confirmDelete },
+                ]}
+              />
           </div>
         );
       },
@@ -92,7 +133,7 @@ const ProjectList = () => {
     const order = sortModel[0]?.sort || "asc";
 
     try {
-      const url = new URL("http://localhost/truck_management/me/project/list");
+      const url = new URL("http://localhost/truck_management/api/project/list");
       url.searchParams.append("page", (page + 1).toString());
       url.searchParams.append("limit", (pageSize).toString());
       url.searchParams.append("search", search);

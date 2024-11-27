@@ -41,9 +41,15 @@ export const resetPasswordSchema = z
 
   export const projectSchema = z.object({
     projectName: z.string().min(3, { message: "Project Name must be at least 3 characters long" }),
-    projectTech: z.array(z.string()).min(1, { message: "At least one technology must be selected" }),
-    projectStartAt: z.date().nullable().refine((date) => date !== null, { message: "Start date is required" }),
-    projectDeadline: z.date().nullable().refine((date) => date !== null, { message: "Deadline date is required" }),
+    projectTech: z.preprocess(
+      (val) => {
+        if (typeof val === 'string' || typeof val === 'number') return [val];
+        if (Array.isArray(val)) return val;
+        return [];
+      },z.array(z.string()).min(1, { message: "At least one technology must be selected" })
+    ), 
+    // projectStartAt: z.date().nullable().refine((date) => date !== null, { message: "Start date is required" }),
+    // projectDeadline: z.date().nullable().refine((date) => date !== null, { message: "Deadline date is required" }),
     projectLead: z.string().min(1, { message: "Project Lead is required" }),
     teamSize: z.number().min(1, { message: "Team size must be at least 1" }),
     projectClient: z.string().min(1, { message: "Project Client is required" }),

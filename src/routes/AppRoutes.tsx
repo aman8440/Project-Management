@@ -1,27 +1,27 @@
-import { Routes, Navigate, Route, Outlet } from "react-router-dom";
-import AuthRoutes from "./AuthRoutes";
-import {PrivateRoutes, PrivateRoute} from "./PrivateRoute";
-import { getToken } from "../services/storageService";
-import { AuthProviderProps } from "../interfaces";
-
-const PublicRoutes: React.FC<AuthProviderProps> = () => {
-  const token = getToken();
-  return token ? <Navigate to="/dashboard" /> : <Outlet/> ;
-};
+import { Routes, Navigate, Route } from "react-router-dom";
+import {PrivateRoutes} from "./PrivateRoute";
+import Signin from "../pages/public_layout/Signin";
+import ForgetPass from "../pages/public_layout/ForgetPass";
+import ChangePass from "../pages/public_layout/ChangePass";
+import Dashboard from "../pages/private_layout/Dashboard";
+import ProjectList from "../pages/private_layout/ProjectList";
+import AddProjects from "../pages/private_layout/AddProjects";
+import UpdateProject from "../pages/private_layout/UpdateProject";
 const AppRoutes = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={ getToken() ? (<Navigate to="/dashboard" replace />) : (<Navigate to="/login" replace />)}/>
-        <Route element={<PublicRoutes children={undefined} />}>
-          {AuthRoutes.map((route) => (
-            <Route key={route.path} path={route.path} element={route.element} />
-          ))}
-        </Route>
+        <Route path="/" element={<Navigate to={"/login"} />}></Route>
+        <Route path="/login" element={<Signin />}></Route>
+        <Route path="/forget" element={<ForgetPass />}></Route>
+        <Route path="/reset-password/:reset_token" element={<ChangePass />}></Route>
         <Route element={<PrivateRoutes />}>
-          {PrivateRoute.map((route) => (
-            <Route key={route.path} path={route.path} element={route.element} />
-          ))}
+          <Route path="/dashboard" element={<Dashboard />}>
+            {" "}
+          </Route>
+          <Route path="/dashboard/projects" element={<ProjectList />}></Route>
+          <Route path="/dashboard/projects/add-projects" element={<AddProjects />}></Route>
+          <Route path="/dashboard/projects/:id" element={<UpdateProject />}></Route>
         </Route>
       </Routes>
     </div>

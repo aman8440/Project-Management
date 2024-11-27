@@ -13,10 +13,11 @@ import dayjs from "dayjs";
 import { DateRange } from '@mui/x-date-pickers-pro/models';
 import Button from "../../components/Button";
 import { ProjectData } from "../../interfaces";
-import { useAuth } from "../../routes/PrivateRoute";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema } from "../../schema";
+import { useUserData } from "../../hooks/useUserData";
+import { useNavigate } from "react-router-dom";
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -36,11 +37,12 @@ const PROJECT_MANAGEMENT_TOOLS = [
 ];
 
 const AddProjects = () => {
-  const { user } = useAuth();
+  const userStateData  = useUserData();
+  const navigate= useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<ProjectData>({
     projectName: '',
-    projectTech: [] as string[],
+    projectTech: [],
     projectStartAt: null,
     projectDeadline: null,
     projectLead: '',
@@ -60,12 +62,13 @@ const AddProjects = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<ProjectData>({
     resolver: zodResolver(projectSchema),
   });
 
-  const handleChange = (field: string, value: string | string[] | number) => {
+  const handleChange = (field: string, value: string | string[] | number | null | Date) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
@@ -75,9 +78,9 @@ const AddProjects = () => {
     setIsLoading(true);
     const payload = {
       project_name: data.projectName,
-      project_tech: data.projectTech,
-      project_startat: data.projectStartAt?.toISOString(),
-      project_deadline: data.projectDeadline?.toISOString(),
+      project_tech: formData.projectTech,
+      project_startat: formData.projectStartAt ? formData.projectStartAt.toISOString() : null,
+      project_deadline: formData.projectDeadline ? formData.projectDeadline.toISOString() : null,
       project_lead: data.projectLead,
       team_size: data.teamSize,
       project_client: data.projectClient,
@@ -87,20 +90,23 @@ const AddProjects = () => {
       project_repo_tool: data.projectRepoTool,
       project_repo_url: data.projectRepoUrl,
       project_status: data.projectStatus,
-      created_by: user?.fname,
-      updated_by: user?.fname
+      created_by: userStateData?.fname || "Unknown",
+      updated_by: userStateData?.fname || "Unknown",
     };
-
+    console.log("payload", payload);
     try {
       const token= getToken();
-      const response = await fetch("http://localhost/truck_management/me/project/create" ,{
+      const response = await fetch("http://localhost/truck_management/api/project/create" ,{
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
        body:JSON.stringify(payload)});
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      console.log('Project created:', response.json());
+      else{
+        console.log('Project created:', response.json());
+        navigate('/dashboard/projects');
+      }
     } catch (error) {
       console.error('Error creating project:', error);
     } finally {
@@ -142,48 +148,50 @@ const AddProjects = () => {
                   />
                   <Autocomplete
                     multiple
-                    fullWidth={true} 
+                    fullWidth={true}
                     value={formData.projectTech}
-                    onChange={(e, newValue) => handleChange('projectTech', newValue)}
                     options={filteredTechOptions}
+                    onChange={(e, newValue) => {
+                      handleChange('projectTech', newValue);
+                    }}
+                    inputValue={techSearch}
+                    onInputChange={(e, newInputValue) => setTechSearch(newInputValue)}
                     className="mb-3"
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        {...register("projectTech")}
                         label="Project Technologies"
                         name="projectTech"
-                        placeholder="Search technologies"
                         error={!!errors.projectTech}
                         helperText={errors.projectTech?.message}
                       />
                     )}
                     getOptionLabel={(option) => option}
-                    inputValue={techSearch}
-                    onInputChange={(e, newInputValue) => {
-                      setTechSearch(newInputValue); 
-                    }}
                   />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={['DateRangePicker']}>
-                          <DateRangePicker
-                            value={[
-                              dayjs(formData.projectStartAt),
-                              dayjs(formData.projectDeadline),
-                            ]}
-                            onChange={(newValue: DateRange<dayjs.Dayjs> | null) => {
-                              if (newValue !== null) {
-                                setFormData((prev) => ({
-                                  ...prev,
-                                  projectStartAt: newValue[0]?.toDate() || null,
-                                  projectDeadline: newValue[1]?.toDate() || null,
-                                }));
-                              }
-                            }}
-                            localeText={{
-                              start: 'Project Start Date',
-                              end: 'Project Deadline',
-                            }}
-                          />
+                        <DateRangePicker
+                          value={[
+                            formData.projectStartAt ? dayjs(formData.projectStartAt) : null,
+                            formData.projectDeadline ? dayjs(formData.projectDeadline) : null,
+                          ]}
+                          onChange={(newValue: DateRange<dayjs.Dayjs> | null) => {
+                            if (newValue !== null) {
+                              const [start, end] = newValue;
+                              const startDate = start ? start.toDate() : null;
+                              const endDate = end ? end.toDate() : null;
+                              handleChange('projectStartAt', startDate);
+                              handleChange('projectDeadline', endDate);
+                              setValue('projectStartAt', startDate);
+                              setValue('projectDeadline', endDate);
+                            }
+                          }}
+                          localeText={{
+                            start: 'Project Start Date',
+                            end: 'Project Deadline',
+                          }}
+                        />
                       </DemoContainer>
                     </LocalizationProvider>
                     {errors.projectStartAt && <p className="text-danger">{errors.projectStartAt.message}</p>}
@@ -202,11 +210,11 @@ const AddProjects = () => {
                   <FormControl fullWidth={true}  className="mb-3" error={!!errors.teamSize}>
                     <InputLabel>Team Size</InputLabel>
                     <Select
-                      name="teamSize"
                       className="mb-3"
                       value={formData.teamSize}
                       label="Team Size"
-                      onChange={(e) => handleChange('teamSize', e.target.value)}
+                      {...register('teamSize')}
+                      onChange={(e) =>  handleChange('teamSize', e.target.value)}
                     >
                       {[...Array(10)].map((_, i) => (
                         <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>
@@ -237,7 +245,7 @@ const AddProjects = () => {
                       setToolSearch(newInputValue);
                     }}
                     options={filteredToolOptions}
-                    renderInput={(params) => <TextField {...params} label="Project Management Tool" name="projectManagementTool"
+                    renderInput={(params) => <TextField {...params} {...register("projectManagementTool")} label="Project Management Tool" name="projectManagementTool"
                       error={!!errors.projectManagementTool} helperText={errors.projectManagementTool?.message}/>}
                     getOptionLabel={(option) => option}
                   />
@@ -257,7 +265,6 @@ const AddProjects = () => {
                     label="Project Description"
                     type="textarea" 
                     variant="outlined" 
-                    multiline
                     name="projectDescription"
                     register={register}
                     error={errors.projectDescription}
@@ -291,9 +298,9 @@ const AddProjects = () => {
                     <InputLabel>Project Status</InputLabel>
                     <Select
                       className="mb-3"
-                      name="projectStatus"
                       value={formData.projectStatus}
                       label="Project Status"
+                      {...register('projectStatus')}
                       onChange={(e) => handleChange('projectStatus', e.target.value)}
                     >
                       {[

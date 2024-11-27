@@ -1,26 +1,32 @@
 import { useEffect } from "react";
-import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "../state/UserDataState";
-import { UserStateDataTwo } from "../interfaces";
+import { getToken } from "../services/storageService";
+import { AuthContextTypeData } from "../interfaces";
 
 export const useUserData = () => {
-  const [userStateData, setUserStateData] = useRecoilState<any>(userState);
+  const [userStateData, setUserStateData] = useRecoilState<AuthContextTypeData>(userState);
+  const token = getToken();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://b211-2401-4900-1c2b-639e-f6ba-dfec-968c-8652.ngrok-free.app/truck_management/", {
-          headers: {
-            Authorization: localStorage.getItem("jwtToken"),
-          },
+        const response = await fetch("http://localhost/truck_management/me", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
         });
-        setUserStateData(response?.data?.stateData);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch user data. Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setUserStateData(data.admin);
       } catch (error) {
-        console.log(error);
-        throw new Error("Error in fetching user state data.");
+        console.error("Error fetching user data:", error);
       }
     };
-    fetchData();
-  }, []);
+
+    if (token) fetchData();
+  }, [token]);
+
+  return userStateData;
 };
