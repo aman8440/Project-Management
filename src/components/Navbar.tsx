@@ -1,11 +1,11 @@
-import { useAuth } from "../routes/PrivateRoute";
 import Button from "./Button";
 import icon from '../assets/img/search_icon.svg';
 import { removeToken } from "../services/storageService";
 import { useNavigate } from "react-router-dom";
+import { useUserData } from "../hooks/useUserData";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const userStateData  = useUserData();
   const navigate = useNavigate();
   const logout= ()=>{
     removeToken();
@@ -32,7 +32,7 @@ const Navbar = () => {
               padding: '19px'
             }}
           >
-            {`${user?.fname?.charAt(0)}${user?.lname?.charAt(0)}`}
+            {`${userStateData?.fname?.charAt(0)}${userStateData?.lname?.charAt(0)}`}
           </div>
         </div>
         <Button text="Logout" type="button" onClick={() => logout()} />

@@ -1,6 +1,13 @@
 import { atom } from "recoil";
+import { AuthContextTypeData } from "../interfaces";
 
-export const userState = atom({
+export const userState = atom<AuthContextTypeData>({
   key: "userState",
-  default: {},
+  default: {
+    fname: "",
+    lname: "",
+    phone: "",
+    email: "",
+    gender: "",
+  },
 });

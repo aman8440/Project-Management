@@ -8,8 +8,8 @@ import { SignInData } from "../../interfaces";
 import { Toaster, toast } from "sonner";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { setToken } from "../../services/storageService";
+import { useEffect, useState } from "react";
+import { getToken, setToken } from "../../services/storageService";
 
 export default function Signin() {
   const navigate = useNavigate();
@@ -22,6 +22,15 @@ export default function Signin() {
   } = useForm<SignInData>({
     resolver: zodResolver(LoginSchema),
   });
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      navigate("/dashboard");
+    } else {
+      console.log("Token not found or invalid.");
+    }
+  }, [navigate]);
 
   const onSubmit = async (data: SignInData) => {
     setIsLoading(true);

@@ -19,6 +19,17 @@ export interface FilterType {
   pageSize: number;
 }
 
+export interface DialogProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  content: string;
+  actions: {
+    label: string;
+    onClick: () => void;
+  }[];
+}
+
 export interface RowData {
   id: number;
   project_name: string;
@@ -62,7 +73,11 @@ export interface GridValueGetterParams<V = any, R = any> {
   getValue: (id: GridRowId, field: string) => GridKeyValue;
 }
 export interface AuthContextTypeData {
-  user?: UserData | null;
+  fname: string;
+  lname: string;
+  phone: string;
+  email: string;
+  gender: string;
 }
 export interface AuthGuardProps {
   children: React.ReactNode;
