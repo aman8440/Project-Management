@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { z } from "zod";
 
 export const LoginSchema = z.object({
@@ -41,15 +42,15 @@ export const resetPasswordSchema = z
 
   export const projectSchema = z.object({
     projectName: z.string().min(3, { message: "Project Name must be at least 3 characters long" }),
-    projectTech: z.preprocess(
-      (val) => {
-        if (typeof val === 'string' || typeof val === 'number') return [val];
-        if (Array.isArray(val)) return val;
-        return [];
-      },z.array(z.string()).min(1, { message: "At least one technology must be selected" })
-    ), 
-    // projectStartAt: z.date().nullable().refine((date) => date !== null, { message: "Start date is required" }),
-    // projectDeadline: z.date().nullable().refine((date) => date !== null, { message: "Deadline date is required" }),
+    projectTech: z.array(z.string()).refine((data) => data.length > 0, {message: "At least one technology must be selected"}),
+    projectStartAt: z.date({
+      required_error: "Start date is required",
+      invalid_type_error: "Invalid start date"
+    }),
+    projectDeadline: z.date({
+      required_error: "Deadline date is required",
+      invalid_type_error: "Invalid deadline date"
+    }),
     projectLead: z.string().min(1, { message: "Project Lead is required" }),
     teamSize: z.number().min(1, { message: "Team size must be at least 1" }),
     projectClient: z.string().min(1, { message: "Project Client is required" }),
@@ -59,6 +60,16 @@ export const resetPasswordSchema = z
     projectRepoTool: z.string().min(1, { message: "Project Repo Tool is required" }),
     projectRepoUrl: z.string().url({ message: "Provide a valid URL for Project Repo" }),
     projectStatus: z.enum(['Planning', 'Requirements Gathering', 'In Progress', 'Development', 'Testing', 'Production']),
+  }).superRefine((data, ctx) => {
+    if (data.projectStartAt && data.projectDeadline) {
+      if (!dayjs(data.projectDeadline).isAfter(dayjs(data.projectStartAt))) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Deadline must be after start date",
+          path: ['projectDeadline']
+        });
+      }
+    }
   });
 
 

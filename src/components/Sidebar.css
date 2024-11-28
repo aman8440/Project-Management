@@ -1,15 +1,17 @@
 .sidebar-container {
   width: 50px;
-  height: auto;
+  height: 100vh;
   background-color: #2b303b;
-  position: relative;
+  position: fixed;
   z-index: 1;
-  margin-left: -1px;
 }
 .sidebar-container .imgContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.sidebar-container .imgContainer .text-decoration-none .aws:hover{
+  color: red;
 }
 .sidebar-container .imgContainer .line {
   width: 50px;
@@ -32,19 +34,37 @@
   margin-left: 10px;
   display: flex;
   justify-content: center;
+  cursor: pointer;
 }
 .sidebar-container .imgContainer .home {
   background-color: #ffffff;
   color: #2B303B;
 }
 .sidebar-container .imgContainer .mask {
-  background-color: #FFFFFF1A;
+  background-color: #ffffff1a;
   color: white;
 }
 .sidebar-container .imgContainer .aws {
   background-color: #FFFFFF1A;
   color: white;
 }
+
+.sidebar-container .imgContainer .home:hover{
+  transition: 0.2s ease-in !important;
+  background-color: #ffffffab !important;
+  color: #746e6e !important;
+}
+.sidebar-container .imgContainer .mask:hover{
+  transition: 0.2s ease-in !important;
+  background-color: #ffffffab !important;
+  color: #746e6e !important;
+}
+.sidebar-container .imgContainer .aws:hover{
+  transition: 0.2s ease-in !important;
+  background-color: #ffffffab !important;
+  color: #746e6e !important;
+}
+
 .sidebar-container:hover {
   width: 169px;
   transition: width 0.1s;
@@ -83,5 +103,5 @@
   content: "| Projects";
 }
 .sidebar-container:hover .imgContainer .aws::after {
-  content: "| Home";
+  content: "| Dashboard";
 }
