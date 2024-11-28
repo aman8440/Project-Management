@@ -1,10 +1,8 @@
 import Breadcrumb from "../../components/Breadcrumb"
 import Navbar from "../../components/Navbar"
 import Sidebar from "../../components/Sidebar"
-import { useUserData } from "../../hooks/useUserData";
 
 const Dashboard = () => {
-  useUserData();
   return (
     <div className="vh-100 d-flex">
       <Sidebar />

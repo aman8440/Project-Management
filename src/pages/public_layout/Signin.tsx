@@ -8,13 +8,11 @@ import { SignInData } from "../../interfaces";
 import { Toaster, toast } from "sonner";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getToken, setToken } from "../../services/storageService";
-
+import { useState } from "react";
+import {  setAuthToken } from "../../services/storage.service";
 export default function Signin() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const {
     register,
     handleSubmit,
@@ -22,15 +20,6 @@ export default function Signin() {
   } = useForm<SignInData>({
     resolver: zodResolver(LoginSchema),
   });
-
-  useEffect(() => {
-    const token = getToken();
-    if (token) {
-      navigate("/dashboard");
-    } else {
-      console.log("Token not found or invalid.");
-    }
-  }, [navigate]);
 
   const onSubmit = async (data: SignInData) => {
     setIsLoading(true);
@@ -50,7 +39,7 @@ export default function Signin() {
       } = await response.json();
   
       if (response.status === 200 && responseData?.token) {
-        setToken(responseData.token);
+        setAuthToken(responseData.token);
         navigate("/dashboard");
       } else {
         console.error("Sign-in failed:", responseData);
