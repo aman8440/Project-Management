@@ -3,9 +3,11 @@ import projectIcon from '../assets/img/project_icon.svg';
 import profileIcon from '../assets/img/profile_icon.svg';
 import dashboardIcon from '../assets/img/dashboard-icon.svg';
 import './Sidebar.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
+  const location = useLocation();
+  const isActive = (path: string) => location.pathname === path;
   return (
     <div className="sidebar-container text-white d-flex flex-column">
       {/* <div className="d-flex w-100 p-4 pb-2" style={{borderBottom: '1px solid #FFFFFF1A'}}>
@@ -40,15 +42,26 @@ const Sidebar = () => {
           </div>
           <hr className="line"/>
           <Link className='text-decoration-none' to="/dashboard">   
-            <div className="aws d-flex text-white btn">
+            <div className={`aws d-flex btn ${isActive("/dashboard") ? "active" : ""}`} style={{
+              backgroundColor: isActive("/dashboard") ? "#ffffff" : "#ffffff1a",
+              color: isActive("/dashboard") ? "black" : "#ffffff",
+            }}>
               <img src={dashboardIcon} alt="dashboardIcon" height='20' width='20'/>
             </div>
           </Link>
-          <div className="home d-flex btn" style={{color: '#2B303B'}}>
-            <img src={profileIcon} alt="profileIcon" height='20' width='20' />
-          </div>
+          <Link className='text-decoration-none' to="/dashboard/profile">
+            <div className={`home d-flex btn ${isActive("/dashboard/profile") ? "active" : ""}`} style={{
+              backgroundColor: isActive("/dashboard/profile") ? "#ffffff" : "#ffffff1a",
+              color: isActive("/dashboard/profile") ? "black" : "#ffffff",
+            }}>
+              <img src={profileIcon} alt="profileIcon" height='20' width='20' />
+            </div>
+          </Link>
           <Link className='text-decoration-none' to="/dashboard/projects">   
-            <div className="mask d-flex text-white btn">
+            <div className={`mask d-flex btn ${isActive("/dashboard/projects") ? "active" : ""}`} style={{
+              backgroundColor: isActive("/dashboard/projects") ? "#ffffff" : "#ffffff1a",
+              color: isActive("/dashboard/projects") ? "black" : "#ffffff",
+            }}>
               <img src={projectIcon} alt="projectIcon" height='20' width='20'/>
             </div>
           </Link>

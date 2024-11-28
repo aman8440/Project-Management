@@ -1,0 +1,3 @@
+.InputBaseClass, .MuiTextField-root, .MuiInputBase-formControl{
+  height: auto !important;
+}

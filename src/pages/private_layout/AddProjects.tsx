@@ -67,7 +67,9 @@ const AddProjects = () => {
   } = useForm<ProjectData>({
     resolver: zodResolver(projectSchema),
   });
-
+  const getTodayDate= (): dayjs.Dayjs =>{
+    return dayjs();
+  }
   const handleChange = (field: string, value: string | string[] | number | null | Date) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -144,7 +146,7 @@ const AddProjects = () => {
                     register={register}
                     error={errors.projectName}
                     onChange={(e) => handleChange('projectName', e.target.value)}
-                    className="mb-1"
+                    className="mb-2"
                   />
                   <Autocomplete
                     multiple
@@ -153,6 +155,7 @@ const AddProjects = () => {
                     options={filteredTechOptions}
                     onChange={(e, newValue) => {
                       handleChange('projectTech', newValue);
+                      setValue('projectTech', newValue, { shouldValidate: true });
                     }}
                     inputValue={techSearch}
                     onInputChange={(e, newInputValue) => setTechSearch(newInputValue)}
@@ -176,6 +179,7 @@ const AddProjects = () => {
                             formData.projectStartAt ? dayjs(formData.projectStartAt) : null,
                             formData.projectDeadline ? dayjs(formData.projectDeadline) : null,
                           ]}
+                          minDate={getTodayDate()}
                           onChange={(newValue: DateRange<dayjs.Dayjs> | null) => {
                             if (newValue !== null) {
                               const [start, end] = newValue;
@@ -193,9 +197,11 @@ const AddProjects = () => {
                           }}
                         />
                       </DemoContainer>
+                      <div className="d-flex justify-content-between">
+                        {errors.projectStartAt && <p className="text-danger ms-3" style={{fontSize:'13px'}}>{errors.projectStartAt.message}</p>}
+                        {errors.projectDeadline && <p className="text-danger" style={{marginRight:'15px',fontSize:'13px'}}>{errors.projectDeadline.message}</p>}
+                      </div>
                     </LocalizationProvider>
-                    {errors.projectStartAt && <p className="text-danger">{errors.projectStartAt.message}</p>}
-                    {errors.projectDeadline && <p className="text-danger">{errors.projectDeadline.message}</p>}
                   <Input
                     label="Project Lead"
                     type="text" 
@@ -211,16 +217,16 @@ const AddProjects = () => {
                     <InputLabel>Team Size</InputLabel>
                     <Select
                       className="mb-3"
+                      {...register('teamSize',{ valueAsNumber: true })}
                       value={formData.teamSize}
                       label="Team Size"
-                      {...register('teamSize')}
                       onChange={(e) =>  handleChange('teamSize', e.target.value)}
                     >
                       {[...Array(10)].map((_, i) => (
                         <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>
                       ))}
                     </Select>
-                    {errors.teamSize && <p className="text-danger">{errors.teamSize.message}</p>}
+                    {errors.teamSize && <p className="text-danger">{errors.teamSize?.message}</p>}
                   </FormControl>
                   <Input
                     label="Project Client"
@@ -234,7 +240,7 @@ const AddProjects = () => {
                     className="mb-3"
                   />
                   <Autocomplete
-                    fullWidth={true} 
+                    fullWidth={true}
                     className="mb-3"
                     value={formData.projectManagementTool}
                     onChange={(e, newValue) => {
@@ -258,7 +264,7 @@ const AddProjects = () => {
                     error={errors.projectManagementUrl}
                     value={formData.projectManagementUrl}
                     onChange={(e) => handleChange('projectManagementUrl', e.target.value)}
-                    className="mb-3"
+                    className="mb-3 mt-3"
                   />
 
                   <Input

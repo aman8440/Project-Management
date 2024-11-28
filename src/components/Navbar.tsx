@@ -7,7 +7,7 @@ const Navbar = () => {
   const logout = useLogout();
   
   return (
-    <nav className="bg-transparent d-flex justify-content-between align-items-center text-#2B303B" style={{padding:'14px' ,borderBottom: '1px solid rgb(84 84 84 / 10%)'}}>
+    <nav className="bg-transparent d-flex justify-content-between align-items-center text-#2B303B" style={{padding:'14px', marginLeft:'32px', borderBottom: '1px solid rgb(84 84 84 / 10%)'}}>
       <div className="d-flex w-full">
         <div className="logo ms-4" style={{paddingRight:'10px', borderRight: '1px solid #32323840'}}>
           <img src={icon} alt="Logo" width="30" height="30" className="d-inline-block align-top" />

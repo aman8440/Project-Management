@@ -68,6 +68,10 @@ const UpdateProject = () => {
     resolver: zodResolver(projectSchema),
   });
 
+  const getTodayDate= (): dayjs.Dayjs =>{
+    return dayjs();
+  }
+
   useEffect(() => {
     const fetchProjectData = async () => {
       setIsLoading(true);
@@ -107,14 +111,24 @@ const UpdateProject = () => {
   }, [id, setValue]);
 
   const handleChange = (field: string, value: string | string[] | number | null | Date) => {
+    if (field === 'projectStartAt' || field === 'projectDeadline') {
+      value = value ? dayjs(value as Date).toDate() : null;
+    }
+    if (field === 'teamSize') {
+      value = Number(value);
+    }
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
+    setValue(field as keyof ProjectData, value, { 
+      shouldValidate: true 
+    });
   };
 
   const onSubmit: SubmitHandler<ProjectData> = async (data) => {
     setIsLoading(true);
+    console.log("Validated Data:", data);
     const projectTechArray = typeof formData.projectTech === 'string'
     ? JSON.stringify(formData.projectTech).split(',').map(item => item.trim())
     : formData.projectTech || [];
@@ -185,7 +199,7 @@ const UpdateProject = () => {
                       register={register}
                       error={errors.projectName}
                       onChange={(e) => handleChange('projectName', e.target.value)}
-                      className="mb-1"
+                      className="mb-2"
                     />
                     <Autocomplete
                       multiple
@@ -194,6 +208,7 @@ const UpdateProject = () => {
                       options={filteredTechOptions}
                       onChange={(e, newValue) => {
                         handleChange('projectTech', newValue);
+                        setValue('projectTech', newValue, { shouldValidate: true });
                       }}
                       inputValue={techSearch}
                       onInputChange={(e, newInputValue) => setTechSearch(newInputValue)}
@@ -214,6 +229,7 @@ const UpdateProject = () => {
                       <DemoContainer components={['DateRangePicker']}>
                         <DateRangePicker
                           value={[dayjs(formData.projectStartAt),dayjs(formData.projectDeadline)]}
+                          minDate={getTodayDate()}
                           onChange={(newValue: DateRange<dayjs.Dayjs> ) => {
                             if (newValue !== null) {
                               const [start, end] = newValue;
@@ -229,6 +245,10 @@ const UpdateProject = () => {
                           }}
                         />
                       </DemoContainer>
+                      <div className="d-flex justify-content-between">
+                        {errors.projectStartAt && <p className="text-danger ms-3" style={{fontSize:'13px'}}>{errors.projectStartAt.message}</p>}
+                        {errors.projectDeadline && <p className="text-danger" style={{marginRight:'15px',fontSize:'13px'}}>{errors.projectDeadline.message}</p>}
+                      </div>
                     </LocalizationProvider>
                     <Input
                       label="Project Lead"
@@ -246,15 +266,15 @@ const UpdateProject = () => {
                       <Select
                         className="mb-3"
                         value={formData.teamSize}
+                        {...register('teamSize',{ valueAsNumber: true })}
                         label="Team Size"
-                        {...register('teamSize')}
                         onChange={(e) =>  handleChange('teamSize', e.target.value)}
                       >
                         {[...Array(10)].map((_, i) => (
                           <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>
                         ))}
                       </Select>
-                      {errors.teamSize && <p className="text-danger">{errors.teamSize.message}</p>}
+                      {errors.teamSize && <p className="text-danger">{errors.teamSize?.message}</p>}
                     </FormControl>
                     <Input
                       label="Project Client"
@@ -296,7 +316,7 @@ const UpdateProject = () => {
                       register={register}
                       error={errors.projectManagementUrl}
                       onChange={(e) => handleChange('projectManagementUrl', e.target.value)}
-                      className="mb-3"
+                      className="mb-3 mt-3"
                     />
                     <Input
                       label="Project Description"
