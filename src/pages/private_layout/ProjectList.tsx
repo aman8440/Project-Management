@@ -7,7 +7,7 @@ import { RowData } from "../../interfaces";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import Input from "../../components/Input";
-import { getToken } from "../../services/storageService";
+import { getToken } from "../../services/storage.service";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";

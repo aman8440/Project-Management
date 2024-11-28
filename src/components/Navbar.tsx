@@ -1,16 +1,11 @@
 import Button from "./Button";
 import icon from '../assets/img/search_icon.svg';
-import { removeToken } from "../services/storageService";
-import { useNavigate } from "react-router-dom";
-import { useUserData } from "../hooks/useUserData";
+import { useLogout, useUserProfile } from "../hooks/userProfile";
 
 const Navbar = () => {
-  const userStateData  = useUserData();
-  const navigate = useNavigate();
-  const logout= ()=>{
-    removeToken();
-    navigate("/login");
-  }
+  const { userProfile }= useUserProfile();
+  const logout = useLogout();
+  
   return (
     <nav className="bg-transparent d-flex justify-content-between align-items-center text-#2B303B" style={{padding:'14px' ,borderBottom: '1px solid rgb(84 84 84 / 10%)'}}>
       <div className="d-flex w-full">
@@ -32,7 +27,7 @@ const Navbar = () => {
               padding: '19px'
             }}
           >
-            {`${userStateData?.fname?.charAt(0)}${userStateData?.lname?.charAt(0)}`}
+            {`${userProfile?.fname?.charAt(0)}${userProfile?.lname?.charAt(0)}`}
           </div>
         </div>
         <Button text="Logout" type="button" onClick={() => logout()} />

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Breadcrumb from "../../components/Breadcrumb"
 import Navbar from "../../components/Navbar"
 import Sidebar from "../../components/Sidebar"
-import { getToken } from "../../services/storageService";
+import { getToken } from "../../services/storage.service";
 import Input from "../../components/Input";
 import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
@@ -16,8 +16,8 @@ import { ProjectData } from "../../interfaces";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema } from "../../schema";
-import { useUserData } from "../../hooks/useUserData";
 import { useNavigate } from "react-router-dom";
+import { useUserProfile } from "../../hooks/userProfile";
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -37,7 +37,7 @@ const PROJECT_MANAGEMENT_TOOLS = [
 ];
 
 const AddProjects = () => {
-  const userStateData  = useUserData();
+  const { userProfile }= useUserProfile();
   const navigate= useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<ProjectData>({
@@ -90,8 +90,8 @@ const AddProjects = () => {
       project_repo_tool: data.projectRepoTool,
       project_repo_url: data.projectRepoUrl,
       project_status: data.projectStatus,
-      created_by: userStateData?.fname || "Unknown",
-      updated_by: userStateData?.fname || "Unknown",
+      created_by: userProfile?.fname || "Unknown",
+      updated_by: userProfile?.fname || "Unknown",
     };
     console.log("payload", payload);
     try {
