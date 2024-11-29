@@ -85,10 +85,11 @@ const UpdateProject = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const project = await response.json();
+        console.log("project", project)
         setFormData(project);
         setFormData({
           projectName: project.project_name || '',
-          projectTech: project.project_tech ? JSON.parse(project.project_tech) : [],
+          projectTech: project.project_tech ? project.project_tech.split(', ') : [],
           projectStartAt: project.project_startat ? dayjs(project.project_startat).toDate() : null,
           projectDeadline: project.project_deadline ? dayjs(project.project_deadline).toDate() : null,
           projectLead: project.project_lead || '',
@@ -129,12 +130,9 @@ const UpdateProject = () => {
   const onSubmit: SubmitHandler<ProjectData> = async (data) => {
     setIsLoading(true);
     console.log("Validated Data:", data);
-    const projectTechArray = typeof formData.projectTech === 'string'
-    ? JSON.stringify(formData.projectTech).split(',').map(item => item.trim())
-    : formData.projectTech || [];
     const payload = {
       project_name: data.projectName,
-      project_tech: projectTechArray,
+      project_tech: formData.projectTech.toString(),
       project_startat: formData?.projectStartAt ? formData.projectStartAt.toISOString() : null,
       project_deadline: formData?.projectDeadline ? formData.projectDeadline.toISOString() : null,
       project_lead: data.projectLead,

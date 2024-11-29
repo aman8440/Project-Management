@@ -80,7 +80,7 @@ const AddProjects = () => {
     setIsLoading(true);
     const payload = {
       project_name: data.projectName,
-      project_tech: formData.projectTech,
+      project_tech: formData.projectTech.toString(),
       project_startat: formData.projectStartAt ? formData.projectStartAt.toISOString() : null,
       project_deadline: formData.projectDeadline ? formData.projectDeadline.toISOString() : null,
       project_lead: data.projectLead,

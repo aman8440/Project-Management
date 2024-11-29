@@ -63,6 +63,26 @@ export interface ProjectData{
   projectStatus: string;
 }
 
+export interface FilterSidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onApply: (filters: FilterDataProp) => void;
+  onReset: () => void;
+  filters: FilterDataProp;
+  setFilters: React.Dispatch<React.SetStateAction<FilterDataProp>>;
+}
+
+export interface FilterDataProp{
+  projectStartAt: Date | null;
+  projectDeadline: Date | null; 
+  projectStatus: string;
+  projectTech: string[];
+}
+
+export interface DynamicFilters {
+  [key: string]: string[] | string;
+}
+
 export interface GridValueGetterParams<V = any, R = any> {
   field: string;
   id: GridRowId;

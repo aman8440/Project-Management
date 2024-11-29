@@ -10,9 +10,7 @@
   flex-direction: column;
   justify-content: center;
 }
-.sidebar-container .imgContainer .text-decoration-none .aws:hover{
-  color: red;
-}
+
 .sidebar-container .imgContainer .line {
   width: 50px;
   border-top: 1px solid #FFFFFF1A;
@@ -26,7 +24,8 @@
 }
 .sidebar-container .imgContainer .home,
 .sidebar-container .imgContainer .mask,
-.sidebar-container .imgContainer .aws {
+.sidebar-container .imgContainer .aws,
+.sidebar-container .imgContainer .add {
   width: 32px;
   height: 32px;
   border-radius: 4px;
@@ -48,6 +47,10 @@
   background-color: #FFFFFF1A;
   color: white;
 }
+.sidebar-container .imgContainer .add {
+  background-color: #FFFFFF1A;
+  color: white;
+}
 
 .sidebar-container .imgContainer .home:hover{
   transition: 0.2s ease-in !important;
@@ -60,6 +63,11 @@
   color: #746e6e !important;
 }
 .sidebar-container .imgContainer .aws:hover{
+  transition: 0.2s ease-in !important;
+  background-color: #ffffffab !important;
+  color: #746e6e !important;
+}
+.sidebar-container .imgContainer .add:hover{
   transition: 0.2s ease-in !important;
   background-color: #ffffffab !important;
   color: #746e6e !important;
@@ -83,8 +91,9 @@
 }
 .sidebar-container:hover .imgContainer .home,
 .sidebar-container:hover .imgContainer .mask,
-.sidebar-container:hover .imgContainer .aws {
-  width: 145px;
+.sidebar-container:hover .imgContainer .aws,
+.sidebar-container:hover .imgContainer .add {
+  width: 136px;
   padding-left: 8px;
   align-items: center;
   display: flex;
@@ -105,3 +114,7 @@
 .sidebar-container:hover .imgContainer .aws::after {
   content: "| Dashboard";
 }
+.sidebar-container:hover .imgContainer .add::after {
+  content: "| Add Project";
+}
+
