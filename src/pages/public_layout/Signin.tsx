@@ -10,6 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {  setAuthToken } from "../../services/storage.service";
+import loginPage from '../../assets/img/login_page_image.jpg'
+import loginLogo from '../../assets/img/login_logo.svg'
+
 export default function Signin() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,10 +58,11 @@ export default function Signin() {
 
   return (
     <>
-      <div className="d-flex justify-content-center align-items-center min-vh-100">
-        <div className="w-100" style={{ maxWidth: '430px' }}>
-          <div className="bg-white p-4 rounded-lg shadow">
+      <div className="d-flex justify-content-center align-items-center" style={{width:'100%', height:'100vh'}}>
+        <div className="d-flex w-full justify-content-between bg-white" style={{width:'100%', height:'100vh'}}>
+          <div className="d-flex flex-column p-4 rounded-lg shadow" style={{width:'50%', alignItems:'center', justifyContent:'center'}}>
             <div className="text-center mb-3">
+              <img src={loginLogo} alt="loginLogo" width="40" height="40"/>
               <div className="font-sans display-4 font-weight-bold">Login</div>
             </div>
             <Toaster richColors position="top-right" />
@@ -84,6 +88,9 @@ export default function Signin() {
               </p>
               <Button text={isLoading ? "Signing in..." : "Sign In"} type="submit" disabled={isLoading} />
             </form>
+          </div>
+          <div className="d-flex" style={{width:'50%'}}>
+            <img src={loginPage} alt="loginPage" style={{width:'100%'}}/>
           </div>
         </div>
       </div>

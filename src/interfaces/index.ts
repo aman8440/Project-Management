@@ -13,12 +13,19 @@ export interface UserData {
   phone?: string;
   email?: string;
   gender?: string;
+  id?: string
 }
 export interface FilterType {
   page: number;
   pageSize: number;
 }
 
+export interface UploadResponse {
+  url: string;
+}
+export interface deleteResponse {
+  id: string;
+}
 export interface DialogProps {
   open: boolean;
   onClose: () => void;
