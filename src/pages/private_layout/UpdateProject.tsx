@@ -88,19 +88,19 @@ const UpdateProject = () => {
         console.log("project", project)
         setFormData(project);
         setFormData({
-          projectName: project.project_name || '',
-          projectTech: project.project_tech ? project.project_tech.split(', ') : [],
-          projectStartAt: project.project_startat ? dayjs(project.project_startat).toDate() : null,
-          projectDeadline: project.project_deadline ? dayjs(project.project_deadline).toDate() : null,
-          projectLead: project.project_lead || '',
-          teamSize: parseInt(project.team_size) || 1,
-          projectClient: project.project_client || '',
-          projectManagementTool: project.project_management_tool || null,
-          projectManagementUrl: project.project_management_url || '',
-          projectDescription: project.project_description || '',
-          projectRepoTool: project.project_repo_tool || '',
-          projectRepoUrl: project.project_repo_url || '',
-          projectStatus: project.project_status || 'Planning'
+          projectName: project.project_name,
+          projectTech: project.project_tech.split(', '),
+          projectStartAt: dayjs(project.project_startat).toDate(),
+          projectDeadline: dayjs(project.project_deadline).toDate(),
+          projectLead: project.project_lead,
+          teamSize: parseInt(project.team_size),
+          projectClient: project.project_client,
+          projectManagementTool: project.project_management_tool,
+          projectManagementUrl: project.project_management_url,
+          projectDescription: project.project_description,
+          projectRepoTool: project.project_repo_tool,
+          projectRepoUrl: project.project_repo_url,
+          projectStatus: project.project_status
         });
       } catch (error) {
         console.error('Error fetching project data:', error);

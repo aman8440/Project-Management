@@ -51,11 +51,10 @@ const Sidebar = () => {
             color: isActive("/dashboard/projects") ? "black" : "#ffffff",
             position:'relative'
           }}
-          onClick={toggleProjectsSubmenu}
-        >
+          >
           <img src={projectIcon} alt="projectIcon" height="20" width="20" />
           {isSidebarHovered && (
-            <span style={{position:'absolute', right:'9px'}}>
+            <span onClick={toggleProjectsSubmenu} style={{position:'absolute', right:'9px'}}>
               {isProjectsOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
             </span>
           )}
