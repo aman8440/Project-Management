@@ -58,8 +58,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   const closeSidebar = () => {
-    setShowStatusField(false);
-    setShowTechField(false);
     onClose();
   };
 

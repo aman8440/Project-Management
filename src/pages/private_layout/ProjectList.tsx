@@ -29,7 +29,7 @@ const ProjectList = () => {
       field: "id",
       headerName: "Serial No.",
       width: 90,
-      sortable: false,
+      sortable: true,
       value: "1"
     },
     { field: "project_name", headerName: "Project Name", width: 150 },
@@ -135,7 +135,7 @@ const ProjectList = () => {
   });
   const [sortModel, setSortModel] = useState<GridSortModel>([
     {
-      field: searchParams.get("sort") || "project_name",
+      field: searchParams.get("sort") || "id",
       sort: (searchParams.get("order") as GridSortDirection) || "asc",
     },
   ]);
@@ -162,7 +162,7 @@ const ProjectList = () => {
       projectDeadline: null,
       projectStatus: "",
       projectTech: [],
-    }); // Reset filter values
+    });
   };
 
   const formatDate = (date: string) => {
@@ -217,9 +217,9 @@ const ProjectList = () => {
 
       const result = await response.json();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const rowsWithIndex = result.data.data.map((row: any, index: number) => ({
+      const rowsWithIndex = result.data.data.map((row: any) => ({
         ...row,
-        id: (page - 1) * pageSize + index + 1
+        // id: (page - 1) * pageSize + index + 1
       }));
       setRows(rowsWithIndex);
       setTotalRows(result.data.total);

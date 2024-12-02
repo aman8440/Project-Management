@@ -68,10 +68,6 @@ const UpdateProject = () => {
     resolver: zodResolver(projectSchema),
   });
 
-  const getTodayDate= (): dayjs.Dayjs =>{
-    return dayjs();
-  }
-
   useEffect(() => {
     const fetchProjectData = async () => {
       setIsLoading(true);
@@ -85,7 +81,6 @@ const UpdateProject = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const project = await response.json();
-        console.log("project", project)
         setFormData(project);
         setFormData({
           projectName: project.project_name,
@@ -129,10 +124,9 @@ const UpdateProject = () => {
 
   const onSubmit: SubmitHandler<ProjectData> = async (data) => {
     setIsLoading(true);
-    console.log("Validated Data:", data);
     const payload = {
       project_name: data.projectName,
-      project_tech: formData.projectTech.toString(),
+      project_tech: formData.projectTech,
       project_startat: formData?.projectStartAt ? formData.projectStartAt.toISOString() : null,
       project_deadline: formData?.projectDeadline ? formData.projectDeadline.toISOString() : null,
       project_lead: data.projectLead,
@@ -156,7 +150,6 @@ const UpdateProject = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      console.log('Project updated:', await response.json());
       navigate('/dashboard/projects');
     } catch (error) {
       console.error('Error updating project:', error);
@@ -170,9 +163,8 @@ const UpdateProject = () => {
   );
 
   const filteredToolOptions = PROJECT_MANAGEMENT_TOOLS.filter(tool =>
-    tool.toLowerCase().includes(toolSearch.toLowerCase())
+    (tool || "").toLowerCase().includes((toolSearch || "").toLowerCase())
   );
-
   return (
     <div className="d-flex">
       <Sidebar />
@@ -227,7 +219,6 @@ const UpdateProject = () => {
                       <DemoContainer components={['DateRangePicker']}>
                         <DateRangePicker
                           value={[dayjs(formData.projectStartAt),dayjs(formData.projectDeadline)]}
-                          minDate={getTodayDate()}
                           onChange={(newValue: DateRange<dayjs.Dayjs> ) => {
                             if (newValue !== null) {
                               const [start, end] = newValue;
@@ -287,22 +278,18 @@ const UpdateProject = () => {
                     />
                     <Autocomplete
                       fullWidth={true}
-                      value={formData?.projectManagementTool || null}
-                      options={filteredToolOptions}
-                      onChange={(e, newValue) => handleChange('projectManagementTool', newValue)}
-                      inputValue={toolSearch}
-                      onInputChange={(e, newInputValue) => setToolSearch(newInputValue)}
                       className="mb-3"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          {...register("projectManagementTool")}
-                          label="Project Management Tool"
-                          name="projectManagementTool"
-                          error={!!errors.projectManagementTool}
-                          helperText={errors.projectManagementTool?.message}
-                        />
-                      )}
+                      value={formData.projectManagementTool}
+                      onChange={(e, newValue) => {
+                        handleChange('projectManagementTool', newValue as string);
+                        setToolSearch(newValue as string);
+                      }}
+                      onInputChange={(e, newInputValue) => {
+                        setToolSearch(newInputValue);
+                      }}
+                      options={filteredToolOptions}
+                      renderInput={(params) => <TextField {...params} {...register("projectManagementTool")} label="Project Management Tool" name="projectManagementTool"
+                        error={!!errors.projectManagementTool} helperText={errors.projectManagementTool?.message}/>}
                       getOptionLabel={(option) => option}
                     />
                     <Input
