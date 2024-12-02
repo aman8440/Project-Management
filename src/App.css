@@ -10,3 +10,10 @@
   width: 500px;
   height: 300px;
 }
+.search-input .space-y-2{
+  margin-bottom: 0px !important;
+}
+.search-input .space-y-2 .MuiFormControl-root .MuiInputBase-root{
+  height: 44px !important;
+  position: relative;
+}
