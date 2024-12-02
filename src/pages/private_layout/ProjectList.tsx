@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Paper, Tooltip, tooltipClasses } from "@mui/material";
+import { InputAdornment, Paper, Tooltip, tooltipClasses } from "@mui/material";
 import { DataGrid, GridSortDirection, GridSortModel } from "@mui/x-data-grid";
 import { FilterDataProp, RowData } from "../../interfaces";
 import Sidebar from "../../components/Sidebar";
@@ -16,6 +16,7 @@ import Breadcrumb from "../../components/Breadcrumb";
 import Button from "../../components/Button";
 import FilterSidebar from "../../components/FilterSidebar";
 import { format } from 'date-fns';
+import SearchIcon from '@mui/icons-material/Search';
 // import AlertDialogSlide from "../../components/AlertDialogSlide";
 
 const ProjectList = () => {
@@ -268,7 +269,7 @@ const ProjectList = () => {
   }, [paginationModel, sortModel, search]);
 
   return (
-    <div className="vh-100 d-flex">
+    <div className="vh-100 d-flex" style={{overflow:'hidden'}}>
       <Sidebar />
       <div className="d-flex flex-column flex-grow-1">
         <Navbar />
@@ -276,57 +277,83 @@ const ProjectList = () => {
           <div className="d-flex justify-content-start" style={{width:'91%', marginTop: '29px'}}>
             <Breadcrumb/>
           </div>
-        <div className="w-full m-2" style={{width: '1745px', zIndex: '0',
-          position: 'absolute',top: '130px', right: '10px'}}>
-          <div className="d-flex justify-content-between w-">
-            <h2 className="my-4">Project Listing</h2>
-            <Button text={"Add Projects"} type={'button'} onClick={handleNavigateToAddProjects}/>
-          </div>
-          <div className="d-flex w-full justify-content-between" style={{alignItems:'self-start'}}>
-            <div className="w-full" style={{width:'92%'}}>
-              <Tooltip
-                open={searchError}
-                title="Please enter at least 3 characters"
-                placement="bottom-start"
-                slotProps={{
-                  popper: {
-                    sx: {
-                      [`&.${tooltipClasses.popper}[data-popper-placement*="bottom"] .${tooltipClasses.tooltip}`]:
-                        {
-                          marginTop: '0px',
-                        },
-                    },
-                  },
-                }}
-              >
-                <Input
-                  type="text"
-                  name="search"
-                  placeholder="Search Projects"
-                  label=""
-                  value={search}
-                  onChange={handleSearchChange}
-                  register={null}
-                  error={null}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      ...(searchError && {
-                        '& fieldset': {
-                          borderColor: 'error.main',
-                        },
-                      }),
+        <div className="w-full align-items-center w-full" style={{width: '93vw', zIndex: '0',
+          marginLeft: '55px', marginTop: '25px', backgroundColor:'#f0f0f0', padding:'15px 24px', borderRadius:'15px'}}>
+          <div className="d-flex justify-content-between w-full align-items-center">
+            <div className="d-flex">
+              <h2 className="my-4">Project Listing</h2>
+            </div>
+            <div className="d-flex w-full justify-content-between">
+              <div className="search-input w-full">
+                <Tooltip
+                  open={searchError}
+                  title="Please enter at least 3 characters"
+                  placement="bottom-start"
+                  slotProps={{
+                    popper: {
+                      sx: {
+                        [`&.${tooltipClasses.popper}[data-popper-placement*="bottom"] .${tooltipClasses.tooltip}`]:
+                          {
+                            marginTop: '0px',
+                          },
+                      },
                     },
                   }}
-                  style={{width:'100%'}}
-                />
-              </Tooltip>
-            </div>
-            <div className="btn bg-light d-flex mb-3 ms-3 align-items-center" onClick={() => setSidebarOpen(true)} style={{borderRadius:'8px', padding:'12px 27px',    boxShadow:'0px 20px 60px 0px rgba(0, 0, 0, 0.2)'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" fill="none"><path d="M1.667.311C1.2.41.813.774.662 1.255.603 1.443.6 1.493.6 2.187c0 .682.004.746.059.921.089.281.232.48.545.757l2.329 2.022 2.054 1.78.013 2.546c.013 2.54.014 2.547.071 2.689.211.512.731.772 1.267.632.189-.049 2.798-1.09 2.943-1.174.154-.089.351-.311.434-.488l.072-.152.013-2.026.013-2.026 2.04-1.768c1.122-.973 2.17-1.883 2.329-2.023.327-.289.469-.485.559-.769.055-.175.059-.239.059-.921 0-.694-.003-.744-.062-.932a1.36 1.36 0 0 0-1.024-.946c-.183-.038-.855-.042-6.333-.04-5.317.002-6.152.007-6.314.042M13.92 2.199v.466L11.631 4.65C10.372 5.741 9.3 6.686 9.249 6.75a1.514 1.514 0 0 0-.251.437c-.048.126-.051.238-.059 2.055l-.008 1.922-.912.365c-.502.2-.921.364-.932.364-.01 0-.022-1.029-.026-2.286-.008-2.18-.011-2.293-.059-2.42a1.514 1.514 0 0 0-.251-.437c-.051-.064-1.123-1.009-2.382-2.1L2.08 2.665v-.932h11.84v.466" fill="#000"/></svg>
-              <button className="text-black" type="button" style={{borderColor:'transparent', backgroundColor:'transparent'}}>Filter</button>
+                >
+                  <Input
+                    type="text"
+                    name="search"
+                    placeholder="Search Projects"
+                    label=""
+                    value={search}
+                    onChange={handleSearchChange}
+                    register={null}
+                    error={null}
+                    sx={{
+
+                      '& .MuiOutlinedInput-root': {
+                        ...(searchError && {
+                          '& fieldset': {
+                            borderColor: 'error.main',
+                          },
+                        }),
+                      },
+                    }}
+                    style={{width:'100%'}}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Tooltip>
+                  {/* <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28" style={{
+                    position:'absolute', right:'354px', top:'43px', zIndex:'1'
+                  }}><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#7E7E7E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> */}
+              </div>
+              <div className="btn bg-light d-flex ms-3 align-items-center" onClick={() => setSidebarOpen(true)} style={{borderRadius:'8px', padding:'7px 27px', marginRight:'10px', boxShadow:'0px 20px 60px 0px rgba(0, 0, 0, 0.2)'}}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" fill="none"><path d="M1.667.311C1.2.41.813.774.662 1.255.603 1.443.6 1.493.6 2.187c0 .682.004.746.059.921.089.281.232.48.545.757l2.329 2.022 2.054 1.78.013 2.546c.013 2.54.014 2.547.071 2.689.211.512.731.772 1.267.632.189-.049 2.798-1.09 2.943-1.174.154-.089.351-.311.434-.488l.072-.152.013-2.026.013-2.026 2.04-1.768c1.122-.973 2.17-1.883 2.329-2.023.327-.289.469-.485.559-.769.055-.175.059-.239.059-.921 0-.694-.003-.744-.062-.932a1.36 1.36 0 0 0-1.024-.946c-.183-.038-.855-.042-6.333-.04-5.317.002-6.152.007-6.314.042M13.92 2.199v.466L11.631 4.65C10.372 5.741 9.3 6.686 9.249 6.75a1.514 1.514 0 0 0-.251.437c-.048.126-.051.238-.059 2.055l-.008 1.922-.912.365c-.502.2-.921.364-.932.364-.01 0-.022-1.029-.026-2.286-.008-2.18-.011-2.293-.059-2.42a1.514 1.514 0 0 0-.251-.437c-.051-.064-1.123-1.009-2.382-2.1L2.08 2.665v-.932h11.84v.466" fill="#000"/></svg>
+                <button className="text-black" type="button" style={{borderColor:'transparent', backgroundColor:'transparent'}}>Filter</button>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28" style={{
+                position:'absolute', right:'152px', top:'43px', zIndex:'1'
+              }}><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 14H12M12 14H14M12 14V16M12 14V12" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M2 6.94975C2 6.06722 2 5.62595 2.06935 5.25839C2.37464 3.64031 3.64031 2.37464 5.25839 2.06935C5.62595 2 6.06722 2 6.94975 2C7.33642 2 7.52976 2 7.71557 2.01738C8.51665 2.09229 9.27652 2.40704 9.89594 2.92051C10.0396 3.03961 10.1763 3.17633 10.4497 3.44975L11 4C11.8158 4.81578 12.2237 5.22367 12.7121 5.49543C12.9804 5.64471 13.2651 5.7626 13.5604 5.84678C14.0979 6 14.6747 6 15.8284 6H16.2021C18.8345 6 20.1506 6 21.0062 6.76946C21.0849 6.84024 21.1598 6.91514 21.2305 6.99383C22 7.84935 22 9.16554 22 11.7979V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V6.94975Z" stroke="#ffffff" stroke-width="1.5"></path> </g></svg>
+              <Button text={"Add Projects"} type={'button'} onClick={handleNavigateToAddProjects}
+                sx={{
+                  padding: '11px 15px', 
+                  fontSize: '12px', 
+                  display: 'flex', 
+                  width: '170px !important', 
+                  alignItems: 'center',
+                  position: 'relative',
+                  paddingLeft: '34px'
+                }}
+              />
             </div>
           </div>
-          <Paper sx={{ width: "100%" }}>
+          <Paper sx={{ width: "100%", overflow:'auto', maxHeight:'68vh' }}>
             <DataGrid
               rows={rows}
               columns={columns}
@@ -344,7 +371,7 @@ const ProjectList = () => {
                 page: paginationModel.page - 1,
                 pageSize: paginationModel.pageSize
               }}
-              pageSizeOptions={[5, 10]}
+              pageSizeOptions={[5, 10, 15]}
               sx={{ border: 0 }}
             />
           </Paper>

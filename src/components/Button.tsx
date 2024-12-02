@@ -11,8 +11,8 @@ const Button: React.FC<ButtonProps> = ({ text, type = "button", className, onCli
         type={type}
         variant="contained"
         onClick={onClick} 
-        className={`btn bg-dark text-white w-100 ${className}`}
-        style={{ backgroundColor: "black", color: "white", width: "100%" }} 
+        className={`btn w-100 ${className}`}
+        style={{ backgroundColor: "#0145FE", color: "#FFFFFF", width: "100%" }} 
         {...rest}
       >
         {text || ""}

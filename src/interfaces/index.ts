@@ -143,6 +143,8 @@ export interface ButtonProps {
   className?: string;
   onClick?: () => void;
   fullWidth?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  sx: any;
 }
 
 export interface ErrorMessageProps {
@@ -160,6 +162,8 @@ export interface InputProps extends Omit<TextFieldProps, 'name' | 'value' | 'err
   error?: { message?: string } | null;
   className?: string;
   fullWidth?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  InputProps?: any;
 }
 
 export interface SearchInputProps {
