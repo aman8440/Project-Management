@@ -216,6 +216,7 @@ const ProjectList = () => {
       }
 
       const result = await response.json();
+      updateQueryParams();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const rowsWithIndex = result.data.data.map((row: any) => ({
         ...row,
