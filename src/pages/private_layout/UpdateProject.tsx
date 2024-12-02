@@ -26,7 +26,10 @@ const TECH_OPTIONS = [
   'Spring Boot', 'Django', 'Flask', 'Express.js', 
   'Next.js', 'Laravel', 'ASP.NET', 'Svelte',
   'MongoDB', 'PostgreSQL', 'MySQL', 'Redis',
-  'AWS', 'Azure', 'Google Cloud', 'Firebase'
+  'AWS', 'Azure', 'Google Cloud', 'Firebase',
+  'TensorFlow', 'WebSocket', 'Qiskit', 'InfluxDB',
+  'Kafka', 'OpenCV', 'ROS', 'Terraform', 'Unity',
+  'React Native', 'WebRTC'
 ];
 
 const PROJECT_MANAGEMENT_TOOLS = [
@@ -198,7 +201,7 @@ const UpdateProject = () => {
                       options={filteredTechOptions}
                       onChange={(e, newValue) => {
                         handleChange('projectTech', newValue);
-                        setValue('projectTech', newValue, { shouldValidate: true });
+                        setValue('projectTech', newValue);
                       }}
                       inputValue={techSearch}
                       onInputChange={(e, newInputValue) => setTechSearch(newInputValue)}
