@@ -11,6 +11,7 @@ import Interceptor from "../hooks/interceptor";
 import { UserProfileProvider } from "../hooks/userProfile";
 import { getToken } from "../services/storage.service";
 import Profile from "../pages/private_layout/Profile";
+import ViewMore from "../pages/private_layout/ViewMore";
 
 const PublicRoutes= ()=>{
   const token= getToken();
@@ -36,7 +37,8 @@ const AppRoutes = () => {
               <Route path="/dashboard/profile" element={<Profile />}></Route>
               <Route path="/dashboard/projects" element={<ProjectList />}></Route>
               <Route path="/dashboard/projects/add-projects" element={<AddProjects />}></Route>
-              <Route path="/dashboard/projects/:id" element={<UpdateProject />}></Route>
+              <Route path="/dashboard/projects/edit/:id" element={<UpdateProject />}></Route>
+              <Route path="/dashboard/projects/:id" element={<ViewMore />}></Route>
             </Route>
           </Routes>
         </UserProfileProvider>

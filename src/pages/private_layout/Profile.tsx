@@ -13,7 +13,7 @@ const Profile = () => {
   const {userProfile}= useUserProfile();
   const [hover, setHover] = useState(false);
 
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [, setProfileImage] = useState<string | null>(null);
   const [coverImageSet, setCoverImage] =  useState<string | null>(null);
 
   const handleImageUpload = async (
@@ -34,6 +34,7 @@ const Profile = () => {
         const data: UploadResponse = await response.json();
         if (type === "profile") setProfileImage(data.url);
         if (type === "cover") setCoverImage(data.url);
+        window.location.reload(); 
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -51,10 +52,12 @@ const Profile = () => {
 
       if (type === "profile") setProfileImage(null);
       if (type === "cover") setCoverImage(null);
+      window.location.reload(); 
     } catch (error) {
       console.error("Error deleting image:", error);
     }
   };
+  const coverImageUrl = coverImageSet !==null ? "http://localhost/truck_management/assets/images/uploads/"+coverImageSet : coverImage;
   return (
     <div className="vh-100 d-flex">
       <Sidebar />
@@ -71,7 +74,7 @@ const Profile = () => {
                   sx={{
                     width: "100%",
                     height: "100%",
-                    backgroundImage: `url(http://localhost/truck_management/assets/images/uploads/${coverImageSet}  ||${coverImage})`,
+                    backgroundImage: `url(${coverImageUrl})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     position: "relative",
@@ -94,7 +97,11 @@ const Profile = () => {
                       onMouseLeave={() => setHover(false)}
                     >
                       <Avatar
-                        src={"http://localhost/truck_management/assets/images/uploads/"+profileImage  || "/default-avatar.png"}
+                        src={
+                          userProfile?.image_name !== null
+                            ? "http://localhost/truck_management/assets/images/uploads/" + userProfile?.image_name
+                            : "/default-avatar.png"
+                        }
                         sx={{
                           width: 150,
                           height: 150,
@@ -125,12 +132,23 @@ const Profile = () => {
                               gap: 1,
                             }}
                           >
-                            <IconButton color="primary" sx={{ fontSize: 40 }}
-                               onChange={(e) => handleImageUpload(e as ChangeEvent<HTMLInputElement>, "profile")}>
-                              <CloudUpload />
+                            <IconButton color="primary" sx={{ fontSize: 50 }}>
+                              <label htmlFor="upload-profile-image" style={{ cursor: "pointer" }}>
+                                <CloudUpload />
+                              </label>
+                              <input
+                                id="upload-profile-image"
+                                type="file"
+                                style={{ display: "none" }}
+                                onChange={(e) =>
+                                  handleImageUpload(e as React.ChangeEvent<HTMLInputElement>, "profile")
+                                }
+                              />
                             </IconButton>
-                            <IconButton sx={{ color: 'red', fontSize: 40 }}
-                              onClick={() => handleImageDelete("profile")}>
+                            <IconButton
+                              sx={{ color: "red", fontSize: 40 }}
+                              onClick={() => handleImageDelete("profile")}
+                            >
                               <Delete />
                             </IconButton>
                           </Box>

@@ -9,7 +9,7 @@ function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 const Breadcrumb = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const pathSegments = location.pathname.split('/').filter((segment) => segment);
+  const pathSegments = location.pathname.split('/').filter((segment) => segment && segment !== 'edit'); ;
 
   const buildPath = (index: number) =>
     `/${pathSegments.slice(0, index + 1).join('/')}`;

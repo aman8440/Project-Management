@@ -66,7 +66,7 @@ export default function Signin() {
               <div className="font-sans display-4 font-weight-bold">Login</div>
             </div>
             <Toaster richColors position="top-right" />
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2" style={{width:'50%'}}>
               <Input
                 label="Email"
                 type="text"
