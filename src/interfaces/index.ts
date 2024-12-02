@@ -14,10 +14,17 @@ export interface UserData {
   email?: string;
   gender?: string;
   id?: string
+  image_name?: string
 }
 export interface FilterType {
   page: number;
   pageSize: number;
+}
+
+export interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
 }
 
 export interface UploadResponse {
@@ -90,6 +97,7 @@ export interface DynamicFilters {
   [key: string]: string[] | string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface GridValueGetterParams<V = any, R = any> {
   field: string;
   id: GridRowId;
@@ -147,6 +155,7 @@ export interface InputProps extends Omit<TextFieldProps, 'name' | 'value' | 'err
   type?: string;
   name: string;
   value?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: UseFormRegister<any> | null;
   error?: { message?: string } | null;
   className?: string;
@@ -156,12 +165,16 @@ export interface InputProps extends Omit<TextFieldProps, 'name' | 'value' | 'err
 export interface SearchInputProps {
   sortBy: string;
   sortOrder: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setUserData: any,
   input: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setInput: any,
   recordsPerPage: number,
   page: number,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setPage: any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setTotalUsers: any
 }
 
@@ -179,6 +192,7 @@ export interface UserListProps {
 }
 
 export interface useUserInterface {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setUserData: any;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }

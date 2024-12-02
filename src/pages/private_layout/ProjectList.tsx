@@ -58,12 +58,11 @@ const ProjectList = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       renderCell: (params:any) => {
         const handleView = () => {
-          console.log("View project", params.row);
+          navigate(`/dashboard/projects/${params.row.id}`);
         };
 
         const handleEdit = () => {
-          console.log("Edit project", params.row);
-          navigate(`/dashboard/projects/${params.row.id}`);
+          navigate(`/dashboard/projects/edit/${params.row.id}`);
         };
         
         // const handleDelete = (projectId:string) => {
@@ -158,14 +157,12 @@ const ProjectList = () => {
   };
 
   const handleResetFilters = () => {
-    setSidebarOpen(false);
     setFilters({
       projectStartAt: null,
       projectDeadline: null,
       projectStatus: "",
       projectTech: [],
     }); // Reset filter values
-    fetchData(); // Fetch data without filters
   };
 
   const formatDate = (date: string) => {
@@ -253,11 +250,15 @@ const ProjectList = () => {
       order: sortModel[0]?.sort || "asc",
       ...filterParams,
     });
-    console.log(filterParams, "df");
   };
 
   const handleNavigateToAddProjects = () => {
     navigate('/dashboard/projects/add-projects');
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleRowDoubleClick = (param:any) => {
+    navigate(`/dashboard/projects/${param.row.id}`);
   };
 
   useEffect(() => {
@@ -274,7 +275,7 @@ const ProjectList = () => {
           <div className="d-flex justify-content-start" style={{width:'91%', marginTop: '29px'}}>
             <Breadcrumb/>
           </div>
-        <div className="w-full m-2" style={{width: '1411px', zIndex: '0',
+        <div className="w-full m-2" style={{width: '1745px', zIndex: '0',
           position: 'absolute',top: '130px', right: '10px'}}>
           <div className="d-flex justify-content-between w-">
             <h2 className="my-4">Project Listing</h2>
@@ -331,6 +332,8 @@ const ProjectList = () => {
               rowCount={totalRows}
               paginationMode="server"
               sortingMode="server"
+              checkboxSelection
+              onRowDoubleClick={handleRowDoubleClick}
               onPaginationModelChange={(newModel) => setPaginationModel({
                 page: newModel.page + 1,
                 pageSize: newModel.pageSize || 5,
