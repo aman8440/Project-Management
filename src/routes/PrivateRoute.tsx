@@ -13,9 +13,7 @@ export const PrivateRoutes = () => {
       router("/login");
       return;
     }
-    fetchUserProfile().catch(() => {
-      router("/login");
-    });
+    fetchUserProfile();
   }, []);
 
   if (!userProfile) {
