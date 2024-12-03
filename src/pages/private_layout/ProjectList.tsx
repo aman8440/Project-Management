@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { InputAdornment, Paper, Tooltip, tooltipClasses } from "@mui/material";
-import { DataGrid, GridSortDirection, GridSortModel} from "@mui/x-data-grid";
+import { DataGrid, GridSortDirection, GridSortModel, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
 import { FilterDataProp, RowData } from "../../interfaces";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
@@ -19,16 +19,17 @@ import { format } from 'date-fns';
 import SearchIcon from '@mui/icons-material/Search';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 // import AlertDialogSlide from "../../components/AlertDialogSlide";
+import { toast } from "react-toastify";
 
-// function CustomToolbar() {
-//   return (
-//     <div className="d-flex" style={{justifyContent: 'flex-end'}}>
-//       <GridToolbarContainer>
-//         <GridToolbarExport />
-//       </GridToolbarContainer>
-//     </div>
-//   );
-// }
+function CustomToolbar() {
+  return (
+    <div className="d-flex" style={{justifyContent: 'flex-end'}}>
+      <GridToolbarContainer>
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    </div>
+  );
+}
 
 const ProjectList = () => {
   const [rows, setRows] = useState<RowData[]>([]); 
@@ -84,6 +85,7 @@ const ProjectList = () => {
         // };
 
         const confirmDelete = () => {
+          // setOpen(true);
           const userConfirmed = window.confirm("Are you sure you want to delete this project?");
           if (userConfirmed) {
             console.log("Delete confirmed for project", params.row.id);
@@ -92,12 +94,14 @@ const ProjectList = () => {
                 if (response.ok) {
                   console.log("Project deleted successfully");
                   fetchData();
+                  // setOpen(false);
                 } else {
                   console.error("Failed to delete project");
                 }
               })
               .catch((error) => {
                 console.error("Error deleting project:", error);
+                toast.error(error);
               });
           } else {
             console.log("Delete action canceled");
@@ -238,6 +242,7 @@ const ProjectList = () => {
       setTotalRows(result.data.total);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error(error as string);
     }
   };
 
@@ -378,9 +383,9 @@ const ProjectList = () => {
               }}
               pageSizeOptions={[10, 15, 20]}
               sx={{ border: 0 }}
-              // slots={{
-              //   toolbar: CustomToolbar,
-              // }}
+              slots={{
+                toolbar: CustomToolbar,
+              }}
             />
           </Paper>
         </div>

@@ -22,10 +22,6 @@ export const UserProfileProvider = ({ children }: AuthProviderProps) => {
 
   const fetchUserProfile = useCallback(async (): Promise<boolean> => {
     const token = getToken();
-    if (!token) {
-      navigate("/login");
-      return false;
-    }
     setIsProfileLoading(true);
     try {
       const response = await fetch("http://localhost/truck_management/me", {
@@ -37,12 +33,6 @@ export const UserProfileProvider = ({ children }: AuthProviderProps) => {
       });
 
       if (!response.ok) {
-        if (response.status === 401 || response.status === 403) {
-          setAuthToken('');
-          navigate("/login");
-          return false;
-        }
-
         const errorData = await response.json();
         toast.error(errorData.message || "Failed to fetch user profile");
         return false;

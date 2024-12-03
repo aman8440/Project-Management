@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import { InputProps } from "../interfaces";
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, type, register, name, value, error, className, inputSlotProps, ...rest }, ref) => {
+  ({ label, type, register, name, value, error, className, inputSlotProps, multiline, rows, ...rest }, ref) => {
     return (
       <div className={`space-y-2 mb-4`}>
         <div>
@@ -19,6 +19,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             error={!!error?.message}
             helperText={error?.message}
             inputRef={ref}
+            multiline={multiline}
+            rows={rows}
             slotProps={{
               input: {
                 ...inputSlotProps,
