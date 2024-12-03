@@ -12,6 +12,9 @@ import { useState } from "react";
 import {  setAuthToken } from "../../services/storage.service";
 import loginPage from '../../assets/img/login_page_image.jpg'
 import loginLogo from '../../assets/img/login_logo.svg'
+import React from "react";
+import { IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function Signin() {
   const navigate = useNavigate();
@@ -23,6 +26,18 @@ export default function Signin() {
   } = useForm<SignInData>({
     resolver: zodResolver(LoginSchema),
   });
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
   const onSubmit = async (data: SignInData) => {
     setIsLoading(true);
@@ -50,7 +65,7 @@ export default function Signin() {
       }
     } catch (error) {
       console.error("Error occurred during sign-in:", error);
-      toast.error("An error occurred. Please try again later.");
+      toast.error("An error occurred. Please try again later. " +error);
     } finally {
       setIsLoading(false);
     }
@@ -76,10 +91,26 @@ export default function Signin() {
               />
               <Input
                 label="Password"
-                type="password"
+                id="outlined-adornment-password"
+                type={showPassword ? 'text' : 'password'}
                 name="password"
                 register={register}
                 error={errors.password}
+                inputSlotProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={showPassword ? "hide the password" : "display the password"}
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        onMouseUp={handleMouseUpPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <p className="mt-2 text-muted">
                 <Link className="text-decoration-underline" to="/forget">

@@ -29,7 +29,7 @@ const TECH_OPTIONS = [
   'AWS', 'Azure', 'Google Cloud', 'Firebase',
   'TensorFlow', 'WebSocket', 'Qiskit', 'InfluxDB',
   'Kafka', 'OpenCV', 'ROS', 'Terraform', 'Unity',
-  'React Native', 'WebRTC'
+  'React Native', 'WebRTC', 'Solidity', 'Ethereum', 'IPFS', 'R'
 ];
 
 const PROJECT_MANAGEMENT_TOOLS = [
@@ -314,6 +314,8 @@ const UpdateProject = () => {
                       value={formData.projectDescription}
                       register={register}
                       error={errors.projectDescription}
+                      multiline={true}
+                      rows={3}
                       onChange={(e) => handleChange('projectDescription', e.target.value)}
                       className="mb-3"
                     />

@@ -1,9 +1,10 @@
 import ErrorModal from "../components/model/page";
-import { getToken, setAuthToken } from "../services/storage.service";
+import { getToken } from "../services/storage.service";
 import { useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { handleAuthError } from "../utility/authUtils";
 
 const Interceptor = ({ children }: { children: React.ReactNode }) => {
   const router = useNavigate();
@@ -17,11 +18,14 @@ const Interceptor = ({ children }: { children: React.ReactNode }) => {
   const apiInterceptor = () => {
     const originalFetch = window.fetch;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window.fetch = async (input: any, init = {}): Promise<Response> => {
       const token = getToken();
+
       const isAWSUrl =
         (typeof input === "string") ||
         (typeof input === "object");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const headers: any = {
         ...init.headers,
         Accept: "application/json",
@@ -32,7 +36,7 @@ const Interceptor = ({ children }: { children: React.ReactNode }) => {
         headers["Authorization"] = `Bearer ${token}`;
       }
 
-      init.headers = headers;
+    init.headers = headers;
 
       // eslint-disable-next-line no-async-promise-executor
       return new Promise(async (resolve, reject) => {
@@ -40,26 +44,21 @@ const Interceptor = ({ children }: { children: React.ReactNode }) => {
           const res = await originalFetch(input as Request, init);
           if ([400, 401, 422, 404, 419, 500, 403].includes(res.status)) {
             const response = await res.json();
-            if (res.status === 401 || res.status === 403 || res.status === 404) {
-              setAuthToken("");
-              router("/login");
-            }
+            handleAuthError(res.status, router, response?.error?.message);
+
             if (res.status === 419) {
               setErrorModalMessage(response?.error?.message);
               setErrorModalIsOpen(true);
-            } else {
-              toast.error(response?.error?.message);
+            } else if (res.status !== 401 && res.status !== 403) {
+              toast.error(response?.error?.message || "Something went wrong");
             }
             return reject(
-              response.error || {
-                statusCode: 500,
-                message: "Something went wrong.",
-              },
+              response.error || { statusCode: 500, message: "Unknown error" }
             );
           }
-
           return resolve(res);
         } catch (e) {
+          toast.error("Network error. Please try again.");
           return reject(e);
         }
       });

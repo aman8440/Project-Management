@@ -123,8 +123,8 @@ const AddProjects = () => {
     tech.toLowerCase().includes(techSearch.toLowerCase())
   );
 
-  const filteredToolOptions = PROJECT_MANAGEMENT_TOOLS.filter(tool => 
-    tool.toLowerCase().includes(toolSearch.toLowerCase())
+  const filteredToolOptions = PROJECT_MANAGEMENT_TOOLS.filter(tool =>
+    (tool || "").toLowerCase().includes((toolSearch || "").toLowerCase())
   );
   return (
     <div className="d-flex">
@@ -277,6 +277,8 @@ const AddProjects = () => {
                     name="projectDescription"
                     register={register}
                     error={errors.projectDescription}
+                    multiline={true}
+                    rows={3}
                     value={formData.projectDescription}
                     onChange={(e) => handleChange('projectDescription', e.target.value)}
                     className="mb-3"
