@@ -64,7 +64,7 @@ const Profile = () => {
       <div className="d-flex flex-column flex-grow-1">
         <Navbar />
         <div className="d-flex flex-column" style={{overflow:'auto', height:'100%'}}>
-          <div className="d-flex justify-content-start" style={{width:'92%', marginLeft:'70px', marginTop: '29px'}}>
+          <div className="d-flex justify-content-start" style={{width:'92%', marginLeft:'70px', marginTop: '12px'}}>
             <Breadcrumb/>
           </div>
           <div className="d-flex flex-column justify-content-center align-items-center w-full mt-3" style={{backgroundColor:'#f0f0f0'}}>
@@ -132,7 +132,7 @@ const Profile = () => {
                               gap: 1,
                             }}
                           >
-                            <IconButton color="primary" sx={{ fontSize: 50 }}>
+                            <IconButton color="primary">
                               <label htmlFor="upload-profile-image" style={{ cursor: "pointer" }}>
                                 <CloudUpload />
                               </label>
@@ -146,7 +146,7 @@ const Profile = () => {
                               />
                             </IconButton>
                             <IconButton
-                              sx={{ color: "red", fontSize: 40 }}
+                              sx={{ color: "red" }}
                               onClick={() => handleImageDelete("profile")}
                             >
                               <Delete />
@@ -162,7 +162,7 @@ const Profile = () => {
                 <Typography variant="h5">Profile Information</Typography>
               </Box>
             </div>
-            <Grid container spacing={3} sx={{ mt: 4 }}>
+            <Grid container spacing={3} sx={{ marginTop:'1px' }}>
               <Grid item xs={12} md={4} sx={{width: '50%', display: 'flex', justifyContent:'flex-end', height: 'max-content'}}>
                 <Box className="p-3 bg-light rounded" sx={{width:'53%', padding:'16px 29px !important', backgroundColor:'#ffffff !important', borderRadius: '20px !important'}}>
                   <Typography variant="h6" className="mb-3">

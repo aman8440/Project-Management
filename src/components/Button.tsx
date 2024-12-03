@@ -3,9 +3,9 @@ import { Button as MuiButton, } from "@mui/material";
 import { ButtonProps } from "../interfaces/index";
 
 
-const Button: React.FC<ButtonProps> = ({ text, type = "button", className, onClick, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ text, type = "button", className, onClick, startIconPass, ...rest }) => {
   return (
-    <div className="d-flex justify-content-center align-items-center">
+    <div className="d-flex justify-content-center align-items-center sidebar-btn">
       <MuiButton
         fullWidth={true}
         type={type}
@@ -13,6 +13,7 @@ const Button: React.FC<ButtonProps> = ({ text, type = "button", className, onCli
         onClick={onClick} 
         className={`btn w-100 ${className}`}
         style={{ backgroundColor: "#0145FE", color: "#FFFFFF", width: "100%" }} 
+        startIcon={startIconPass}
         {...rest}
       >
         {text || ""}

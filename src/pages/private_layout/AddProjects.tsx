@@ -132,7 +132,7 @@ const AddProjects = () => {
       <div className="d-flex flex-column flex-grow-1">
         <Navbar />
         <div className="d-flex flex-column" style={{overflow:'hidden', height:'100%'}}>
-          <div className="d-flex justify-content-start" style={{width:'92%', marginLeft:'70px', marginTop: '29px'}}>
+          <div className="d-flex justify-content-start" style={{width:'92%', marginLeft:'70px', marginTop: '12px'}}>
             <Breadcrumb/>
           </div>
           <div className="container mt-5 mb-2">
