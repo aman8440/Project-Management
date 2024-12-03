@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { Drawer, FormControl, InputLabel, MenuItem, Select, Box, Autocomplete, TextField } from '@mui/material';
 import { DateRange } from '@mui/x-date-pickers-pro/models';
 import Button from './Button';
+import RestoreIcon from '@mui/icons-material/Restore';
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isOpen,
@@ -113,9 +114,16 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               text="Reset"
               className='align-self-start '
               onClick={resetFilters}
+              startIconPass={<RestoreIcon />}
+              sx={{
+                backgroundColor:'transparent !important',
+                border: '1px solid #000',
+                borderRadius:'10px',
+                color:'#4f4f4f !important'
+              }}
             />
         </div>
-        <div className="d-flex flex-column justify-content-between" style={{height:'calc(100vh - 142px)'}}>
+        <div className="d-flex flex-column justify-content-between filter-sidebar" style={{height:'calc(100vh - 142px)'}}>
           <div className="d-flex flex-column align-items-start ">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateRangePicker
@@ -179,13 +187,18 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             )}
           </div>
           <Box sx={{ marginTop: 2, display:'flex', justifyContent:'space-between', width:'100%' }}>
-            <Button type="button" text="Apply" className='w-full' onClick={applyFilters} />
             <Button
               type="button"
               text="Cancel"
               onClick={closeSidebar}
               className="w-full"
+              sx={{
+                width:'100px',
+                backgroundColor:'transparent !important',
+                color:'#4f4f4f !important'
+              }}
             />
+            <Button type="button" text="Apply" className='w-full' onClick={applyFilters} />
           </Box>
         </div>
       </Box>

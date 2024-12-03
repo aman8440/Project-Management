@@ -16,4 +16,10 @@
 .search-input .space-y-2 .MuiFormControl-root .MuiInputBase-root{
   height: 44px !important;
   position: relative;
+  width: 360px;
+  border-radius: 18px;
+}
+
+.filter-sidebar .MuiBox-root .sidebar-btn{
+  width: 49%;
 }
