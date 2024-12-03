@@ -23,3 +23,13 @@
 .filter-sidebar .MuiBox-root .sidebar-btn{
   width: 49%;
 }
+
+.list-container .MuiPaper-root{
+  border-radius: 10px;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root{
+  border-radius: 10px;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-topContainer .MuiDataGrid-columnHeaders .MuiDataGrid-row--borderBottom{
+  background-color: #EFEFEF;
+}

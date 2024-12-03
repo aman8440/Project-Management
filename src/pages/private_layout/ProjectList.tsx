@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { InputAdornment, Paper, Tooltip, tooltipClasses } from "@mui/material";
-import { DataGrid, GridSortDirection, GridSortModel, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
+import { DataGrid, GridSortDirection, GridSortModel} from "@mui/x-data-grid";
 import { FilterDataProp, RowData } from "../../interfaces";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
@@ -20,15 +20,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 // import AlertDialogSlide from "../../components/AlertDialogSlide";
 
-function CustomToolbar() {
-  return (
-    <div className="d-flex" style={{justifyContent: 'flex-end'}}>
-      <GridToolbarContainer>
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    </div>
-  );
-}
+// function CustomToolbar() {
+//   return (
+//     <div className="d-flex" style={{justifyContent: 'flex-end'}}>
+//       <GridToolbarContainer>
+//         <GridToolbarExport />
+//       </GridToolbarContainer>
+//     </div>
+//   );
+// }
 
 const ProjectList = () => {
   const [rows, setRows] = useState<RowData[]>([]); 
@@ -288,11 +288,11 @@ const ProjectList = () => {
           <div className="d-flex justify-content-start" style={{width:'91%', marginTop: '12px'}}>
             <Breadcrumb/>
           </div>
-        <div className="w-full align-items-center w-full" style={{width: '93vw', zIndex: '0',
-          marginLeft: '55px', marginTop: '25px', backgroundColor:'#f0f0f0', padding:'15px 24px', borderRadius:'15px'}}>
-          <div className="d-flex justify-content-between w-full align-items-center">
+        <div className="w-full align-items-center w-full list-container" style={{width: '93vw', zIndex: '0',
+          marginLeft: '55px', marginTop: '25px', backgroundColor:'#F0F6FF', backdropFilter: 'blur(10px)', padding:'15px 24px', borderRadius:'15px'}}>
+          <div className="d-flex justify-content-between w-full align-items-start mb-4">
             <div className="d-flex">
-              <h2 className="my-4">Project Listing</h2>
+              <h2 className="mt-2" style={{fontSize:'23px', fontWeight:'600'}}>Project Listing</h2>
             </div>
             <div className="d-flex w-full justify-content-between">
               <div className="search-input w-full">
@@ -358,7 +358,7 @@ const ProjectList = () => {
               />
             </div>
           </div>
-          <Paper sx={{ width: "100%", height: 680 }}>
+          <Paper sx={{ width: "100%", height: 700 }}>
             <DataGrid
               rows={rows}
               columns={columns}
@@ -378,9 +378,9 @@ const ProjectList = () => {
               }}
               pageSizeOptions={[10, 15, 20]}
               sx={{ border: 0 }}
-              slots={{
-                toolbar: CustomToolbar,
-              }}
+              // slots={{
+              //   toolbar: CustomToolbar,
+              // }}
             />
           </Paper>
         </div>
