@@ -5,17 +5,30 @@ import dashboardIcon from '../assets/img/dashboard-icon.svg';
 import addProjectIcon from '../assets/img/add-project-icon.svg';
 import './Sidebar.css';
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const Sidebar = () => {
   const location = useLocation();
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
-  const toggleProjectsSubmenu = () => setIsProjectsOpen(!isProjectsOpen);
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
+
+  const toggleProjectsSubmenu = () => setIsProjectsOpen(!isProjectsOpen);
   const handleMouseEnterSidebar = () => setIsSidebarHovered(true);
   const handleMouseLeaveSidebar = () => setIsSidebarHovered(false);
   const isActive = (path: string) => location.pathname === path;
+
+  const projectsRoute = `/dashboard/projects${location.search}`;
+
+  useEffect(() => {
+    if (
+      location.pathname.startsWith('/dashboard/projects/add-projects') &&
+      location.pathname !== `${projectsRoute}`
+    ) {
+      setIsProjectsOpen(true);
+    }
+  }, [location.pathname]);
+
   return (
     <div className="sidebar-container text-white d-flex flex-column"
       onMouseEnter={handleMouseEnterSidebar}
@@ -43,26 +56,26 @@ const Sidebar = () => {
             <img src={profileIcon} alt="profileIcon" height='20' width='20' />
           </div>
         </Link>
-        <Link className='text-decoration-none' to="/dashboard/projects">   
-        <div
-          className={`mask d-flex btn ${isActive("/dashboard/projects") ? "active" : ""}`}
-          style={{
-            backgroundColor: isActive("/dashboard/projects") ? "#ffffff" : "#ffffff1a",
-            color: isActive("/dashboard/projects") ? "black" : "#ffffff",
-            position:'relative'
-          }}
-          >
-          <img src={projectIcon} alt="projectIcon" height="20" width="20" />
-          {isSidebarHovered && (
-            <span onClick={toggleProjectsSubmenu} style={{position:'absolute', right:'9px'}}>
-              {isProjectsOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
-            </span>
-          )}
-        </div>
+        <Link className='text-decoration-none' to={projectsRoute}>   
+          <div
+            className={`mask d-flex btn ${isActive("/dashboard/projects") ? "active" : ""}`}
+            style={{
+              backgroundColor: isActive("/dashboard/projects") ? "#ffffff" : "#ffffff1a",
+              color: isActive("/dashboard/projects") ? "black" : "#ffffff",
+              position:'relative'
+            }}
+            >
+            <img src={projectIcon} alt="projectIcon" height="20" width="20" />
+            {isSidebarHovered && (
+              <span onClick={toggleProjectsSubmenu} style={{position:'absolute', right:'9px'}}>
+                {isProjectsOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
+              </span>
+            )}
+          </div>
         </Link>
         {isProjectsOpen && (
           <Link
-            className="text-decoration-none ms-3"
+            className="text-decoration-none ms-1"
             to="/dashboard/projects/add-projects"
           >
             <div className={`add d-flex btn ${isActive("/dashboard/projects/add-projects") ? "active" : ""}`} style={{
