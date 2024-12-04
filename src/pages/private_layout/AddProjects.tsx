@@ -58,7 +58,7 @@ const AddProjects = () => {
     projectDescription: '',
     projectRepoTool: '',
     projectRepoUrl: '',
-    projectStatus: 'Planning',
+    projectStatus: 'Under Planning',
   });
 
   const [techSearch, setTechSearch] = useState('');
@@ -111,9 +111,10 @@ const AddProjects = () => {
       }
       else{
         navigate('/dashboard/projects');
+        toast.success("Data Inserted Successfully");
       }
     } catch (error) {
-      toast.error(error as string);
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -315,12 +316,7 @@ const AddProjects = () => {
                       onChange={(e) => handleChange('projectStatus', e.target.value)}
                     >
                       {[
-                        'Planning', 
-                        'Requirements Gathering', 
-                        'In Progress', 
-                        'Development', 
-                        'Testing', 
-                        'Production'
+                        'Under Planning', 'Development Started', 'Under Testing', 'Deployed on Dev', 'Live'
                       ].map((status) => (
                         <MenuItem key={status} value={status}>{status}</MenuItem>
                       ))}

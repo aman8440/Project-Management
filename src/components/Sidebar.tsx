@@ -7,6 +7,10 @@ import './Sidebar.css';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import projectIconActive from '../assets/img/project-icon-active.svg';
+import profileIconActive from '../assets/img/profile-icon-active.svg';
+import dashboardIconActive from '../assets/img/home-icon-active.svg';
+import addProjectIconACtive from '../assets/img/add-project-icon-active.svg';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -41,31 +45,21 @@ const Sidebar = () => {
         </div>
         <hr className="line"/>
         <Link className='text-decoration-none' to="/dashboard">   
-          <div className={`aws d-flex btn ${isActive("/dashboard") ? "active" : ""}`} style={{
-            backgroundColor: isActive("/dashboard") ? "#ffffff" : "#ffffff1a",
-            color: isActive("/dashboard") ? "black" : "#ffffff",
-          }}>
-            <img src={dashboardIcon} alt="dashboardIcon" height='20' width='20'/>
+          <div className={`aws d-flex btn ${isActive("/dashboard") ? "active" : ""}`}>
+            <img src={isActive("/dashboard") ? dashboardIcon : dashboardIconActive} alt="dashboardIcon" height='16' width='16'/>
           </div>
         </Link>
         <Link className='text-decoration-none' to="/dashboard/profile">
-          <div className={`home d-flex btn ${isActive("/dashboard/profile") ? "active" : ""}`} style={{
-            backgroundColor: isActive("/dashboard/profile") ? "#ffffff" : "#ffffff1a",
-            color: isActive("/dashboard/profile") ? "black" : "#ffffff",
-          }}>
-            <img src={profileIcon} alt="profileIcon" height='20' width='20' />
+          <div className={`home d-flex btn ${isActive("/dashboard/profile") ? "active" : ""}`}>
+            <img src={isActive("/dashboard/profile") ? profileIcon : profileIconActive} alt="profileIcon" height='16' width='16' />
           </div>
         </Link>
         <Link className='text-decoration-none' to={projectsRoute}>   
           <div
             className={`mask d-flex btn ${isActive("/dashboard/projects") ? "active" : ""}`}
-            style={{
-              backgroundColor: isActive("/dashboard/projects") ? "#ffffff" : "#ffffff1a",
-              color: isActive("/dashboard/projects") ? "black" : "#ffffff",
-              position:'relative'
-            }}
+            style={{ position:'relative'}}
             >
-            <img src={projectIcon} alt="projectIcon" height="20" width="20" />
+            <img src={isActive("/dashboard/projects") ? projectIcon : projectIconActive} alt="projectIcon" height="16" width="16" />
             {isSidebarHovered && (
               <span onClick={toggleProjectsSubmenu} style={{position:'absolute', right:'9px'}}>
                 {isProjectsOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
@@ -78,11 +72,8 @@ const Sidebar = () => {
             className="text-decoration-none ms-1"
             to="/dashboard/projects/add-projects"
           >
-            <div className={`add d-flex btn ${isActive("/dashboard/projects/add-projects") ? "active" : ""}`} style={{
-              backgroundColor: isActive("/dashboard/projects/add-projects") ? "#ffffff" : "#ffffff1a",
-              color: isActive("/dashboard/projects/add-projects") ? "black" : "#ffffff",
-            }}>
-              <img src={addProjectIcon} alt="addProjectIcon" height='20' width='20'/>
+            <div className={`add d-flex btn ${isActive("/dashboard/projects/add-projects") ? "active" : ""}`}>
+              <img src={isActive("/dashboard/projects/add-projects") ? addProjectIcon : addProjectIconACtive} alt="addProjectIcon" height='16' width='16'/>
             </div>
           </Link>
         )}

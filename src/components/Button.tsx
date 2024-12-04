@@ -12,7 +12,7 @@ const Button: React.FC<ButtonProps> = ({ text, type = "button", className, onCli
         variant="contained"
         onClick={onClick} 
         className={`btn w-100 ${className}`}
-        style={{ backgroundColor: "#0145FE", color: "#FFFFFF", width: "100%" }} 
+        style={{ backgroundColor: "#0145FE", color: "#FFFFFF", width: "100%", textTransform:'none' }} 
         startIcon={startIconPass}
         {...rest}
       >

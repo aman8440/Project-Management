@@ -2,8 +2,8 @@ import { getToken, setAuthToken } from "../services/storage.service";
 import { createContext, useContext, useState, useCallback } from "react";
 import { AuthProviderProps, UserData } from "../interfaces";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { constVariables } from "../constants";
+import { toast } from "react-toastify";
 
 type UserProfileContextType = {
   userProfile?: UserData;
@@ -34,10 +34,9 @@ export const UserProfileProvider = ({ children }: AuthProviderProps) => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        await response.json();
         setAuthToken('');
         navigate('/login');
-        toast.error(errorData.message || "Failed to fetch user profile");
         return false;
       }
 
@@ -46,7 +45,6 @@ export const UserProfileProvider = ({ children }: AuthProviderProps) => {
       return true;
     } catch (error) {
       console.error("Error fetching user data:", error);
-      toast.error("Network error. Please try again.");
       return false;
     } finally {
       setIsProfileLoading(false);
@@ -76,10 +74,10 @@ export const useUserProfile = () => {
 export const useLogout = () => {
   const { setUserProfile } = useUserProfile();
   const navigate = useNavigate();
-
   return () => {
     setUserProfile(undefined);
     setAuthToken("");
+    toast.success("Logout successful!");
     navigate("/login");
   };
 };

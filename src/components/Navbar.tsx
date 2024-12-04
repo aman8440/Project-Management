@@ -1,8 +1,9 @@
-import icon from '../assets/img/search_icon.svg';
+import searchIcon from '../assets/img/search_icon.svg';
 import { useLogout, useUserProfile } from "../hooks/userProfile";
 import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Logout } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 import { constVariables } from '../constants';
@@ -12,19 +13,22 @@ const Navbar = () => {
   const navigate= useNavigate();
   const logout = useLogout();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [icon, setIcon] = useState(true);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+    setIcon(!icon);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    setIcon(true);
   };
 
   return (
     <nav className="bg-transparent d-flex justify-content-between align-items-center text-#2B303B" style={{padding:'14px', marginLeft:'48px', borderBottom: '1px solid rgb(84 84 84 / 10%)'}}>
       <div className="d-flex w-full">
         <div className="logo ms-4" style={{paddingRight:'10px', borderRight: '1px solid #32323840'}}>
-          <img src={icon} alt="Logo" width="30" height="30" className="d-inline-block align-top" />
+          <img src={searchIcon} alt="Logo" width="30" height="30" className="d-inline-block align-top" />
         </div>
         <h5 className='d-flex align-items-center ms-3' style={{color:'#32323820',fontWeight:'600', fontSize:'28px', lineHeight:'16px', marginTop:'8px'}}>Search everything here..</h5>
       </div>
@@ -53,7 +57,7 @@ const Navbar = () => {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <ExpandMoreIcon/>
+            {icon ? <ExpandMoreIcon /> : <ExpandLessIcon />}
           </IconButton>
         </Tooltip>
         <Menu
@@ -62,6 +66,7 @@ const Navbar = () => {
           open={open}
           onClose={handleClose}
           onClick={handleClose}
+          className='menu-list'
           slotProps={{
             paper: {
               elevation: 0,
@@ -97,11 +102,11 @@ const Navbar = () => {
             <Avatar/>Profile
           </MenuItem>
           <Divider />
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={() => {handleClose(); logout();}}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
-            <span onClick={() => logout()}>Logout</span>
+            Logout
           </MenuItem>
         </Menu>
       </div>

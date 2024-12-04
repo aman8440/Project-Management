@@ -1,3 +1,4 @@
+@import 'react-toastify/dist/ReactToastify.css';
 .InputBaseClass, .MuiTextField-root, .MuiInputBase-formControl{
   height: auto !important;
 }
@@ -14,7 +15,7 @@
   margin-bottom: 0px !important;
 }
 .search-input .space-y-2 .MuiFormControl-root .MuiInputBase-root{
-  height: 44px !important;
+  height: 47px !important;
   position: relative;
   width: 360px;
   border-radius: 18px;
@@ -38,4 +39,35 @@
 }
 .add-btn .sidebar-btn .MuiButtonBase-root{
   width: 100% !important;
+}
+
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .css-s09cke-MuiTablePagination-selectLabel{
+  margin-bottom: 10px !important;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .MuiInputBase-root{
+  margin-right: 8px !important;
+  margin-left: 8px !important;
+  margin-bottom: 7px !important;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .MuiTablePagination-displayedRows{
+  margin-bottom: 7px !important;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .MuiTablePagination-actions{
+  margin-bottom: 7px !important;
+  margin-left: 8px !important;
+}
+
+.menu-list .MuiPaper-root{
+  top: 56px !important;
+  left: 1684px !important;
+  width: 155px !important;
+}
+
+.login-form .space-y-2 .MuiFormControl-root .MuiFormHelperText-root{
+  margin-left: 0px !important;
+}
+.space-y-2 .MuiFormControl-root .MuiInputBase-root input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
