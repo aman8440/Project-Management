@@ -19,6 +19,7 @@ import { projectSchema } from "../../schema";
 import { useNavigate } from "react-router-dom";
 import { useUserProfile } from "../../hooks/userProfile";
 import { constVariables } from "../../constants";
+import { toast } from "react-toastify";
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -99,7 +100,6 @@ const AddProjects = () => {
       created_by: userProfile?.fname || "Unknown",
       updated_by: userProfile?.fname || "Unknown",
     };
-    console.log("payload", payload);
     try {
       const token= getToken();
       const response = await fetch(`${constVariables.base_url}api/project/create` ,{
@@ -110,11 +110,10 @@ const AddProjects = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       else{
-        console.log('Project created:', response.json());
         navigate('/dashboard/projects');
       }
     } catch (error) {
-      console.error('Error creating project:', error);
+      toast.error(error as string);
     } finally {
       setIsLoading(false);
     }

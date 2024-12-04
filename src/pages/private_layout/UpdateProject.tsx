@@ -19,6 +19,7 @@ import { projectSchema } from "../../schema";
 import { useNavigate, useParams } from "react-router-dom";
 import { useUserProfile } from "../../hooks/userProfile";
 import { constVariables } from "../../constants";
+import { toast } from "react-toastify";
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -156,7 +157,7 @@ const UpdateProject = () => {
       }
       navigate('/dashboard/projects');
     } catch (error) {
-      console.error('Error updating project:', error);
+      toast.error(error as string);
     } finally {
       setIsLoading(false);
     }
