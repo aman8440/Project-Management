@@ -144,9 +144,9 @@ const ViewMore = () => {
       <Sidebar />
       <div className="d-flex flex-column flex-grow-1">
         <Navbar />
-        <div className="d-flex flex-column" style={{overflow:'hidden', height:'100%', backgroundColor:'rgb(232, 232, 232)'}}>
-          <div className="d-flex justify-content-start" style={{width:'92%', marginLeft:'70px', marginTop: '12px'}}>
-            <Breadcrumb/>
+        <div className="d-flex flex-column" style={{overflow:'hidden', height:'100%'}}>
+          <div className="d-flex justify-content-start" style={{width:'92%', marginLeft:'107px', marginTop: '12px'}}>
+            <Breadcrumb projectName={formData.projectName} />
           </div>
           <div className="d-flex flex-column" style={{width:'100%', marginLeft:'107px', marginTop:'42px'}}>
             <div className="d-flex">
