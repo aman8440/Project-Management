@@ -61,11 +61,9 @@ export default function Signin() {
         setAuthToken(responseData.token);
         navigate("/dashboard");
       } else {
-        console.error("Sign-in failed:", responseData);
         toast.error(responseData.message || "Incorrect credentials!");
       }
     } catch (error) {
-      console.error("Error occurred during sign-in:", error);
       toast.error("An error occurred. Please try again later. " +error);
     } finally {
       setIsLoading(false);

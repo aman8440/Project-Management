@@ -231,19 +231,6 @@ export interface EditFormData {
   roleId: number
 }
 
-export interface AllEmailTemplateData {
-  et_id: string,
-  et_slug: string,
-  et_title: string
-}
-
-export interface EmailTemplateData {
-  et_id: string,
-  et_slug: string,
-  et_title: string,
-  et_content: string,
-  et_subject: string,
-}
 
 export interface UserStateData {
   id?: number,

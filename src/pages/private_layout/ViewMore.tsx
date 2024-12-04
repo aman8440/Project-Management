@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import Input from "../../components/Input";
 import { BarChart, DefaultizedPieValueType, LineChart, pieArcLabelClasses, PieChart, ScatterChart } from "@mui/x-charts";
 import { constVariables } from "../../constants";
+import { toast } from "react-toastify";
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -92,6 +93,7 @@ const ViewMore = () => {
         });
       } catch (error) {
         console.error('Error fetching project data:', error);
+        toast.error(error as string);
       } finally {
         setIsLoading(false);
       }
