@@ -141,17 +141,28 @@ const AddProjects = () => {
               <div className="col-md-8 offset-md-2">
                 <form onSubmit={handleSubmit(onSubmit)} className="p-4 rounded shadow">
                   <h2 className="text-center mb-4">Create New Project</h2>
-                  <Input
-                    label="Project Name" 
-                    type="text"
-                    variant="outlined" 
-                    name="projectName"
-                    value={formData.projectName}
-                    register={register}
-                    error={errors.projectName}
-                    onChange={(e) => handleChange('projectName', e.target.value)}
-                    className="mb-2"
-                  />
+                  <div className="input-div-main d-flex mb-2 justify-content-between w-full">
+                    <Input
+                      label="Project Name" 
+                      type="text"
+                      variant="outlined" 
+                      name="projectName"
+                      value={formData.projectName}
+                      register={register}
+                      error={errors.projectName}
+                      onChange={(e) => handleChange('projectName', e.target.value)}
+                    />
+                    <Input
+                      label="Project Lead"
+                      type="text" 
+                      variant="outlined"    
+                      name="projectLead"
+                      register={register}
+                      error={errors.projectLead}
+                      value={formData.projectLead}
+                      onChange={(e) => handleChange('projectLead', e.target.value)}
+                    />
+                  </div>
                   <Autocomplete
                     multiple
                     fullWidth={true}
@@ -163,7 +174,7 @@ const AddProjects = () => {
                     }}
                     inputValue={techSearch}
                     onInputChange={(e, newInputValue) => setTechSearch(newInputValue)}
-                    className="mb-3"
+                    className="mb-4"
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -176,89 +187,66 @@ const AddProjects = () => {
                     )}
                     getOptionLabel={(option) => option}
                   />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={['DateRangePicker']}>
-                        <DateRangePicker
-                          value={[
-                            formData.projectStartAt ? dayjs(formData.projectStartAt) : null,
-                            formData.projectDeadline ? dayjs(formData.projectDeadline) : null,
-                          ]}
-                          minDate={getTodayDate()}
-                          onChange={(newValue: DateRange<dayjs.Dayjs> | null) => {
-                            if (newValue !== null) {
-                              const [start, end] = newValue;
-                              const startDate = start ? start.toDate() : null;
-                              const endDate = end ? end.toDate() : null;
-                              handleChange('projectStartAt', startDate);
-                              handleChange('projectDeadline', endDate);
-                              setValue('projectStartAt', startDate);
-                              setValue('projectDeadline', endDate);
-                            }
-                          }}
-                          localeText={{
-                            start: 'Project Start Date',
-                            end: 'Project Deadline',
-                          }}
-                        />
-                      </DemoContainer>
-                      <div className="d-flex justify-content-between">
-                        {errors.projectStartAt && <p className="text-danger ms-3" style={{fontSize:'13px'}}>{errors.projectStartAt.message}</p>}
-                        {errors.projectDeadline && <p className="text-danger" style={{marginRight:'15px',fontSize:'13px'}}>{errors.projectDeadline.message}</p>}
-                      </div>
-                    </LocalizationProvider>
-                  <Input
-                    label="Project Lead"
-                    type="text" 
-                    variant="outlined" 
-                    name="projectLead"
-                    register={register}
-                    error={errors.projectLead}
-                    value={formData.projectLead}
-                    onChange={(e) => handleChange('projectLead', e.target.value)}
-                    className="mb-3 mt-4"
-                  />
-                  <FormControl fullWidth={true}  className="mb-3" error={!!errors.teamSize}>
-                    <InputLabel>Team Size</InputLabel>
-                    <Select
-                      className="mb-3"
-                      {...register('teamSize',{ valueAsNumber: true })}
-                      value={formData.teamSize}
-                      label="Team Size"
-                      onChange={(e) =>  handleChange('teamSize', e.target.value)}
-                    >
-                      {[...Array(10)].map((_, i) => (
-                        <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>
-                      ))}
-                    </Select>
-                    {errors.teamSize && <p className="text-danger">{errors.teamSize?.message}</p>}
-                  </FormControl>
-                  <Input
-                    label="Project Client"
-                    type="text"
-                    variant="outlined" 
-                    name="projectClient"
-                    register={register}
-                    error={errors.projectClient}
-                    value={formData.projectClient}
-                    onChange={(e) => handleChange('projectClient', e.target.value)}
-                    className="mb-3"
-                  />
-                  <Autocomplete
-                    fullWidth={true}
-                    className="mb-3"
-                    value={formData.projectManagementTool}
-                    onChange={(e, newValue) => {
-                      handleChange('projectManagementTool', newValue as string);
-                      setToolSearch(newValue as string);
-                    }}
-                    onInputChange={(e, newInputValue) => {
-                      setToolSearch(newInputValue);
-                    }}
-                    options={filteredToolOptions}
-                    renderInput={(params) => <TextField {...params} {...register("projectManagementTool")} label="Project Management Tool" name="projectManagementTool"
-                      error={!!errors.projectManagementTool} helperText={errors.projectManagementTool?.message}/>}
-                    getOptionLabel={(option) => option}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={['DateRangePicker']}>
+                      <DateRangePicker
+                        value={[
+                          formData.projectStartAt ? dayjs(formData.projectStartAt) : null,
+                          formData.projectDeadline ? dayjs(formData.projectDeadline) : null,
+                        ]}
+                        minDate={getTodayDate()}
+                        onChange={(newValue: DateRange<dayjs.Dayjs> | null) => {
+                          if (newValue !== null) {
+                            const [start, end] = newValue;
+                            const startDate = start ? start.toDate() : null;
+                            const endDate = end ? end.toDate() : null;
+                            handleChange('projectStartAt', startDate);
+                            handleChange('projectDeadline', endDate);
+                            setValue('projectStartAt', startDate);
+                            setValue('projectDeadline', endDate);
+                          }
+                        }}
+                        localeText={{
+                          start: 'Project Start Date',
+                          end: 'Project Deadline',
+                        }}
+                      />
+                    </DemoContainer>
+                    <div className="d-flex justify-content-between">
+                      {errors.projectStartAt && <p className="text-danger ms-3" style={{fontSize:'13px'}}>{errors.projectStartAt.message}</p>}
+                      {errors.projectDeadline && <p className="text-danger" style={{marginRight:'15px',fontSize:'13px'}}>{errors.projectDeadline.message}</p>}
+                    </div>
+                  </LocalizationProvider>
+                  <div className="input-div-main d-flex d-flex justify-content-between w-full" style={{
+                    marginTop:'30px'
+                  }}>
+                    <Input
+                      label="Project Client"
+                      type="text"
+                      variant="outlined" 
+                      name="projectClient"
+                      register={register}
+                      error={errors.projectClient}
+                      value={formData.projectClient}
+                      onChange={(e) => handleChange('projectClient', e.target.value)}
+                    />
+                    <Autocomplete
+                      fullWidth={true}
+                      value={formData.projectManagementTool}
+                      onChange={(e, newValue) => {
+                        handleChange('projectManagementTool', newValue as string);
+                        setToolSearch(newValue as string);
+                      }}
+                      onInputChange={(e, newInputValue) => {
+                        setToolSearch(newInputValue);
+                      }}
+                      options={filteredToolOptions}
+                      renderInput={(params) => <TextField {...params} {...register("projectManagementTool")} label="Project Management Tool" name="projectManagementTool"
+                        error={!!errors.projectManagementTool} helperText={errors.projectManagementTool?.message}/>}
+                      getOptionLabel={(option) => option}
+                      style={{width:'49%'}}
+                    />
+                  </div>
                   <Input
                     label="Project Management URL" 
                     type="text"
@@ -268,7 +256,7 @@ const AddProjects = () => {
                     error={errors.projectManagementUrl}
                     value={formData.projectManagementUrl}
                     onChange={(e) => handleChange('projectManagementUrl', e.target.value)}
-                    className="mb-3 mt-3"
+                    className="mb-2 mt-2"
                   />
 
                   <Input
@@ -279,21 +267,10 @@ const AddProjects = () => {
                     register={register}
                     error={errors.projectDescription}
                     multiline={true}
-                    rows={3}
+                    rows={4}
                     value={formData.projectDescription}
                     onChange={(e) => handleChange('projectDescription', e.target.value)}
-                    className="mb-3"
-                  />
-                  <Input
-                    label="Project Repo Tool" 
-                    type="text"
-                    variant="outlined" 
-                    name="projectRepoTool"
-                    register={register}
-                    error={errors.projectRepoTool}
-                    value={formData.projectRepoTool}
-                    onChange={(e) => handleChange('projectRepoTool', e.target.value)}
-                    className="mb-3"
+                    className="mb-2"
                   />
                   <Input
                     label="Project Repo Url"
@@ -304,25 +281,53 @@ const AddProjects = () => {
                     error={errors.projectRepoUrl}
                     value={formData.projectRepoUrl}
                     onChange={(e) => handleChange('projectRepoUrl', e.target.value)}
-                    className="mb-3"
+                    className="mb-2"
                   />
-                  <FormControl fullWidth={true}  className="mb-3" error={!!errors.projectStatus}>
-                    <InputLabel>Project Status</InputLabel>
-                    <Select
-                      className="mb-3"
-                      value={formData.projectStatus}
-                      label="Project Status"
-                      {...register('projectStatus')}
-                      onChange={(e) => handleChange('projectStatus', e.target.value)}
-                    >
-                      {[
-                        'Under Planning', 'Development Started', 'Under Testing', 'Deployed on Dev', 'Live'
-                      ].map((status) => (
-                        <MenuItem key={status} value={status}>{status}</MenuItem>
-                      ))}
-                    </Select>
-                    {errors.projectStatus && <p className="text-danger">{errors.projectStatus.message}</p>}
-                  </FormControl>
+                  <div className="add-input-div d-flex d-flex mb-2 justify-content-between w-full">
+                    <Input
+                      label="Project Repo Tool" 
+                      type="text"
+                      variant="outlined" 
+                      name="projectRepoTool"
+                      register={register}
+                      error={errors.projectRepoTool}
+                      value={formData.projectRepoTool}
+                      onChange={(e) => handleChange('projectRepoTool', e.target.value)}
+                      className="mb-2"
+                    />
+                    <FormControl  className="mb-2" error={!!errors.teamSize} style={{width:'32%'}}>
+                      <InputLabel>Team Size</InputLabel>
+                      <Select
+                        className="mb-2"
+                        {...register('teamSize',{ valueAsNumber: true })}
+                        value={formData.teamSize}
+                        label="Team Size"
+                        onChange={(e) =>  handleChange('teamSize', e.target.value)}
+                      >
+                        {[...Array(10)].map((_, i) => (
+                          <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>
+                        ))}
+                      </Select>
+                      {errors.teamSize && <p className="text-danger">{errors.teamSize?.message}</p>}
+                    </FormControl>
+                    <FormControl  className="mb-2" error={!!errors.projectStatus} style={{width:'32%'}}>
+                      <InputLabel>Project Status</InputLabel>
+                      <Select
+                        className="mb-2"
+                        value={formData.projectStatus}
+                        label="Project Status"
+                        {...register('projectStatus')}
+                        onChange={(e) => handleChange('projectStatus', e.target.value)}
+                      >
+                        {[
+                          'Under Planning', 'Development Started', 'Under Testing', 'Deployed on Dev', 'Live'
+                        ].map((status) => (
+                          <MenuItem key={status} value={status}>{status}</MenuItem>
+                        ))}
+                      </Select>
+                      {errors.projectStatus && <p className="text-danger">{errors.projectStatus.message}</p>}
+                    </FormControl>
+                  </div>
                   <div className="add-btn d-flex justify-content-between" style={{width:'100%'}}>    
                     <Button text="Back" type="button" onClick={()=>{navigate("/dashboard/projects")}} sx={{backgroundColor:'transparent !important', color:'#0145FE !important'
                     }}/>

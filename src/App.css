@@ -71,3 +71,17 @@
   box-shadow: 0 0 0px 1000px transparent inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-topContainer .MuiDataGrid-columnHeaders .MuiDataGrid-row--borderBottom .MuiDataGrid-columnHeader .MuiDataGrid-columnHeaderDraggableContainer .MuiDataGrid-columnHeaderTitleContainer{
+  justify-content: center !important;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-virtualScrollerContent .MuiDataGrid-virtualScrollerRenderZone .MuiDataGrid-row .MuiDataGrid-cell{
+  text-align: center !important;
+}
+
+.input-div-main .space-y-2{
+  width: 49% !important;
+}
+.add-input-div .space-y-2{
+  width: 32% !important;
+}

@@ -376,7 +376,7 @@ const ProjectList = () => {
               />
             </div>
           </div>
-          <Paper sx={{ width: "100%", height: 700 }}>
+          <Paper sx={{ width: "100%", height: 483 }}>
             <DataGrid
               rows={rows}
               columns={columns}
