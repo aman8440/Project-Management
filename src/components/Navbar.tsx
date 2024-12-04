@@ -5,6 +5,7 @@ import { useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Logout } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
+import { constVariables } from '../constants';
 
 const Navbar = () => {
   const { userProfile }= useUserProfile();
@@ -40,7 +41,7 @@ const Navbar = () => {
               padding: '19px'
             }}
           >
-           {userProfile?.image_name !== null ? <img src={"http://localhost/truck_management/assets/images/uploads/" + userProfile?.image_name} alt="userProfile" width="40" height="40" style={{borderRadius:'100%', borderColor:'transparent'}}/> : `${userProfile?.fname?.charAt(0)}${userProfile?.lname?.charAt(0)}`} 
+           {userProfile?.image_name !== null ? <img src={`${constVariables.base_url}assets/images/uploads/` + userProfile?.image_name} alt="userProfile" width="40" height="40" style={{borderRadius:'100%', borderColor:'transparent'}}/> : `${userProfile?.fname?.charAt(0)}${userProfile?.lname?.charAt(0)}`} 
           </div>
         </div>
         <span>{`${userProfile?.fname}`}</span>

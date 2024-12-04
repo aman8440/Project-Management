@@ -7,6 +7,7 @@ import Button from "../../components/Button";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useParams, useNavigate } from "react-router-dom";
 import { FormValues } from "../../interfaces";
+import { constVariables } from "../../constants";
 
 const ChangePass = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +26,7 @@ const ChangePass = () => {
     const validateToken = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost/truck_management/verify-token?reset_token=${reset_token}`, {
+        const response = await fetch(`${constVariables.base_url}verify-token?reset_token=${reset_token}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +63,7 @@ const ChangePass = () => {
     setErrorMessage(null);
     setSuccessMessage(null);
     try {
-      const response = await fetch("http://localhost/truck_management/reset_password", {
+      const response = await fetch(`${constVariables.base_url}reset_password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

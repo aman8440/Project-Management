@@ -3,11 +3,9 @@ import { getToken } from "../services/storage.service";
 import { useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { handleAuthError } from "../utility/authUtils";
 
 const Interceptor = ({ children }: { children: React.ReactNode }) => {
-  const router = useNavigate();
   const [errorModalIsOpen, setErrorModalIsOpen] = useState<boolean>(false);
   const [errorModalMessage, setErrorModalMessage] = useState<string>("");
 
@@ -44,13 +42,13 @@ const Interceptor = ({ children }: { children: React.ReactNode }) => {
           const res = await originalFetch(input as Request, init);
           if ([400, 401, 422, 404, 419, 500, 403].includes(res.status)) {
             const response = await res.json();
-            handleAuthError(res.status, router, response?.error?.message);
+            handleAuthError(res.status, response?.message);
 
             if (res.status === 419) {
-              setErrorModalMessage(response?.error?.message);
+              setErrorModalMessage(response?.message);
               setErrorModalIsOpen(true);
             } else if (res.status !== 401 && res.status !== 403) {
-              toast.error(response?.error?.message || "Something went wrong");
+              toast.error(response?.message || "Something went wrong");
             }
             return reject(
               response.error || { statusCode: 500, message: "Unknown error" }

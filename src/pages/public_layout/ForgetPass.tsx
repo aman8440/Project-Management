@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { emailSchema } from "../../schema";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
+import { constVariables } from "../../constants";
 
 interface FormValues {
   email: string;
@@ -21,7 +22,7 @@ const ForgetPass = () => {
   const onSubmit = async (data: { email: string }) => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost/truck_management/forgot_password", {
+      const response = await fetch(`${constVariables.base_url}forgot_password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

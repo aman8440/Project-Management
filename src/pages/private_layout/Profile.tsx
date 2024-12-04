@@ -8,6 +8,7 @@ import { Facebook, Twitter, LinkedIn, Instagram } from "@mui/icons-material";
 import coverImage from '../../assets/img/cover_img.webp';
 import { ChangeEvent, useState } from "react";
 import { UploadResponse } from "../../interfaces";
+import { constVariables } from "../../constants";
 
 const Profile = () => {
   const {userProfile}= useUserProfile();
@@ -26,7 +27,7 @@ const Profile = () => {
       formData.append("file", file);
       formData.append("id", userProfile?.id as string);
       try {
-        const response = await fetch("http://localhost/truck_management/me/profile", {
+        const response = await fetch(`${constVariables.base_url}me/profile`, {
           method: "POST",
           body: formData,
         });
@@ -44,7 +45,7 @@ const Profile = () => {
   const handleImageDelete = async (type: "profile" | "cover") => {
     try {
       const data = { id: userProfile?.id }; 
-      await fetch("http://localhost/truck_management/me/profile/delete", {
+      await fetch(`${constVariables.base_url}me/profile/delete`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
@@ -57,7 +58,7 @@ const Profile = () => {
       console.error("Error deleting image:", error);
     }
   };
-  const coverImageUrl = coverImageSet !==null ? "http://localhost/truck_management/assets/images/uploads/"+coverImageSet : coverImage;
+  const coverImageUrl = coverImageSet !==null ? `${constVariables.base_url}assets/images/uploads/`+coverImageSet : coverImage;
   return (
     <div className="vh-100 d-flex">
       <Sidebar />
@@ -99,7 +100,7 @@ const Profile = () => {
                       <Avatar
                         src={
                           userProfile?.image_name !== null
-                            ? "http://localhost/truck_management/assets/images/uploads/" + userProfile?.image_name
+                            ? `${constVariables.base_url}assets/images/uploads/` + userProfile?.image_name
                             : "/default-avatar.png"
                         }
                         sx={{

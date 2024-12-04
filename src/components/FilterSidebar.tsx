@@ -8,6 +8,7 @@ import { Drawer, FormControl, InputLabel, MenuItem, Select, Box, Autocomplete, T
 import { DateRange } from '@mui/x-date-pickers-pro/models';
 import Button from './Button';
 import RestoreIcon from '@mui/icons-material/Restore';
+import { constVariables } from '../constants';
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isOpen,
@@ -69,7 +70,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           project_startat: startDate,
           project_deadline: endDate
         };
-        const response = await fetch('http://localhost/truck_management/api/project/status', {
+        const response = await fetch(`${constVariables.base_url}api/project/status`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
@@ -86,7 +87,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const fetchTechnologies = async (project_status: string) => {
     if (project_status) {
       try {
-        const response = await fetch('http://localhost/truck_management/api/project/tech', {
+        const response = await fetch(`${constVariables.base_url}api/project/tech`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ project_status }),
@@ -195,7 +196,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               sx={{
                 width:'100px',
                 backgroundColor:'transparent !important',
-                color:'#4f4f4f !important'
+                color:'#0145FE !important'
               }}
             />
             <Button type="button" text="Apply" className='w-full' onClick={applyFilters} />

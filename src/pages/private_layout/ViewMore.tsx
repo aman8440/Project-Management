@@ -9,6 +9,7 @@ import { getToken } from "../../services/storage.service";
 import dayjs from "dayjs";
 import Input from "../../components/Input";
 import { BarChart, DefaultizedPieValueType, LineChart, pieArcLabelClasses, PieChart, ScatterChart } from "@mui/x-charts";
+import { constVariables } from "../../constants";
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -65,7 +66,7 @@ const ViewMore = () => {
       setIsLoading(true);
       try {
         const token = getToken();
-        const response = await fetch(`http://localhost/truck_management/api/project/details/${id}`, {
+        const response = await fetch(`${constVariables.base_url}api/project/details/${id}`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -73,7 +74,6 @@ const ViewMore = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const project = await response.json();
-        console.log("project", project)
         setFormData(project);
         setFormData({
           projectName: project.project_name,
@@ -156,8 +156,7 @@ const ViewMore = () => {
               </div>
             </div>
           </div>
-          <div className="profile-tab d-flex mb-3" style={{width:'80%', marginLeft:'107px', marginTop:'42px', backgroundColor:'#fff', padding:'20px 25px', borderRadius:'15px',
-            boxShadow: '0px 2px 1px -1px rgba(0, 0, 0, .2), 0px 1px 1px 0px rgba(0, 0, 0, .14), 0px 1px 3px 0px rgba(0, 0, 0, .12)', overflow:'auto'}}>
+          <div className="profile-tab d-flex mb-3 shadow" style={{width:'80%', marginLeft:'107px', marginTop:'42px', backgroundColor:'#fff', padding:'20px 25px', borderRadius:'15px', overflow:'auto'}}>
             <Box sx={{ width: '100%' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
