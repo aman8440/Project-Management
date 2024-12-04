@@ -15,6 +15,7 @@ import loginLogo from '../../assets/img/login_logo.svg'
 import React from "react";
 import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { constVariables } from "../../constants";
 
 export default function Signin() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function Signin() {
     setIsLoading(true);
     
     try {
-      const response = await fetch("http://localhost/truck_management/api/login", {
+      const response = await fetch(`${constVariables.base_url}api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

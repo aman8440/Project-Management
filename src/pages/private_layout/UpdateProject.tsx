@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema } from "../../schema";
 import { useNavigate, useParams } from "react-router-dom";
 import { useUserProfile } from "../../hooks/userProfile";
+import { constVariables } from "../../constants";
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -76,7 +77,7 @@ const UpdateProject = () => {
       setIsLoading(true);
       try {
         const token = getToken();
-        const response = await fetch(`http://localhost/truck_management/api/project/details/${id}`, {
+        const response = await fetch(`${constVariables.base_url}api/project/details/${id}`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -145,7 +146,7 @@ const UpdateProject = () => {
     };
     try {
       const token = getToken();
-      const response = await fetch(`http://localhost/truck_management/api/project/update/${id}`, {
+      const response = await fetch(`${constVariables.base_url}api/project/update/${id}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -363,7 +364,11 @@ const UpdateProject = () => {
                       </Select>
                       {errors.projectStatus && <p className="text-danger">{errors.projectStatus.message}</p>}
                     </FormControl>
-                    <Button type="submit" text={isLoading ? 'Updating...' : 'Update Project'} fullWidth disabled={isLoading}/>
+                    <div className="add-btn d-flex justify-content-between" style={{width:'100%'}}>    
+                      <Button text="Back" type="button" onClick={()=>{navigate("/dashboard/projects")}} sx={{backgroundColor:'transparent !important', color:'#0145FE !important'
+                      }}/>
+                      <Button type="submit" text={isLoading ? 'Updating...' : 'Update Project'} disabled={isLoading}/>
+                    </div>
                   </form>
                 ) : (
                   <p>Loading project data...</p>

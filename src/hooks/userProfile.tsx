@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useCallback } from "react";
 import { AuthProviderProps, UserData } from "../interfaces";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { constVariables } from "../constants";
 
 type UserProfileContextType = {
   userProfile?: UserData;
@@ -24,7 +25,7 @@ export const UserProfileProvider = ({ children }: AuthProviderProps) => {
     const token = getToken();
     setIsProfileLoading(true);
     try {
-      const response = await fetch("http://localhost/truck_management/me", {
+      const response = await fetch(`${constVariables.base_url}me`, {
         method: "GET",
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -34,6 +35,8 @@ export const UserProfileProvider = ({ children }: AuthProviderProps) => {
 
       if (!response.ok) {
         const errorData = await response.json();
+        setAuthToken('');
+        navigate('/login');
         toast.error(errorData.message || "Failed to fetch user profile");
         return false;
       }

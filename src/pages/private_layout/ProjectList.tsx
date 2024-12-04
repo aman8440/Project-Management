@@ -20,6 +20,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 // import AlertDialogSlide from "../../components/AlertDialogSlide";
 import { toast } from "react-toastify";
+import { constVariables } from "../../constants";
 
 function CustomToolbar() {
   return (
@@ -89,7 +90,7 @@ const ProjectList = () => {
           const userConfirmed = window.confirm("Are you sure you want to delete this project?");
           if (userConfirmed) {
             console.log("Delete confirmed for project", params.row.id);
-            fetch(`http://localhost/truck_management/api/project/delete/${params.row.id}`, { method: "DELETE" })
+            fetch(`${constVariables.base_url}api/project/delete/${params.row.id}`, { method: "DELETE" })
               .then((response) => {
                 if (response.ok) {
                   console.log("Project deleted successfully");
@@ -202,7 +203,7 @@ const ProjectList = () => {
     const order = sortModel[0]?.sort || "asc";
 
     try {
-      const url = new URL("http://localhost/truck_management/api/project/list");
+      const url = new URL(`${constVariables.base_url}api/project/list`);
       url.searchParams.append("page", (page).toString());
       url.searchParams.append("limit", (pageSize).toString());
       if (search.length >= 3) {

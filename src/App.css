@@ -33,3 +33,9 @@
 .list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-topContainer .MuiDataGrid-columnHeaders .MuiDataGrid-row--borderBottom{
   background-color: #EFEFEF;
 }
+.add-btn .sidebar-btn {
+  width: 49% !important;
+}
+.add-btn .sidebar-btn .MuiButtonBase-root{
+  width: 100% !important;
+}

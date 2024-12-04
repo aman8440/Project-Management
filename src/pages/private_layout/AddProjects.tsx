@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema } from "../../schema";
 import { useNavigate } from "react-router-dom";
 import { useUserProfile } from "../../hooks/userProfile";
+import { constVariables } from "../../constants";
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -101,7 +102,7 @@ const AddProjects = () => {
     console.log("payload", payload);
     try {
       const token= getToken();
-      const response = await fetch("http://localhost/truck_management/api/project/create" ,{
+      const response = await fetch(`${constVariables.base_url}api/project/create` ,{
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
        body:JSON.stringify(payload)});
@@ -138,7 +139,7 @@ const AddProjects = () => {
           <div className="container mt-5 mb-2">
             <div className="row">
               <div className="col-md-8 offset-md-2">
-                <form onSubmit={handleSubmit(onSubmit)} className="bg-light p-4 rounded shadow">
+                <form onSubmit={handleSubmit(onSubmit)} className="p-4 rounded shadow">
                   <h2 className="text-center mb-4">Create New Project</h2>
                   <Input
                     label="Project Name" 
@@ -327,7 +328,11 @@ const AddProjects = () => {
                     </Select>
                     {errors.projectStatus && <p className="text-danger">{errors.projectStatus.message}</p>}
                   </FormControl>
-                  <Button text={isLoading ? "Submitting..." : "Submit"} type="submit" disabled={isLoading} />
+                  <div className="add-btn d-flex justify-content-between" style={{width:'100%'}}>    
+                    <Button text="Back" type="button" onClick={()=>{navigate("/dashboard/projects")}} sx={{backgroundColor:'transparent !important', color:'#0145FE !important'
+                    }}/>
+                    <Button text={isLoading ? "Submitting..." : "Submit"} type="submit" disabled={isLoading}/>
+                  </div>
                 </form>
               </div>
             </div>
