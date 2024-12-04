@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "../../schema";
 import { SignInData } from "../../interfaces";
-import { Toaster, toast } from "sonner";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {  setAuthToken } from "../../services/storage.service";
@@ -59,12 +58,13 @@ export default function Signin() {
   
       if (response.status === 200 && responseData?.token) {
         setAuthToken(responseData.token);
-        navigate("/dashboard");
+        toast.success("Login successful!");
+        navigate("/dashboard/projects");
       } else {
-        toast.error(responseData.message || "Incorrect credentials!");
+        // The interceptor will already handle toast for errors.
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again later. " +error);
+      console.error("Unexpected error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -79,10 +79,9 @@ export default function Signin() {
               <img src={loginLogo} alt="loginLogo" width="40" height="40"/>
               <div className="font-sans display-4 font-weight-bold">Login</div>
             </div>
-            <Toaster richColors position="top-right" />
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2" style={{width:'50%'}}>
+            <form onSubmit={handleSubmit(onSubmit)} className="login-form space-y-4 mt-2" style={{width:'50%'}}>
               <Input
-                label="Email"
+                label="Email Address"
                 type="text"
                 name="email"
                 register={register}

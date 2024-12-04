@@ -1,13 +1,9 @@
-import ErrorModal from "../components/model/page";
 import { getToken } from "../services/storage.service";
-import { useEffect, useState } from "react";
-import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { handleAuthError } from "../utility/authUtils";
 
 const Interceptor = ({ children }: { children: React.ReactNode }) => {
-  const [errorModalIsOpen, setErrorModalIsOpen] = useState<boolean>(false);
-  const [errorModalMessage, setErrorModalMessage] = useState<string>("");
 
   useEffect(() => {
     apiInterceptor();
@@ -33,31 +29,23 @@ const Interceptor = ({ children }: { children: React.ReactNode }) => {
         headers["Content-Type"] = "application/json";
         headers["Authorization"] = `Bearer ${token}`;
       }
-
-    init.headers = headers;
+      init.headers = headers;
 
       // eslint-disable-next-line no-async-promise-executor
       return new Promise(async (resolve, reject) => {
         try {
           const res = await originalFetch(input as Request, init);
-          if ([400, 401, 422, 404, 419, 500, 403].includes(res.status)) {
-            const response = await res.json();
-            handleAuthError(res.status, response?.message);
-
-            if (res.status === 419) {
-              setErrorModalMessage(response?.message);
-              setErrorModalIsOpen(true);
-            } else if (res.status !== 401 && res.status !== 403) {
-              toast.error(response?.message || "Something went wrong");
-            }
-            return reject(
-              response.error || { statusCode: 500, message: "Unknown error" }
-            );
-          }
+          const contentType = res.headers.get("Content-Type");
+          const responseData = contentType && contentType.includes("application/json") ? res : null;
+          
+          if (!res.ok) {
+            handleAuthError(res.status, res.statusText);
+            return reject(responseData || { status: res.status, message: res.statusText });
+          } 
           return resolve(res);
-        } catch (e) {
-          toast.error("Network error. Please try again.");
-          return reject(e);
+        } catch (error) {
+          toast.error("Network error. Please check your connection.");
+          return reject(error);
         }
       });
     };
@@ -66,11 +54,6 @@ const Interceptor = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {children}
-      <ErrorModal
-        isOpen={errorModalIsOpen}
-        errorMessage={errorModalMessage}
-        onRequestClose={() => setErrorModalIsOpen(false)}
-      />
     </>
   );
 };

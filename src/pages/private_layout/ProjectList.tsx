@@ -17,6 +17,7 @@ import Button from "../../components/Button";
 import FilterSidebar from "../../components/FilterSidebar";
 import { format } from 'date-fns';
 import SearchIcon from '@mui/icons-material/Search';
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 // import AlertDialogSlide from "../../components/AlertDialogSlide";
 import { toast } from "react-toastify";
@@ -24,7 +25,7 @@ import { constVariables } from "../../constants";
 
 function CustomToolbar() {
   return (
-    <div className="d-flex" style={{justifyContent: 'flex-end'}}>
+    <div className="d-flex w-full" style={{position:'absolute', bottom:'14px', zIndex:'1'}}>
       <GridToolbarContainer>
         <GridToolbarExport />
       </GridToolbarContainer>
@@ -94,6 +95,7 @@ const ProjectList = () => {
               .then((response) => {
                 if (response.ok) {
                   console.log("Project deleted successfully");
+                  toast.success("Project deleted successful!");
                   fetchData();
                   // setOpen(false);
                 } else {
@@ -102,7 +104,6 @@ const ProjectList = () => {
               })
               .catch((error) => {
                 console.error("Error deleting project:", error);
-                toast.error(error);
               });
           } else {
             console.log("Delete action canceled");
@@ -243,7 +244,6 @@ const ProjectList = () => {
       setTotalRows(result.data.total);
     } catch (error) {
       console.error("Error fetching data:", error);
-      toast.error(error as string);
     }
   };
 
@@ -298,7 +298,7 @@ const ProjectList = () => {
           marginLeft: '55px', marginTop: '25px', backgroundColor:'#F0F6FF', backdropFilter: 'blur(10px)', padding:'15px 24px', borderRadius:'15px'}}>
           <div className="d-flex justify-content-between w-full align-items-start mb-4">
             <div className="d-flex">
-              <h2 className="mt-2" style={{fontSize:'23px', fontWeight:'600'}}>Project Listing</h2>
+              <h2 className="mt-2" style={{fontSize:'23px', fontWeight:'600'}}>Projects</h2>
             </div>
             <div className="d-flex w-full justify-content-between">
               <div className="search-input w-full">
@@ -347,13 +347,25 @@ const ProjectList = () => {
                   />
                 </Tooltip>
               </div>
-              <div className="btn d-flex ms-3 align-items-center" onClick={() => setSidebarOpen(true)} style={{borderRadius:'8px', backgroundColor:'transparent', border:'0.86px solid #9B9CA0', padding:'7px 27px', marginRight:'10px', boxShadow:'0px 20px 60px 0px rgba(0, 0, 0, 0.2)'}}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" fill="none"><path d="M1.667.311C1.2.41.813.774.662 1.255.603 1.443.6 1.493.6 2.187c0 .682.004.746.059.921.089.281.232.48.545.757l2.329 2.022 2.054 1.78.013 2.546c.013 2.54.014 2.547.071 2.689.211.512.731.772 1.267.632.189-.049 2.798-1.09 2.943-1.174.154-.089.351-.311.434-.488l.072-.152.013-2.026.013-2.026 2.04-1.768c1.122-.973 2.17-1.883 2.329-2.023.327-.289.469-.485.559-.769.055-.175.059-.239.059-.921 0-.694-.003-.744-.062-.932a1.36 1.36 0 0 0-1.024-.946c-.183-.038-.855-.042-6.333-.04-5.317.002-6.152.007-6.314.042M13.92 2.199v.466L11.631 4.65C10.372 5.741 9.3 6.686 9.249 6.75a1.514 1.514 0 0 0-.251.437c-.048.126-.051.238-.059 2.055l-.008 1.922-.912.365c-.502.2-.921.364-.932.364-.01 0-.022-1.029-.026-2.286-.008-2.18-.011-2.293-.059-2.42a1.514 1.514 0 0 0-.251-.437c-.051-.064-1.123-1.009-2.382-2.1L2.08 2.665v-.932h11.84v.466" fill="#000"/></svg>
-                <button className="text-black" type="button" style={{borderColor:'transparent', backgroundColor:'transparent'}}>Filter</button>
-              </div>
+              <Button text={"Filter"} type={'button'} onClick={() => setSidebarOpen(true)}
+                sx={{
+                  padding: '10px 15px', 
+                  fontSize: '14px', 
+                  display: 'flex', 
+                  alignItems: 'center',
+                  position: 'relative',
+                  borderRadius:'8px',
+                  backgroundColor:'transparent !important', 
+                  border:'0.86px solid #9B9CA0 !important',
+                  marginRight:'10px', 
+                  marginLeft:'10px',
+                  color:'#000 !important'
+                }}
+                startIconPass={<FilterAltOutlinedIcon />}
+              />
               <Button text={"Add Projects"} type={'button'} onClick={handleNavigateToAddProjects}
                 sx={{
-                  padding: '11px 15px', 
+                  padding: '10px 15px', 
                   fontSize: '14px', 
                   display: 'flex', 
                   alignItems: 'center',

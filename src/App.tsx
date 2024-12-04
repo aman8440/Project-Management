@@ -2,14 +2,14 @@ import './App.css'
 import { BrowserRouter} from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import AppRoutes from './routes/AppRoutes';
-import { Toaster } from 'sonner';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <>
       <RecoilRoot>
         <BrowserRouter>
-          <Toaster richColors position="top-right" />
+          <ToastContainer position='top-right' />
           <AppRoutes />
         </BrowserRouter>
       </RecoilRoot>

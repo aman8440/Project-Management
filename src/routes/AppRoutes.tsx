@@ -8,7 +8,7 @@ import { lazy, Suspense } from "react";
 
 const PublicRoutes= ()=>{
   const token= getToken();
-  return token ? <Navigate to="/dashboard"/> : <Outlet/>;
+  return token ? <Navigate to="/dashboard/projects"/> : <Outlet/>;
 }
 
 const Signin = lazy(() => import("../pages/public_layout/Signin"));
