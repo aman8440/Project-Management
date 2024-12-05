@@ -1,0 +1,53 @@
+.main-container{
+  overflow: hidden;
+  height: 100%;
+}
+.common-class{
+  width:92%;
+  margin-left:70px;
+  margin-top: 12px;
+}
+.text-danger{
+  font-size: 13px;
+}
+.select-box{
+  width: 32%;
+}
+.add-btn{
+  width: 100%;
+}
+.add-btn .sidebar-btn {
+  width: 49% !important;
+}
+.add-btn .sidebar-btn .MuiButtonBase-root{
+  width: 100% !important;
+}
+.input-div-main{
+  margin-top: 30px;
+}
+.input-div-main .space-y-2{
+  width: 49% !important;
+}
+.add-input-div .space-y-2{
+  width: 32% !important;
+}
+.input-div-main .space-y-2 .MuiFormControl-root .MuiFormHelperText-root{
+  margin-left: 0 !important;
+}
+.input-div-main .MuiAutocomplete-root .MuiFormControl-root .MuiFormHelperText-root{
+  margin-left: 0 !important;
+}
+.form-div .space-y-2 .MuiFormControl-root .MuiFormHelperText-root{
+  margin-left: 0 !important;
+}
+
+.form-div .space-y-2 .MuiFormControl-root .MuiInputBase-root .MuiInputBase-inputMultiline{
+  margin-top: 9px !important
+}
+.autocomplete-feild{
+  width: 49%;
+}
+.back-btn{
+  background-color: transparent !important;
+  color: #0145FE !important;
+}

@@ -44,7 +44,7 @@ export const resetPasswordSchema = z
     projectName: z.string().min(3, { message: "Project Name must be at least 3 characters long" }),
     projectTech: z.preprocess(
       (val) => {
-        if (typeof val === 'string' || typeof val === 'number') return [val];
+        if (typeof val === 'string') return [val];
         if (Array.isArray(val)) return val;
         return [];
       },z.array(z.string()).min(1, { message: "At least one technology must be selected" })
@@ -65,7 +65,7 @@ export const resetPasswordSchema = z
     projectDescription: z.string().min(10, { message: "Description must be at least 10 characters long" }),
     projectRepoTool: z.string().min(1, { message: "Project Repo Tool is required" }),
     projectRepoUrl: z.string().url({ message: "Provide a valid URL for Project Repo" }),
-    projectStatus: z.enum(['Planning', 'Requirements Gathering', 'In Progress', 'Development', 'Testing', 'Production']),
+    projectStatus: z.enum(['Under Planning', 'Development Started', 'Under Testing', 'Deployed on Dev', 'Live']),
   }).superRefine((data, ctx) => {
     if (data.projectStartAt && data.projectDeadline) {
       if (!dayjs(data.projectDeadline).isAfter(dayjs(data.projectStartAt))) {

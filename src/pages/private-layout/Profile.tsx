@@ -1,3 +1,4 @@
+import './profile.css';
 import { Avatar, Box, Grid, IconButton, Paper, TextField, Typography } from "@mui/material";
 import Breadcrumb from "../../components/Breadcrumb";
 import Navbar from "../../components/Navbar";
@@ -64,40 +65,29 @@ const Profile = () => {
       <Sidebar />
       <div className="d-flex flex-column flex-grow-1">
         <Navbar />
-        <div className="d-flex flex-column" style={{overflow:'auto', height:'100%'}}>
-          <div className="d-flex justify-content-start" style={{width:'92%', marginLeft:'70px', marginTop: '12px'}}>
+        <div className="main-container d-flex flex-column">
+          <div className="sub-container d-flex justify-content-start">
             <Breadcrumb/>
           </div>
-          <div className="d-flex flex-column justify-content-center align-items-center w-full mt-3" style={{backgroundColor:'#f0f0f0'}}>
-            <div className="d-flex flex-column w-full" style={{width:'100%'}}>
-              <Box sx={{width: "100%", height: "220px" }}>
+          <div className="profile-container d-flex flex-column justify-content-center align-items-center w-full mt-3" >
+            <div className="profile-sub-container d-flex flex-column w-full">
+              <Box className="cover-image">
                 <Paper
                   sx={{
-                    width: "100%",
-                    height: "100%",
                     backgroundImage: `url(${coverImageUrl})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    position: "relative",
                   }}
                 >
                 </Paper>
               </Box>
-              <Box sx={{ display:'flex', justifyContent:'space-around', zIndex:'0px', width:'100%', alignItems:'center', backgroundColor:'#ffffff', height:'95px' }}>
+              <Box className="user-info">
                 <div className="d-flex align-items-center">
-                  <div className="d-flex flex-column align-items-center" style={{marginRight:'14px'}}>
-                    <Box
-                      sx={{
-                        position: "relative",
-                        width: 150,
-                        height: 150,
-                        margin: "0 auto",
-                        marginTop: "-107px",
-                      }}
+                  <div className="profile-data d-flex flex-column align-items-center">
+                    <Box className="user-image"
                       onMouseEnter={() => setHover(true)}
                       onMouseLeave={() => setHover(false)}
                     >
                       <Avatar
+                        className='avatar-img'
                         src={
                           userProfile?.image_name !== null
                             ? `${constVariables.base_url}assets/images/uploads/` + userProfile?.image_name
@@ -112,7 +102,7 @@ const Profile = () => {
                         }}
                       />
                       {hover && (
-                        <Box
+                        <Box className="user-box"
                           sx={{
                             position: "absolute",
                             top: 0,
@@ -127,7 +117,7 @@ const Profile = () => {
                             zIndex: 2,
                           }}
                         >
-                          <Box
+                          <Box className="user-sub-box"
                             sx={{
                               display: "flex",
                               gap: 1,
@@ -157,13 +147,13 @@ const Profile = () => {
                       )}
                     </Box>
                   </div>
-                  <span  style={{fontSize:'18px', margin:'0 10px', fontWeight:'800', fontFamily:'sans-serif'}}>{`${userProfile?.fname} ${userProfile?.lname}`}</span>
-                  <span style={{marginLeft:'10px', border:'1px solid rgba(214, 214, 214, 0.7)', height:'32px'}}></span>
+                  <span  className='user-name'>{`${userProfile?.fname} ${userProfile?.lname}`}</span>
+                  <span className='main-heading'></span>
                 </div>
                 <Typography variant="h5">Profile Information</Typography>
               </Box>
             </div>
-            <Grid container spacing={3} sx={{ marginTop:'1px' }}>
+            <Grid container spacing={3} className='grid-container' sx={{ marginTop:'1px' }}>
               <Grid item xs={12} md={4} sx={{width: '50%', display: 'flex', justifyContent:'flex-end', height: 'max-content'}}>
                 <Box className="p-3 bg-light rounded" sx={{width:'53%', padding:'16px 29px !important', backgroundColor:'#ffffff !important', borderRadius: '20px !important'}}>
                   <Typography variant="h6" className="mb-3">

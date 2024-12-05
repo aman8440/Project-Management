@@ -1,3 +1,4 @@
+import './projectList.css'
 import React from "react";
 import { useEffect, useState } from "react";
 import { InputAdornment, Paper, Tooltip, tooltipClasses } from "@mui/material";
@@ -94,7 +95,6 @@ const ProjectList = () => {
             fetch(`${constVariables.base_url}api/project/delete/${params.row.id}`, { method: "DELETE" })
               .then((response) => {
                 if (response.ok) {
-                  console.log("Project deleted successfully");
                   toast.success("Project deleted successful!");
                   fetchData();
                   // setOpen(false);
@@ -291,14 +291,13 @@ const ProjectList = () => {
       <div className="d-flex flex-column flex-grow-1">
         <Navbar />
         <div className="d-flex flex-column justify-content-center align-items-center w-full">
-          <div className="d-flex justify-content-start" style={{width:'91%', marginTop: '12px'}}>
+          <div className="d-flex justify-content-start breadcrum-position">
             <Breadcrumb/>
           </div>
-        <div className="w-full align-items-center w-full list-container" style={{width: '93vw', zIndex: '0',
-          marginLeft: '55px', marginTop: '25px', backgroundColor:'#F0F6FF', backdropFilter: 'blur(10px)', padding:'15px 24px', borderRadius:'15px'}}>
+        <div className="w-full align-items-center w-full list-container">
           <div className="d-flex justify-content-between w-full align-items-start mb-4">
             <div className="d-flex">
-              <h2 className="mt-2" style={{fontSize:'23px', fontWeight:'600'}}>Projects</h2>
+              <h2 className="heading mt-2">Projects</h2>
             </div>
             <div className="d-flex w-full justify-content-between">
               <div className="search-input w-full">
@@ -336,7 +335,6 @@ const ProjectList = () => {
                         }),
                       },
                     }}
-                    style={{width:'100%'}}
                     inputSlotProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -347,36 +345,15 @@ const ProjectList = () => {
                   />
                 </Tooltip>
               </div>
-              <Button text={"Filter"} type={'button'} onClick={() => setSidebarOpen(true)}
-                sx={{
-                  padding: '10px 15px', 
-                  fontSize: '14px', 
-                  display: 'flex', 
-                  alignItems: 'center',
-                  position: 'relative',
-                  borderRadius:'8px',
-                  backgroundColor:'transparent !important', 
-                  border:'0.86px solid #9B9CA0 !important',
-                  marginRight:'10px', 
-                  marginLeft:'10px',
-                  color:'#000 !important'
-                }}
+              <Button text={"Filter"} type={'button'} className='filter-btn' onClick={() => setSidebarOpen(true)}
                 startIconPass={<FilterAltOutlinedIcon />}
               />
-              <Button text={"Add Projects"} type={'button'} onClick={handleNavigateToAddProjects}
-                sx={{
-                  padding: '10px 15px', 
-                  fontSize: '14px', 
-                  display: 'flex', 
-                  alignItems: 'center',
-                  position: 'relative',
-                  borderRadius:'8px'
-                }}
+              <Button text={"Add Projects"} type={'button'} className='add-btn' onClick={handleNavigateToAddProjects}
                 startIconPass={<CreateNewFolderOutlinedIcon />}
               />
             </div>
           </div>
-          <Paper sx={{ width: "100%", height: 483 }}>
+          <Paper>
             <DataGrid
               rows={rows}
               columns={columns}
