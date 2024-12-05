@@ -1,0 +1,34 @@
+.main-container{
+  overflow: hidden;
+  height: 100%;
+}
+.sub-contain{
+  width: 92%;
+  margin-left: 107px;
+  margin-top: 12px;
+}
+.profile-tab .MuiBox-root{
+  width: 100%;
+}
+.profile-tab .MuiBox-root .css-1gsv261 .MuiTabs-root .MuiTabs-scroller .MuiTabs-flexContainer .Mui-selected{
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+.profile-tab .MuiBox-root .css-19kzrtu .charts .css-1v603wu-MuiResponsiveChart-container{
+  width: 500px;
+  height: 250px !important;
+}
+.description{
+  width: 66% !important;
+}
+.card{
+  background: #f9f9f9 !important;
+  border-color: rgb(229 240 255) !important;
+}
+.card-title{
+  font-size: 12px !important;
+}
+.card-text{
+  font-size: 16px;
+  font-weight: bold;
+}

@@ -1,0 +1,12 @@
+.main-container{
+  overflow: hidden;
+  height: 100%;
+}
+.main-container .sub-container{
+  width: 92%;
+  margin-left: 70px;
+  margin-top: 12px;
+}
+.main-container .primary-container{
+  height: 100%;
+}

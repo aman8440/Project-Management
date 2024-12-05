@@ -1,3 +1,4 @@
+import './form.css';
 import { useState } from "react";
 import Breadcrumb from "../../components/Breadcrumb"
 import Navbar from "../../components/Navbar"
@@ -132,14 +133,14 @@ const AddProjects = () => {
       <Sidebar />
       <div className="d-flex flex-column flex-grow-1">
         <Navbar />
-        <div className="d-flex flex-column" style={{overflow:'hidden', height:'100%'}}>
-          <div className="d-flex justify-content-start" style={{width:'92%', marginLeft:'70px', marginTop: '12px'}}>
+        <div className="main-container d-flex flex-column">
+          <div className="common-class d-flex justify-content-start">
             <Breadcrumb/>
           </div>
           <div className="container mt-5 mb-2">
             <div className="row">
               <div className="col-md-8 offset-md-2">
-                <form onSubmit={handleSubmit(onSubmit)} className="p-4 rounded shadow">
+                <form onSubmit={handleSubmit(onSubmit)} className="form-div p-4 rounded shadow">
                   <h2 className="text-center mb-4">Create New Project</h2>
                   <div className="input-div-main d-flex mb-2 justify-content-between w-full">
                     <Input
@@ -213,13 +214,11 @@ const AddProjects = () => {
                       />
                     </DemoContainer>
                     <div className="d-flex justify-content-between">
-                      {errors.projectStartAt && <p className="text-danger ms-3" style={{fontSize:'13px'}}>{errors.projectStartAt.message}</p>}
-                      {errors.projectDeadline && <p className="text-danger" style={{marginRight:'15px',fontSize:'13px'}}>{errors.projectDeadline.message}</p>}
+                      {errors.projectStartAt && <p className="text-danger">{errors.projectStartAt.message}</p>}
+                      {errors.projectDeadline && <p className="text-danger">{errors.projectDeadline.message}</p>}
                     </div>
                   </LocalizationProvider>
-                  <div className="input-div-main d-flex d-flex justify-content-between w-full" style={{
-                    marginTop:'30px'
-                  }}>
+                  <div className="input-div-main d-flex d-flex justify-content-between w-full">
                     <Input
                       label="Project Client"
                       type="text"
@@ -240,11 +239,11 @@ const AddProjects = () => {
                       onInputChange={(e, newInputValue) => {
                         setToolSearch(newInputValue);
                       }}
+                      className='autocomplete-feild'
                       options={filteredToolOptions}
                       renderInput={(params) => <TextField {...params} {...register("projectManagementTool")} label="Project Management Tool" name="projectManagementTool"
                         error={!!errors.projectManagementTool} helperText={errors.projectManagementTool?.message}/>}
                       getOptionLabel={(option) => option}
-                      style={{width:'49%'}}
                     />
                   </div>
                   <Input
@@ -295,7 +294,7 @@ const AddProjects = () => {
                       onChange={(e) => handleChange('projectRepoTool', e.target.value)}
                       className="mb-2"
                     />
-                    <FormControl  className="mb-2" error={!!errors.teamSize} style={{width:'32%'}}>
+                    <FormControl  className="select-box mb-2" error={!!errors.teamSize}>
                       <InputLabel>Team Size</InputLabel>
                       <Select
                         className="mb-2"
@@ -310,7 +309,7 @@ const AddProjects = () => {
                       </Select>
                       {errors.teamSize && <p className="text-danger">{errors.teamSize?.message}</p>}
                     </FormControl>
-                    <FormControl  className="mb-2" error={!!errors.projectStatus} style={{width:'32%'}}>
+                    <FormControl  className="select-box mb-2" error={!!errors.projectStatus}>
                       <InputLabel>Project Status</InputLabel>
                       <Select
                         className="mb-2"
@@ -328,9 +327,8 @@ const AddProjects = () => {
                       {errors.projectStatus && <p className="text-danger">{errors.projectStatus.message}</p>}
                     </FormControl>
                   </div>
-                  <div className="add-btn d-flex justify-content-between" style={{width:'100%'}}>    
-                    <Button text="Back" type="button" onClick={()=>{navigate("/dashboard/projects")}} sx={{backgroundColor:'transparent !important', color:'#0145FE !important'
-                    }}/>
+                  <div className="add-btn d-flex justify-content-between">    
+                    <Button text="Back" type="button" className='back-btn' onClick={()=>{navigate("/dashboard/projects")}}/>
                     <Button text={isLoading ? "Submitting..." : "Submit"} type="submit" disabled={isLoading}/>
                   </div>
                 </form>

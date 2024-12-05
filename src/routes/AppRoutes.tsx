@@ -11,16 +11,16 @@ const PublicRoutes= ()=>{
   return token ? <Navigate to="/dashboard/projects"/> : <Outlet/>;
 }
 
-const Signin = lazy(() => import("../pages/public_layout/Signin"));
-const ForgetPass = lazy(() => import("../pages/public_layout/ForgetPass"));
-const ChangePass = lazy(() => import("../pages/public_layout/ChangePass"));
+const Signin = lazy(() => import("../pages/public-layout/Signin"));
+const ForgetPass = lazy(() => import("../pages/public-layout/ForgetPass"));
+const ChangePass = lazy(() => import("../pages/public-layout/ChangePass"));
 
-const Dashboard = lazy(() => import("../pages/private_layout/Dashboard"));
-const Profile = lazy(() => import("../pages/private_layout/Profile"));
-const ProjectList = lazy(() => import("../pages/private_layout/ProjectList"));
-const AddProjects = lazy(() => import("../pages/private_layout/AddProjects"));
-const UpdateProject = lazy(() => import("../pages/private_layout/UpdateProject"));
-const ViewMore = lazy(() => import("../pages/private_layout/ViewMore"));
+const Dashboard = lazy(() => import("../pages/private-layout/Dashboard"));
+const Profile = lazy(() => import("../pages/private-layout/Profile"));
+const ProjectList = lazy(() => import("../pages/private-layout/ProjectList"));
+const AddProjects = lazy(() => import("../pages/private-layout/AddProjects"));
+const UpdateProject = lazy(() => import("../pages/private-layout/UpdateProject"));
+const ViewMore = lazy(() => import("../pages/private-layout/ViewMore"));
 
 const AppRoutes = () => {
   return (

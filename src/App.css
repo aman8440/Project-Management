@@ -1,60 +1,11 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'react-toastify/dist/ReactToastify.css';
 .InputBaseClass, .MuiTextField-root, .MuiInputBase-formControl{
   height: auto !important;
 }
 
-.profile-tab .MuiBox-root .css-1gsv261 .MuiTabs-root .MuiTabs-scroller .MuiTabs-flexContainer .Mui-selected{
-  background-color: #f0f0f0;
-  border-radius: 8px;
-}
-.profile-tab .MuiBox-root .css-19kzrtu .charts .css-1v603wu-MuiResponsiveChart-container{
-  width: 500px;
-  height: 300px;
-}
-.search-input .space-y-2{
-  margin-bottom: 0px !important;
-}
-.search-input .space-y-2 .MuiFormControl-root .MuiInputBase-root{
-  height: 47px !important;
-  position: relative;
-  width: 360px;
-  border-radius: 18px;
-}
-
 .filter-sidebar .MuiBox-root .sidebar-btn{
   width: 49%;
-}
-
-.list-container .MuiPaper-root{
-  border-radius: 10px;
-}
-.list-container .MuiPaper-root .MuiDataGrid-root{
-  border-radius: 10px;
-}
-.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-topContainer .MuiDataGrid-columnHeaders .MuiDataGrid-row--borderBottom{
-  background-color: #EFEFEF;
-}
-.add-btn .sidebar-btn {
-  width: 49% !important;
-}
-.add-btn .sidebar-btn .MuiButtonBase-root{
-  width: 100% !important;
-}
-
-.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .css-s09cke-MuiTablePagination-selectLabel{
-  margin-bottom: 10px !important;
-}
-.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .MuiInputBase-root{
-  margin-right: 8px !important;
-  margin-left: 8px !important;
-  margin-bottom: 7px !important;
-}
-.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .MuiTablePagination-displayedRows{
-  margin-bottom: 7px !important;
-}
-.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .MuiTablePagination-actions{
-  margin-bottom: 7px !important;
-  margin-left: 8px !important;
 }
 
 .menu-list .MuiPaper-root{
@@ -70,18 +21,4 @@
   background-color: transparent !important;
   box-shadow: 0 0 0px 1000px transparent inset !important;
   transition: background-color 5000s ease-in-out 0s;
-}
-
-.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-topContainer .MuiDataGrid-columnHeaders .MuiDataGrid-row--borderBottom .MuiDataGrid-columnHeader .MuiDataGrid-columnHeaderDraggableContainer .MuiDataGrid-columnHeaderTitleContainer{
-  justify-content: center !important;
-}
-.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-virtualScrollerContent .MuiDataGrid-virtualScrollerRenderZone .MuiDataGrid-row .MuiDataGrid-cell{
-  text-align: center !important;
-}
-
-.input-div-main .space-y-2{
-  width: 49% !important;
-}
-.add-input-div .space-y-2{
-  width: 32% !important;
 }

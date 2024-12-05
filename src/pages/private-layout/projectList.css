@@ -1,0 +1,82 @@
+.breadcrum-position{
+  width: 91%;
+  margin-top: 12px;
+}
+
+.list-container{
+  width: 93vw;
+  z-index: 0;
+  margin-left: 55px;
+  margin-top: 25px;
+  background-color: #F0F6FF;
+  backdrop-filter: blur(10px);
+  padding:15px 24px;
+  border-radius: 15px;
+}
+.heading{
+  font-size: 23px;
+  font-weight: 600;
+}
+.list-container .MuiPaper-root{
+  border-radius: 10px;
+  width: 100%;
+  height: 700px;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root{
+  border-radius: 10px;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-topContainer .MuiDataGrid-columnHeaders .MuiDataGrid-row--borderBottom{
+  background-color: #EFEFEF;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .css-s09cke-MuiTablePagination-selectLabel{
+  margin-bottom: 10px !important;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .MuiInputBase-root{
+  margin-right: 8px !important;
+  margin-left: 8px !important;
+  margin-bottom: 7px !important;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .MuiTablePagination-displayedRows{
+  margin-bottom: 7px !important;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiTablePagination-root .MuiToolbar-root .MuiTablePagination-actions{
+  margin-bottom: 7px !important;
+  margin-left: 8px !important;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-topContainer .MuiDataGrid-columnHeaders .MuiDataGrid-row--borderBottom .MuiDataGrid-columnHeader .MuiDataGrid-columnHeaderDraggableContainer .MuiDataGrid-columnHeaderTitleContainer{
+  justify-content: center !important;
+}
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-virtualScrollerContent .MuiDataGrid-virtualScrollerRenderZone .MuiDataGrid-row .MuiDataGrid-cell{
+  text-align: center !important;
+}
+.filter-btn{
+  padding: 9px 15px !important; 
+  font-size: 14px; 
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 8px;
+  background-color: transparent !important; 
+  border: 0.86px solid #9B9CA0 !important;
+  margin-right: 10px !important; 
+  margin-left: 10px !important;
+  color: #000 !important;
+}
+.add-btn{
+  padding: 9px 15px !important; 
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 8px;
+}
+
+.search-input .space-y-2{
+  margin-bottom: 0px !important;
+}
+.search-input .space-y-2 .MuiFormControl-root .MuiInputBase-root{
+  height: 47px !important;
+  position: relative;
+  width: 360px;
+  border-radius: 18px;
+}
