@@ -1,3 +1,4 @@
+import './signin.css';
 import Input from "../../components/Input";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
@@ -72,14 +73,14 @@ export default function Signin() {
 
   return (
     <>
-      <div className="d-flex justify-content-center align-items-center" style={{width:'100%', height:'100vh'}}>
-        <div className="d-flex w-full justify-content-between bg-white" style={{width:'100%', height:'100vh'}}>
-          <div className="d-flex flex-column p-4 rounded-lg shadow" style={{width:'50%', alignItems:'center', justifyContent:'center'}}>
+      <div className="login-main-container d-flex justify-content-center align-items-center">
+        <div className="login-container d-flex w-full justify-content-between bg-white">
+          <div className="login-sub-container d-flex flex-column p-4 rounded-lg shadow">
             <div className="text-center mb-3">
               <img src={loginLogo} alt="loginLogo" width="40" height="40"/>
               <div className="font-sans display-4 font-weight-bold">Login</div>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="login-form space-y-4 mt-2" style={{width:'50%'}}>
+            <form onSubmit={handleSubmit(onSubmit)} className="login-form space-y-4 mt-2">
               <Input
                 label="Email Address"
                 type="text"
@@ -118,8 +119,8 @@ export default function Signin() {
               <Button text={isLoading ? "Signing in..." : "Sign In"} type="submit" disabled={isLoading} />
             </form>
           </div>
-          <div className="d-flex" style={{width:'50%'}}>
-            <img src={loginPage} alt="loginPage" style={{width:'100%'}}/>
+          <div className="login-image d-flex">
+            <img src={loginPage} alt="loginPage"/>
           </div>
         </div>
       </div>

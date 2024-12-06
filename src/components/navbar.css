@@ -1,0 +1,57 @@
+.navbar-container{
+  padding: 14px; 
+  margin-left: 48px;
+  border-bottom: 1px solid rgb(84 84 84 / 10%);
+}
+.logo-nav{
+  padding-right: 10px;
+  border-right: 1px solid #32323840;
+}
+.nav-heading{
+  color: #32323820;
+  font-weight: 600; 
+  font-size: 28px; 
+  line-height: 16px; 
+  margin-top: 8px;
+}
+.nav-sub-container{
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  text-align: center;
+  padding: 19px;
+}
+.nav-sub-container img{
+  border-radius:100%; 
+  border-color: transparent;
+}
+.menu-list .MuiPaper-root{
+  top: 56px !important;
+  left: 1684px !important;
+  width: 155px !important;
+}
+.menu-list-paper {
+  overflow: visible;
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.32));
+  margin-top: 1.5rem;
+}
+
+.menu-list-paper .MuiAvatar-root {
+  width: 32px;
+  height: 32px;
+  margin-left: -0.5rem;
+  margin-right: 1rem;
+}
+
+.menu-list-paper::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 14px;
+  width: 10px;
+  height: 10px;
+  background-color: var(--background-paper-color, white);
+  transform: translateY(-50%) rotate(45deg);
+  z-index: 0;
+}

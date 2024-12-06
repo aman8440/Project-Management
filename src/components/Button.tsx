@@ -1,3 +1,4 @@
+import './button.css';
 import React from "react";
 import { Button as MuiButton, } from "@mui/material";
 import { ButtonProps } from "../interfaces/index";
@@ -11,8 +12,7 @@ const Button: React.FC<ButtonProps> = ({ text, type = "button", className, onCli
         type={type}
         variant="contained"
         onClick={onClick} 
-        className={`btn w-100 ${className}`}
-        style={{ backgroundColor: "#0145FE", color: "#FFFFFF", width: "100%", textTransform:'none' }} 
+        className={`main-button w-100 ${className}`}
         startIcon={startIconPass}
         {...rest}
       >

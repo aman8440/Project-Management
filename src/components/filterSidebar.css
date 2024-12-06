@@ -1,0 +1,30 @@
+.filter-drawer .MuiPaper-root{
+  padding: 15px 20px;
+}
+.filter-box{
+  width: 400px;
+  padding: 2px;
+}
+.filter-sidebar .MuiBox-root .sidebar-btn{
+  width: 49%;
+}
+.reset-btn{
+  background-color: transparent !important;
+  border: 1px solid #000;
+  border-radius: 10px;
+  color: #4f4f4f !important;
+}
+.filter-field{
+  height: calc(100vh - 142px);
+}
+.action-btn{
+  margin-top: 2; 
+  display: flex;
+  justify-content: space-between; 
+  width: 100%; 
+}
+.cancel-btn{
+  width: 100px;
+  background-color: transparent !important;
+  color: #0145FE !important;
+}

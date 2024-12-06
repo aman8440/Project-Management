@@ -61,7 +61,7 @@ const Sidebar = () => {
             >
             <img src={isActive("/dashboard/projects") ? projectIcon : projectIconActive} alt="projectIcon" height="16" width="16" />
             {isSidebarHovered && (
-              <span onClick={toggleProjectsSubmenu} style={{position:'absolute', right:'9px'}}>
+              <span onClick={toggleProjectsSubmenu} className='sidebar-span'>
                 {isProjectsOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
               </span>
             )}

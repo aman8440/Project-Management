@@ -1,0 +1,25 @@
+.login-main-container{
+  width: 100%;
+  height: 100vh;
+}
+.login-container{
+  width: 100%;
+  height: 100vh;
+}
+.login-sub-container{
+  width: 50%; 
+  align-items: center; 
+  justify-content: center;
+}
+.login-form{
+  width: 50%;
+}
+.login-form .space-y-2 .MuiFormControl-root .MuiFormHelperText-root{
+  margin-left: 0px !important;
+}
+.login-image{
+  width: 50%;
+}
+.login-image img{
+  width: 100%;
+}
