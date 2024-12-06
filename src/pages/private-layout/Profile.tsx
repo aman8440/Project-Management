@@ -8,8 +8,8 @@ import { CloudUpload, Delete } from "@mui/icons-material";
 import { Facebook, Twitter, LinkedIn, Instagram } from "@mui/icons-material";
 import coverImage from '../../assets/img/cover_img.webp';
 import { ChangeEvent, useState } from "react";
-import { UploadResponse } from "../../interfaces";
 import { constVariables } from "../../constants";
+import { toast } from 'react-toastify';
 
 const Profile = () => {
   const {userProfile}= useUserProfile();
@@ -18,28 +18,40 @@ const Profile = () => {
   const [, setProfileImage] = useState<string | null>(null);
   const [coverImageSet, setCoverImage] =  useState<string | null>(null);
 
-  const handleImageUpload = async (
-    e: ChangeEvent<HTMLInputElement>,
-    type: "profile" | "cover"
-  ) => {
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>, type: "profile" | "cover") => {
     const file = e.target.files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("id", userProfile?.id as string);
-      try {
-        const response = await fetch(`${constVariables.base_url}me/profile`, {
-          method: "POST",
-          body: formData,
-        });
+    if (!file) return;
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif','image/jpg','image/webp', 'image/svg'];
+    const maxSize = 5 * 1024 * 1024;
 
-        const data: UploadResponse = await response.json();
-        if (type === "profile") setProfileImage(data.url);
-        if (type === "cover") setCoverImage(data.url);
-        window.location.reload(); 
-      } catch (error) {
-        console.error("Error uploading image:", error);
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Invalid file type. Please upload an image.");
+      return;
+    }
+    if (file.size > maxSize) {
+      toast.error("File is too large. Maximum size is 5MB.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("id", userProfile?.id ?? '');
+    try {
+      const response = await fetch(`${constVariables.base_url}me/profile`, {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const data = await response.json();
+      console.log(data);
+
+      if (type === "profile") setProfileImage(data.url);
+      if (type === "cover") setCoverImage(data.url);
+      toast.success("Image Uploaded Sucessfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
     }
   };
 
@@ -48,13 +60,13 @@ const Profile = () => {
       const data = { id: userProfile?.id }; 
       await fetch(`${constVariables.base_url}me/profile/delete`, {
         method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
       });
 
       if (type === "profile") setProfileImage(null);
       if (type === "cover") setCoverImage(null);
       window.location.reload(); 
+      toast.success("Image Deleted Sucessfully!");
     } catch (error) {
       console.error("Error deleting image:", error);
     }
@@ -104,7 +116,7 @@ const Profile = () => {
                               <input
                                 id="upload-profile-image"
                                 type="file"
-                                style={{ display: "none" }}
+                                hidden
                                 onChange={(e) =>
                                   handleImageUpload(e as React.ChangeEvent<HTMLInputElement>, "profile")
                                 }

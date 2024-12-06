@@ -72,6 +72,7 @@ const AddProjects = () => {
     formState: { errors },
   } = useForm<ProjectData>({
     resolver: zodResolver(projectSchema),
+    mode:'onChange'
   });
   const getTodayDate= (): dayjs.Dayjs =>{
     return dayjs();
@@ -169,12 +170,12 @@ const AddProjects = () => {
                     fullWidth={true}
                     value={formData.projectTech}
                     options={filteredTechOptions}
-                    onChange={(e, newValue) => {
+                    onChange={(_event,newValue) => {
                       handleChange('projectTech', newValue);
                       setValue('projectTech', newValue);
                     }}
                     inputValue={techSearch}
-                    onInputChange={(e, newInputValue) => setTechSearch(newInputValue)}
+                    onInputChange={(_event,newInputValue) => setTechSearch(newInputValue)}
                     className="mb-4"
                     renderInput={(params) => (
                       <TextField
@@ -232,11 +233,11 @@ const AddProjects = () => {
                     <Autocomplete
                       fullWidth={true}
                       value={formData.projectManagementTool}
-                      onChange={(e, newValue) => {
+                      onChange={(_e, newValue) => {
                         handleChange('projectManagementTool', newValue as string);
                         setToolSearch(newValue as string);
                       }}
-                      onInputChange={(e, newInputValue) => {
+                      onInputChange={(_e, newInputValue) => {
                         setToolSearch(newInputValue);
                       }}
                       className='autocomplete-feild'

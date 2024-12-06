@@ -26,7 +26,7 @@ import { toast } from 'react-toastify';
 
 function CustomToolbar() {
   return (
-    <div className="d-flex w-full" style={{position:'absolute', bottom:'14px', zIndex:'1'}}>
+    <div className="custom-toolbar d-flex w-full">
       <GridToolbarContainer>
         <GridToolbarExport />
       </GridToolbarContainer>

@@ -71,6 +71,7 @@ const UpdateProject = () => {
     formState: { errors },
   } = useForm<ProjectData>({
     resolver: zodResolver(projectSchema),
+    mode:'onChange'
   });
 
   useEffect(() => {
@@ -102,6 +103,19 @@ const UpdateProject = () => {
           projectRepoUrl: project.project_repo_url,
           projectStatus: project.project_status
         });
+        setValue("projectName", project.project_name);
+        setValue("projectTech", project.project_tech.split(', '));
+        setValue("projectStartAt", dayjs(project.project_startat).toDate());
+        setValue("projectDeadline", dayjs(project.project_deadline).toDate());
+        setValue("projectLead", project.project_lead);
+        setValue("teamSize", parseInt(project.team_size));
+        setValue("projectClient", project.project_client);
+        setValue("projectManagementTool", project.project_management_tool);
+        setValue("projectManagementUrl", project.project_management_url);
+        setValue("projectDescription", project.project_description);
+        setValue("projectRepoTool", project.project_repo_tool);
+        setValue("projectRepoUrl", project.project_repo_url);
+        setValue("projectStatus", project.project_status);
       } catch (error) {
         console.error('Error fetching project data:', error);
       } finally {
@@ -213,12 +227,12 @@ const UpdateProject = () => {
                       fullWidth
                       value={formData?.projectTech || []}
                       options={filteredTechOptions}
-                      onChange={(e, newValue) => {
+                      onChange={(_e, newValue) => {
                         handleChange('projectTech', newValue);
                         setValue('projectTech', newValue);
                       }}
                       inputValue={techSearch}
-                      onInputChange={(e, newInputValue) => setTechSearch(newInputValue)}
+                      onInputChange={(_e, newInputValue) => setTechSearch(newInputValue)}
                       className="mb-4"
                       renderInput={(params) => (
                         <TextField
@@ -270,11 +284,11 @@ const UpdateProject = () => {
                       <Autocomplete
                         fullWidth={true}
                         value={formData.projectManagementTool}
-                        onChange={(e, newValue) => {
+                        onChange={(_e, newValue) => {
                           handleChange('projectManagementTool', newValue as string);
                           setToolSearch(newValue as string);
                         }}
-                        onInputChange={(e, newInputValue) => {
+                        onInputChange={(_e, newInputValue) => {
                           setToolSearch(newInputValue);
                         }}
                         className='autocomplete-feild'
