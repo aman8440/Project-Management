@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {  setAuthToken } from "../../services/storage.service";
-import loginPage from '../../assets/img/login_page_image.jpg'
 import loginLogo from '../../assets/img/login_logo.svg'
 import React from "react";
 import { IconButton, InputAdornment } from "@mui/material";
@@ -75,7 +74,7 @@ export default function Signin() {
     <>
       <div className="login-main-container d-flex justify-content-center align-items-center">
         <div className="login-container d-flex w-full justify-content-between bg-white">
-          <div className="login-sub-container d-flex flex-column p-4 rounded-lg shadow">
+          <div className="login-sub-container d-flex flex-column p-4 rounded-lg">
             <div className="text-center mb-3">
               <img src={loginLogo} alt="loginLogo" width="40" height="40"/>
               <div className="font-sans display-4 font-weight-bold">Login</div>
@@ -116,11 +115,25 @@ export default function Signin() {
                   Forgot Password?
                 </Link>
               </p>
-              <Button text={isLoading ? "Signing in..." : "Sign In"} type="submit" disabled={isLoading} />
+              <Button text={isLoading ? "Logining in..." : "Login"} type="submit" disabled={isLoading} />
             </form>
           </div>
-          <div className="login-image d-flex">
-            <img src={loginPage} alt="loginPage"/>
+          <div className="sub-div d-flex flex-column">
+            <div className="login-logo d-flex justify-content-start w-full">
+              <img src={loginLogo} alt="loginLogo" width="40" height="40" />
+              <h4 className='head'>Search Portal</h4>
+            </div>
+            <div className="login-heading">
+              <h1 className='header'>Welcome Back, Please Login to Get started</h1>
+            </div>
+            <div className="login-para">
+              <p className='para'>Maybe some text here will help me see it better. Oh God. Oke, let's do it then. </p>
+            </div>
+            <div className="login-image d-flex">
+              <div className="login-sub-img"></div>
+            </div>
+          </div>
+          <div className="right-content">
           </div>
         </div>
       </div>

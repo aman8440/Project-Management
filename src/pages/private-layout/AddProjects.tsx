@@ -171,6 +171,7 @@ const AddProjects = () => {
                     value={formData.projectTech}
                     options={filteredTechOptions}
                     onChange={(_event,newValue) => {
+                      console.log("object", newValue);
                       handleChange('projectTech', newValue);
                       setValue('projectTech', newValue);
                     }}

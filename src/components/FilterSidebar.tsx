@@ -10,6 +10,7 @@ import { DateRange } from '@mui/x-date-pickers-pro/models';
 import Button from './Button';
 import RestoreIcon from '@mui/icons-material/Restore';
 import { constVariables } from '../constants';
+import { toast } from 'react-toastify';
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isOpen,
@@ -133,7 +134,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     const startDate = start ? start.toDate() : null;
                     const endDate = end ? end.toDate() : null;
                     if (start && end && start.isAfter(end)) {
-                      alert('Start date cannot be after the end date.');
+                      toast.warning("Start date cannot be after the end date.");
                       return;
                     }
                     handleFilterChange('projectStartAt', startDate);
@@ -173,9 +174,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 fullWidth
                 value={localFilters.projectTech || []}
                 options={filteredTechOptions}
-                onChange={(e, newValue) => handleFilterChange('projectTech', newValue)}
+                onChange={(_e, newValue) => handleFilterChange('projectTech', newValue)}
                 inputValue={techSearch}
-                onInputChange={(e, newInputValue) => setTechSearch(newInputValue)}
+                onInputChange={(_e, newInputValue) => setTechSearch(newInputValue)}
                 className="mt-4"
                 renderInput={(params) => <TextField {...params} label="Project Technologies" />}
                 getOptionLabel={(option) => option}
