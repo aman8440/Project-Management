@@ -20,9 +20,9 @@ import { format } from 'date-fns';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
-// import AlertDialogSlide from "../../components/AlertDialogSlide";
-import { toast } from "react-toastify";
+import AlertDialogSlide from "../../components/AlertDialogSlide";
 import { constVariables } from "../../constants";
+import { toast } from 'react-toastify';
 
 function CustomToolbar() {
   return (
@@ -36,26 +36,14 @@ function CustomToolbar() {
 
 const ProjectList = () => {
   const [rows, setRows] = useState<RowData[]>([]); 
-  // const [open, setOpen] = React.useState(false);
-  // const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [rowToDelete, setRowToDelete] = useState(null);
+  const [open, setOpen] = React.useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate= useNavigate();
   const [columns] = useState([
-    {
-      field: "id",
-      headerName: "Serial No.",
-      width: 90,
-      sortable: true,
-      value: "1"
-    },
+    { field: "id", headerName: "Serial No.", width: 90, sortable: true, value: "1" },
     { field: "project_name", headerName: "Project Name", width: 150 },
-    { field: "project_tech", headerName: "Technology", width: 150, 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      // renderCell: (params: any) => {
-      //   const techArray = params.value;
-      //   return JSON.parse(techArray).join(', ')
-      // },
-    },
+    { field: "project_tech", headerName: "Technology", width: 150 },
     { field: "project_startat", headerName: "Start Date", width: 120 },
     { field: "project_deadline", headerName: "Deadline", width: 120 },
     { field: "project_lead", headerName: "Lead", width: 120 },
@@ -76,44 +64,9 @@ const ProjectList = () => {
         const handleView = () => {
           navigate(`/dashboard/projects/${params.row.id}`);
         };
-
         const handleEdit = () => {
           navigate(`/dashboard/projects/edit/${params.row.id}`);
         };
-        
-        // const handleDelete = (projectId:string) => {
-        //   setOpen(true);
-        //   setSelectedProjectId(projectId);
-        //   console.log("Delete project", params.row.id);
-        // };
-
-        const confirmDelete = () => {
-          // setOpen(true);
-          const userConfirmed = window.confirm("Are you sure you want to delete this project?");
-          if (userConfirmed) {
-            console.log("Delete confirmed for project", params.row.id);
-            fetch(`${constVariables.base_url}api/project/delete/${params.row.id}`, { method: "DELETE" })
-              .then((response) => {
-                if (response.ok) {
-                  toast.success("Project deleted successful!");
-                  fetchData();
-                  // setOpen(false);
-                } else {
-                  console.error("Failed to delete project");
-                }
-              })
-              .catch((error) => {
-                console.error("Error deleting project:", error);
-              });
-          } else {
-            console.log("Delete action canceled");
-          }
-        };
-
-        // const handleClose= ()=>{
-        //   setOpen(false);
-        // }
-
         return (
           <div>
             <Tooltip title="View More" arrow>
@@ -127,25 +80,44 @@ const ProjectList = () => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete" arrow>
-              <IconButton color="error" onClick={()=>confirmDelete()}>
+              <IconButton color="error" onClick={()=>handleDeleteClick(params.row.id)}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
-              {/* <AlertDialogSlide
-                open={open}
-                onClose={handleClose}
-                title="Delete Project"
-                content="Are you sure you want to delete this project?"
-                actions={[
-                  { label: 'Cancel', onClick: handleClose },
-                  { label: 'Yes', onClick: confirmDelete },
-                ]}
-              /> */}
           </div>
         );
       },
     }
   ]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleDeleteClick = (row:any) => {
+    setRowToDelete(row);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setRowToDelete(null);
+  };
+
+  const confirmDelete = () => {
+    fetch(`${constVariables.base_url}api/project/delete/${rowToDelete}`, { 
+      method: "DELETE" 
+    })
+      .then((response) => {
+        if (response.ok) {
+          toast.success("Project deleted successfully!");
+          fetchData();
+        } else {
+          console.error("Failed to delete project");
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting project:", error);
+      }).finally(() => {
+        handleClose();
+      });
+  };
   const [totalRows, setTotalRows] = useState(0);
   const [paginationModel, setPaginationModel] = useState({
     page: parseInt(searchParams.get("page") || "1"),
@@ -202,7 +174,6 @@ const ProjectList = () => {
     const { page, pageSize } = paginationModel;
     const sort = sortModel[0]?.field || "id";
     const order = sortModel[0]?.sort || "asc";
-
     try {
       const url = new URL(`${constVariables.base_url}api/project/list`);
       url.searchParams.append("page", (page).toString());
@@ -378,6 +349,16 @@ const ProjectList = () => {
               }}
             />
           </Paper>
+          <AlertDialogSlide
+            open={open}
+            onClose={handleClose}
+            title="Delete Project"
+            content="Are you sure you want to delete this project?"
+            actions={[
+              { label: 'Cancel', onClick: handleClose, color: "secondary" },
+              { label: 'Yes', onClick: confirmDelete,  color: "primary"},
+            ]}
+          />
         </div>
         <FilterSidebar
           isOpen={sidebarOpen}

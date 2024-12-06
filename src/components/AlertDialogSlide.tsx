@@ -42,7 +42,16 @@ export default function AlertDialogSlide({
       </DialogContent>
       <DialogActions>
         {actions.map((action, index) => (
-          <Button key={index} onClick={action.onClick}>
+          <Button key={index} onClick={action.onClick}
+            color={
+              action.color === 'secondary' ? 'secondary' : 
+              action.color === 'error' ? 'error' : 
+              action.color === 'success' ? 'success' : 
+              action.color === 'warning' ? 'warning' : 
+              action.color === 'info' ? 'info' : 
+              'primary'
+            }
+          >
             {action.label}
           </Button>
         ))}

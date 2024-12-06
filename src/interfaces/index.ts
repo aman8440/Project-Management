@@ -41,6 +41,7 @@ export interface DialogProps {
   actions: {
     label: string;
     onClick: () => void;
+    color?: string;
   }[];
 }
 
