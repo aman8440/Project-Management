@@ -41,11 +41,15 @@
   margin-left: 0 !important;
 }
 
+.form-div .MuiAutocomplete-root .MuiFormControl-root .MuiFormHelperText-root{
+  margin-left: 0 !important;
+}
+
 .form-div .space-y-2 .MuiFormControl-root .MuiInputBase-root .MuiInputBase-inputMultiline{
   margin-top: 9px !important
 }
 .autocomplete-feild{
-  width: 49%;
+  width: 49% !important;
 }
 .back-btn{
   background-color: transparent !important;

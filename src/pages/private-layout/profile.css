@@ -34,6 +34,9 @@
   background-color: #ffffff;
   height: 95px;
 }
+.upload-profile-image{
+  display: none;
+}
 .profile-data{
   margin-right: 14px;
 }

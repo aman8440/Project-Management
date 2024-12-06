@@ -84,3 +84,8 @@
   width: 360px;
   border-radius: 18px;
 }
+.custom-toolbar{
+  position: absolute; 
+  bottom: 14px; 
+  z-index: 1;
+}
