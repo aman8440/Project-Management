@@ -4,10 +4,9 @@
 }
 .login-container{
   width: 100%;
-  height: 100vh;
 }
 .login-sub-container{
-  width: 50%; 
+  width: 60%; 
   align-items: center; 
   justify-content: center;
 }
@@ -17,9 +16,53 @@
 .login-form .space-y-2 .MuiFormControl-root .MuiFormHelperText-root{
   margin-left: 0px !important;
 }
-.login-image{
-  width: 50%;
+.sub-div{
+  width: 40%;
+  padding: 10px;
+  height: 100vh;
+  background-color: #F4F5F9;
+  border-radius: 20px;
+  padding: 15px;
 }
-.login-image img{
+.sub-div .login-logo{
+  margin-bottom: 59px;
+  display: flex;
+  align-items: center;
+}
+.sub-div .login-logo .head{
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 18.75px;
+  margin-left: 10px;
+}
+.sub-div .login-heading{
+  margin-top: 23px;
+  margin-right: 43px;
+}
+.sub-div .login-heading .header{
+  font-size: 44px;
+  font-weight: 700;
+  color: #323238;
+}
+.sub-div .login-para{
+  margin-top: 20px;
+}
+.sub-div .login-para .para{
+  color: #676879;
+  font-size: 16px;
+  font-weight: 400;
+}
+.sub-div .login-image{
+  background-color: #fff;
+  padding: 10px 11.9px;
+  border-radius: 15px;
+  height: 100%;
+}
+.sub-div .login-image .login-sub-img{
   width: 100%;
+  height: 100%;
+  background: url('../../assets/img/login_page_image.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
