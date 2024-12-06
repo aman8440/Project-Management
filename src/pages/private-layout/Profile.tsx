@@ -93,38 +93,12 @@ const Profile = () => {
                             ? `${constVariables.base_url}assets/images/uploads/` + userProfile?.image_name
                             : "/default-avatar.png"
                         }
-                        sx={{
-                          width: 150,
-                          height: 150,
-                          border: "5px solid white",
-                          position: "relative",
-                          zIndex: 1,
-                        }}
                       />
                       {hover && (
-                        <Box className="user-box"
-                          sx={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: "100%",
-                            backgroundColor: "rgba(0, 0, 0, 0.5)",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderRadius: "50%",
-                            zIndex: 2,
-                          }}
-                        >
-                          <Box className="user-sub-box"
-                            sx={{
-                              display: "flex",
-                              gap: 1,
-                            }}
-                          >
+                        <Box className="user-box">
+                          <Box className="user-sub-box">
                             <IconButton color="primary">
-                              <label htmlFor="upload-profile-image" style={{ cursor: "pointer" }}>
+                              <label htmlFor="upload-profile-image">
                                 <CloudUpload />
                               </label>
                               <input
@@ -137,7 +111,7 @@ const Profile = () => {
                               />
                             </IconButton>
                             <IconButton
-                              sx={{ color: "red" }}
+                              className='delete-image'
                               onClick={() => handleImageDelete("profile")}
                             >
                               <Delete />
@@ -153,38 +127,38 @@ const Profile = () => {
                 <Typography variant="h5">Profile Information</Typography>
               </Box>
             </div>
-            <Grid container spacing={3} className='grid-container' sx={{ marginTop:'1px' }}>
-              <Grid item xs={12} md={4} sx={{width: '50%', display: 'flex', justifyContent:'flex-end', height: 'max-content'}}>
-                <Box className="p-3 bg-light rounded" sx={{width:'53%', padding:'16px 29px !important', backgroundColor:'#ffffff !important', borderRadius: '20px !important'}}>
+            <Grid container spacing={3} className='grid-container'>
+              <Grid item xs={12} md={4} className='sub-grid-container'>
+                <Box className="social-lick-box p-3 bg-light rounded">
                   <Typography variant="h6" className="mb-3">
                     Social Media Links
                   </Typography>
                   <ul className="list-unstyled d-flex flex-wrap">
-                    <li style={{marginRight:'10px'}}>
+                    <li className='list-social'>
                       <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                        <Facebook sx={{ color: "#4267B2", fontSize: 40 }} />
+                        <Facebook className='facebook'/>
                       </a>
                     </li>
-                    <li style={{marginRight:'10px'}}>
+                    <li className='list-social'>
                       <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                        <Twitter sx={{ color: "#1DA1F2", fontSize: 40 }} />
+                        <Twitter className='twitter'/>
                       </a>
                     </li>
-                    <li style={{marginRight:'10px'}}>
+                    <li className='list-social'>
                       <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                        <LinkedIn sx={{ color: "#0077B5", fontSize: 40 }} />
+                        <LinkedIn className='linkedin'/>
                       </a>
                     </li>
-                    <li style={{marginRight:'10px'}}>
+                    <li className='list-social'>
                       <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                        <Instagram sx={{ color: "#E1306C", fontSize: 40 }} />
+                        <Instagram className='instagram'/>
                       </a>
                     </li>
                   </ul>
                 </Box>
               </Grid>
-              <Grid item xs={17} md={8} sx={{padding:'26px 21px', width:'50%', display:'flex', justifyContent:'flex-end', height:'max-content'}}>
-                <Box className="p-3 bg-light rounded" sx={{width:'94%', backgroundColor:'#ffffff !important', borderRadius: '20px !important'}}>
+              <Grid item xs={17} md={8} className='admin-detail-grid'>
+                <Box className="admin-details p-3 bg-light rounded">
                   <Typography variant="h6" className="mb-3">
                     Admin Details
                   </Typography>

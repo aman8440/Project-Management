@@ -1,3 +1,4 @@
+import './filterSidebar.css';
 import React, { useState, useCallback } from 'react';
 import { FilterDataProp, FilterSidebarProps } from '../interfaces';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -106,25 +107,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     tech.toLowerCase().includes(techSearch.toLowerCase())
   );
   return (
-    <Drawer anchor="right" open={isOpen} onClose={onClose}>
-      <Box sx={{ width: 400, padding: 2 }}>
+    <Drawer anchor="right" className='filter-drawer' open={isOpen} onClose={onClose}>
+      <Box className="filter-box">
         <div className="d-flex w-full justify-content-between my-3 mb-5">
           <h4 className='mt-1'>Filters</h4>
           <Button
-              type="button"
-              text="Reset"
-              className='align-self-start '
-              onClick={resetFilters}
-              startIconPass={<RestoreIcon />}
-              sx={{
-                backgroundColor:'transparent !important',
-                border: '1px solid #000',
-                borderRadius:'10px',
-                color:'#4f4f4f !important'
-              }}
-            />
+            type="button"
+            text="Reset"
+            className='reset-btn align-self-start '
+            onClick={resetFilters}
+            startIconPass={<RestoreIcon />}
+          />
         </div>
-        <div className="d-flex flex-column justify-content-between filter-sidebar" style={{height:'calc(100vh - 142px)'}}>
+        <div className="filter-field d-flex flex-column justify-content-between filter-sidebar">
           <div className="d-flex flex-column align-items-start ">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateRangePicker
@@ -187,17 +182,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               />
             )}
           </div>
-          <Box sx={{ marginTop: 2, display:'flex', justifyContent:'space-between', width:'100%' }}>
+          <Box className="action-btn">
             <Button
               type="button"
               text="Cancel"
               onClick={closeSidebar}
-              className="w-full"
-              sx={{
-                width:'100px',
-                backgroundColor:'transparent !important',
-                color:'#0145FE !important'
-              }}
+              className="cancel-btn w-full"
             />
             <Button type="button" text="Apply" className='w-full' onClick={applyFilters} />
           </Box>

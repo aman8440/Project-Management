@@ -109,4 +109,7 @@
 .sidebar-container:hover .imgContainer .add::after {
   content: "| Add Project";
 }
-
+.sidebar-span{
+  position: absolute;
+  right: 9px;
+}

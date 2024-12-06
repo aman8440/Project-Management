@@ -3,20 +3,6 @@
 .InputBaseClass, .MuiTextField-root, .MuiInputBase-formControl{
   height: auto !important;
 }
-
-.filter-sidebar .MuiBox-root .sidebar-btn{
-  width: 49%;
-}
-
-.menu-list .MuiPaper-root{
-  top: 56px !important;
-  left: 1684px !important;
-  width: 155px !important;
-}
-
-.login-form .space-y-2 .MuiFormControl-root .MuiFormHelperText-root{
-  margin-left: 0px !important;
-}
 .space-y-2 .MuiFormControl-root .MuiInputBase-root input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
   background-color: transparent !important;
   box-shadow: 0 0 0px 1000px transparent inset !important;

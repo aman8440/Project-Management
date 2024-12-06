@@ -49,6 +49,10 @@
 .list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-main .MuiDataGrid-virtualScroller .MuiDataGrid-virtualScrollerContent .MuiDataGrid-virtualScrollerRenderZone .MuiDataGrid-row .MuiDataGrid-cell{
   text-align: center !important;
 }
+.list-container .MuiPaper-root .MuiDataGrid-root .MuiDataGrid-footerContainer .MuiDataGrid-selectedRowCount{
+  margin: 0px 100px !important;
+  padding-bottom: 8px;
+}
 .filter-btn{
   padding: 9px 15px !important; 
   font-size: 14px; 
