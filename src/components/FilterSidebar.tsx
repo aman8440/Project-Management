@@ -78,7 +78,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           body: JSON.stringify(data),
         });
         const res = await response.json();
-        setStatuses(res.data);
+        const statusArray : string[] = Object.values(res.data);
+        setStatuses(statusArray);
         setShowStatusField(true);
       } catch (error) {
         console.error('Error fetching statuses:', error);
