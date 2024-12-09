@@ -111,19 +111,19 @@
 }
 .facebook{
   color: #4267B2; 
-  font-size: 40;
+  font-size: 40px !important;
 }
 .twitter{
   color: #1DA1F2; 
-  font-size: 40;
+  font-size: 40px !important;
 }
 .linkedin{
   color: #0077B5; 
-  font-size: 40;
+  font-size: 40px !important;
 }
 .instagram{
   color: #E1306C; 
-  font-size: 40;
+  font-size: 40px !important;
 }
 .admin-detail-grid{
   padding: 26px 21px; 

@@ -32,7 +32,6 @@ const Profile = () => {
       toast.error("File is too large. Maximum size is 5MB.");
       return;
     }
-
     const formData = new FormData();
     formData.append("file", file);
     formData.append("id", userProfile?.id ?? '');
@@ -45,10 +44,9 @@ const Profile = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
-
       if (type === "profile") setProfileImage(data.url);
       if (type === "cover") setCoverImage(data.url);
+      window.location.reload(); 
       toast.success("Image Uploaded Sucessfully!");
     } catch (error) {
       console.error("Error uploading image:", error);
