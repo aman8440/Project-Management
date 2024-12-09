@@ -1,3 +1,4 @@
+import './form.css';
 import { useState, useEffect } from "react";
 import Breadcrumb from "../../components/Breadcrumb";
 import Navbar from "../../components/Navbar";
