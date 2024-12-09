@@ -122,6 +122,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </div>
         <div className="filter-field d-flex flex-column justify-content-between filter-sidebar">
           <div className="d-flex flex-column align-items-start ">
+            <div className="heading d-flex justify-content-between w-100">
+              <h4 className='fs-6'>Project Start Date</h4>
+              <h4 className='deadline-date fs-6 d-flex justify-content-start'>Project Deadline</h4>
+            </div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateRangePicker
                 value={[
@@ -143,8 +147,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   }
                 }}
                 localeText={{
-                  start: 'Project Start Date',
-                  end: 'Project Deadline',
+                  start: 'MM/DD/YYYY',
+                  end: 'MM/DD/YYYY',
                 }}
               />
             </LocalizationProvider>
