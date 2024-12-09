@@ -241,8 +241,6 @@ const UpdateProject = () => {
                           {...register("projectTech")}
                           label="Project Technologies"
                           name="projectTech"
-                          error={!!errors.projectTech}
-                          helperText={errors.projectTech?.message}
                         />
                       )}
                       getOptionLabel={(option) => option}
@@ -251,6 +249,16 @@ const UpdateProject = () => {
                       <DemoContainer components={['DateRangePicker']}>
                         <DateRangePicker
                           value={[dayjs(formData.projectStartAt),dayjs(formData.projectDeadline)]}
+                          slotProps={{
+                            textField: ({position}) => ({
+                              error: position === 'start' 
+                                ? !!errors.projectStartAt 
+                                : !!errors.projectDeadline,
+                              helperText: position === 'start' 
+                                ? errors.projectStartAt?.message 
+                                : errors.projectDeadline?.message,
+                            })
+                          }}
                           onChange={(newValue: DateRange<dayjs.Dayjs> ) => {
                             if (newValue !== null) {
                               const [start, end] = newValue;
@@ -266,10 +274,6 @@ const UpdateProject = () => {
                           }}
                         />
                       </DemoContainer>
-                      <div className="d-flex justify-content-between">
-                        {errors.projectStartAt && <p className="text-danger">{errors.projectStartAt.message}</p>}
-                        {errors.projectDeadline && <p className="text-danger">{errors.projectDeadline.message}</p>}
-                      </div>
                     </LocalizationProvider>
                     <div className="input-div-main d-flex d-flex justify-content-between w-full">
                       <Input
@@ -319,7 +323,7 @@ const UpdateProject = () => {
                       register={register}
                       error={errors.projectDescription}
                       multiline={true}
-                      rows={4}
+                      rows={3}
                       onChange={(e) => handleChange('projectDescription', e.target.value)}
                       className="mb-2"
                     />

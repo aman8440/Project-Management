@@ -170,13 +170,12 @@ const AddProjects = () => {
                     fullWidth={true}
                     value={formData.projectTech}
                     options={filteredTechOptions}
-                    onChange={(_event,newValue) => {
-                      console.log("object", newValue);
+                    onChange={(_event, newValue) => {
                       handleChange('projectTech', newValue);
-                      setValue('projectTech', newValue);
+                      setValue('projectTech', newValue, { shouldValidate: true });
                     }}
                     inputValue={techSearch}
-                    onInputChange={(_event,newInputValue) => setTechSearch(newInputValue)}
+                    onInputChange={(_event, newInputValue) => setTechSearch(newInputValue)}
                     className="mb-4"
                     renderInput={(params) => (
                       <TextField
@@ -184,8 +183,6 @@ const AddProjects = () => {
                         {...register("projectTech")}
                         label="Project Technologies"
                         name="projectTech"
-                        error={!!errors.projectTech}
-                        helperText={errors.projectTech?.message}
                       />
                     )}
                     getOptionLabel={(option) => option}
@@ -197,6 +194,16 @@ const AddProjects = () => {
                           formData.projectStartAt ? dayjs(formData.projectStartAt) : null,
                           formData.projectDeadline ? dayjs(formData.projectDeadline) : null,
                         ]}
+                        slotProps={{
+                          textField: ({position}) => ({
+                            error: position === 'start' 
+                              ? !!errors.projectStartAt 
+                              : !!errors.projectDeadline,
+                            helperText: position === 'start' 
+                              ? errors.projectStartAt?.message 
+                              : errors.projectDeadline?.message,
+                          })
+                        }}
                         minDate={getTodayDate()}
                         onChange={(newValue: DateRange<dayjs.Dayjs> | null) => {
                           if (newValue !== null) {
@@ -215,10 +222,6 @@ const AddProjects = () => {
                         }}
                       />
                     </DemoContainer>
-                    <div className="d-flex justify-content-between">
-                      {errors.projectStartAt && <p className="text-danger">{errors.projectStartAt.message}</p>}
-                      {errors.projectDeadline && <p className="text-danger">{errors.projectDeadline.message}</p>}
-                    </div>
                   </LocalizationProvider>
                   <div className="input-div-main d-flex d-flex justify-content-between w-full">
                     <Input
@@ -268,7 +271,7 @@ const AddProjects = () => {
                     register={register}
                     error={errors.projectDescription}
                     multiline={true}
-                    rows={4}
+                    rows={3}
                     value={formData.projectDescription}
                     onChange={(e) => handleChange('projectDescription', e.target.value)}
                     className="mb-2"

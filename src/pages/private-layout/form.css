@@ -40,11 +40,12 @@
 .form-div .space-y-2 .MuiFormControl-root .MuiFormHelperText-root{
   margin-left: 0 !important;
 }
-
 .form-div .MuiAutocomplete-root .MuiFormControl-root .MuiFormHelperText-root{
   margin-left: 0 !important;
 }
-
+.form-div .MuiStack-root .MuiStack-root .MuiFormControl-root .MuiFormHelperText-root{
+  margin-left: 0 !important;
+}
 .form-div .space-y-2 .MuiFormControl-root .MuiInputBase-root .MuiInputBase-inputMultiline{
   margin-top: 9px !important
 }
