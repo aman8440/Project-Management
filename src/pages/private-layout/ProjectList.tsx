@@ -38,6 +38,29 @@ const ProjectList = () => {
   const [rowToDelete, setRowToDelete] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [totalRows, setTotalRows] = useState(0);
+  const [paginationModel, setPaginationModel] = useState({
+    page: parseInt(searchParams.get("page") || "1"),
+    pageSize: parseInt(searchParams.get("limit") || "10"),
+  });
+  const [sortModel, setSortModel] = useState<GridSortModel>([
+    {
+      field: searchParams.get("sort") || "id",
+      sort: (searchParams.get("order") as GridSortDirection) || "asc",
+    },
+  ]);
+  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [searchError, setSearchError] = useState(false);
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const [filters, setFilters] = useState<FilterDataProp>({
+    projectStartAt: null,
+    projectDeadline: null,
+    projectStatus: '',
+    projectTech: []
+  });
+
   const navigate= useNavigate();
   const [columns] = useState([
     { field: "id", headerName: "Serial No.", width: 90, sortable: true, value: "1" },
@@ -117,28 +140,6 @@ const ProjectList = () => {
         handleClose();
       });
   };
-  const [totalRows, setTotalRows] = useState(0);
-  const [paginationModel, setPaginationModel] = useState({
-    page: parseInt(searchParams.get("page") || "1"),
-    pageSize: parseInt(searchParams.get("limit") || "10"),
-  });
-  const [sortModel, setSortModel] = useState<GridSortModel>([
-    {
-      field: searchParams.get("sort") || "id",
-      sort: (searchParams.get("order") as GridSortDirection) || "asc",
-    },
-  ]);
-  const [search, setSearch] = useState(searchParams.get("search") || "");
-  const [searchError, setSearchError] = useState(false);
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const [filters, setFilters] = useState<FilterDataProp>({
-    projectStartAt: null,
-    projectDeadline: null,
-    projectStatus: '',
-    projectTech: []
-  });
 
   const handleApplyFilters = () => {
     setSidebarOpen(false);
