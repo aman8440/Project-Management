@@ -116,7 +116,7 @@ const ViewMore = () => {
   const fetchGraphData = async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://localhost/truck_management/api/project/getProjectCount",
+      const response = await fetch(`${constVariables.base_url}api/project/getProjectCount`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
@@ -138,7 +138,7 @@ const ViewMore = () => {
   const fetchPieData = async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://localhost/truck_management/api/project/getStatusCount",
+      const response = await fetch(`${constVariables.base_url}api/project/getStatusCount`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
