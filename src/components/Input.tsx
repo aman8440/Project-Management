@@ -25,8 +25,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               input: {
                 ...inputSlotProps,
                 style: {
-                  height: '40px',
-                  padding: '0 12px',
                   ...(inputSlotProps?.style || {}),
                 },
               },
