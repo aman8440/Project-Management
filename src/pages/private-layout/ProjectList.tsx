@@ -7,7 +7,6 @@ import { FilterDataProp, RowData } from "../../interfaces";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import Input from "../../components/Input";
-import { getToken } from "../../services/storage.service";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -195,11 +194,7 @@ const ProjectList = () => {
       if (filters.projectTech.length > 0) {
         url.searchParams.append("project_tech", filters.projectTech.join(","));
       }
-      const token= getToken();
-      const response = await fetch(url,{
-        method:'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

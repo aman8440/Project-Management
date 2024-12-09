@@ -26,24 +26,26 @@ const Interceptor = ({ children }: { children: React.ReactNode }) => {
         });
       }
       headers['Accept'] = 'application/json';
-
+      const method = init.method?.toUpperCase() || 'GET';
       if (!isLocalUrl) {
-        const isFormData = init.body instanceof FormData;
-        const isJsonBody = init.body && 
-          typeof init.body === 'string' && 
-          (init.body.startsWith('{') || init.body.startsWith('['));
+        headers["Authorization"] = `Bearer ${token}`;
+        if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+          const isFormData = init.body instanceof FormData;
+          const isJsonBody = init.body && 
+            typeof init.body === 'string' && 
+            (init.body.startsWith('{') || init.body.startsWith('['));
 
-        if (isFormData) {
-          headers["Authorization"] = `Bearer ${token}`;
-        } else if (isJsonBody || init.body instanceof Blob) {
-          headers["Content-Type"] = "application/json";
-          headers["Authorization"] = `Bearer ${token}`;
-          
-          if (isJsonBody) {
-            try {
-              JSON.parse(init.body as string);
-            } catch {
-              init.body = JSON.stringify(JSON.parse(init.body as string));
+          if (isFormData) {
+            delete headers["Content-Type"];
+          } else if (isJsonBody || init.body instanceof Blob) {
+            headers["Content-Type"] = "application/json";
+            
+            if (isJsonBody) {
+              try {
+                JSON.parse(init.body as string);
+              } catch {
+                init.body = JSON.stringify(JSON.parse(init.body as string));
+              }
             }
           }
         }

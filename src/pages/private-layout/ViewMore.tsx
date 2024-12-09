@@ -6,7 +6,6 @@ import Sidebar from "../../components/Sidebar";
 import { ProjectData, TabPanelProps } from "../../interfaces";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getToken } from "../../services/storage.service";
 import dayjs from "dayjs";
 import {
   BarChart,
@@ -76,14 +75,8 @@ const ViewMore = () => {
     const fetchProjectData = async () => {
       setIsLoading(true);
       try {
-        const token = getToken();
         const response = await fetch(
-          `${constVariables.base_url}api/project/details/${id}`,
-          {
-            method: "GET",
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+          `${constVariables.base_url}api/project/details/${id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -115,13 +108,7 @@ const ViewMore = () => {
 
   const fetchGraphData = async () => {
     try {
-      const token = getToken();
-      const response = await fetch(`${constVariables.base_url}api/project/getProjectCount`,
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await fetch(`${constVariables.base_url}api/project/getProjectCount`);
       const responseData = await response.json();
       const month_data: string[] = [];
       const count_data: number[] = [];
@@ -137,19 +124,12 @@ const ViewMore = () => {
   };
   const fetchPieData = async () => {
     try {
-      const token = getToken();
-      const response = await fetch(`${constVariables.base_url}api/project/getStatusCount`,
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await fetch(`${constVariables.base_url}api/project/getStatusCount`);
       const responseData = await response.json();
       const pieChartData = responseData.data.map((item :{ project_status: string; project_count: string }) => ({
         label: item.project_status,
         value: parseInt(item.project_count),
       }));
-  
       setPieChartData(pieChartData);
     } catch (error) {
       console.error("Error fetching graph data:", error);
