@@ -319,7 +319,7 @@ const ProjectList = () => {
               <Button text={"Filter"} type={'button'} className='filter-btn' onClick={() => setSidebarOpen(true)}
                 startIconPass={<FilterAltOutlinedIcon />}
               />
-              <Button text={"Add Projects"} type={'button'} className='add-btn' onClick={handleNavigateToAddProjects}
+              <Button text={"Add Projects"} type={'button'} className='add-project-btn' onClick={handleNavigateToAddProjects}
                 startIconPass={<CreateNewFolderOutlinedIcon />}
               />
             </div>
