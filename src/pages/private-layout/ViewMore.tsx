@@ -145,13 +145,13 @@ const ViewMore = () => {
     { 
       title: "Project Repo URL", 
       content: <Link className="text-decoration-none" to={formData.projectRepoUrl}>
-                <p className="card-text text-black">View</p>
+                <span className="card-text text-black">View</span>
                </Link> 
     },
     { 
       title: "Project Management URL", 
       content: <Link className="text-decoration-none" to={formData.projectManagementUrl}>
-                <p className="card-text text-black">View</p>
+                <span className="card-text text-black">View</span>
                </Link> 
     },
     { 
