@@ -46,12 +46,12 @@ const Sidebar = () => {
         <hr className="line"/>
         <Link className='text-decoration-none' to="/dashboard">   
           <div className={`aws d-flex btn ${isActive("/dashboard") ? "active" : ""}`}>
-            <img src={isActive("/dashboard") ? dashboardIcon : dashboardIconActive} alt="dashboardIcon" height='16' width='16'/>
+            <img src={isActive("/dashboard") ? dashboardIcon : dashboardIconActive} alt="dashboardIcon" height='25' width='25'/>
           </div>
         </Link>
         <Link className='text-decoration-none' to="/dashboard/profile">
           <div className={`home d-flex btn ${isActive("/dashboard/profile") ? "active" : ""}`}>
-            <img src={isActive("/dashboard/profile") ? profileIcon : profileIconActive} alt="profileIcon" height='16' width='16' />
+            <img src={isActive("/dashboard/profile") ? profileIcon : profileIconActive} alt="profileIcon" height='20' width='20' />
           </div>
         </Link>
         <Link className='text-decoration-none' to={projectsRoute}>   
@@ -59,7 +59,7 @@ const Sidebar = () => {
             className={`mask d-flex btn ${isActive("/dashboard/projects") ? "active" : ""}`}
             style={{ position:'relative'}}
             >
-            <img src={isActive("/dashboard/projects") ? projectIcon : projectIconActive} alt="projectIcon" height="16" width="16" />
+            <img src={isActive("/dashboard/projects") ? projectIcon : projectIconActive} alt="projectIcon" height="20" width="20" />
             {isSidebarHovered && (
               <span onClick={toggleProjectsSubmenu} className='sidebar-span'>
                 {isProjectsOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
@@ -73,7 +73,7 @@ const Sidebar = () => {
             to="/dashboard/projects/add-projects"
           >
             <div className={`add d-flex btn ${isActive("/dashboard/projects/add-projects") ? "active" : ""}`}>
-              <img src={isActive("/dashboard/projects/add-projects") ? addProjectIcon : addProjectIconACtive} alt="addProjectIcon" height='16' width='16'/>
+              <img src={isActive("/dashboard/projects/add-projects") ? addProjectIcon : addProjectIconACtive} alt="addProjectIcon" height='20' width='20'/>
             </div>
           </Link>
         )}
