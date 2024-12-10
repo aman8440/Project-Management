@@ -34,7 +34,7 @@ const Breadcrumb = ({ projectName }: { projectName?: string }) => {
                 e.preventDefault();
                 navigate(fullPath);
               }}
-              style={{ pointerEvents: isLastSegment ? 'none' : 'auto' }}
+              className={isLastSegment ? 'breadcrumb-hide' : 'breadcrumb-visible'}
             >
               {segment.replace(/-/g, ' ').replace(/^\w/, (c) => c.toUpperCase())}
             </Link>
