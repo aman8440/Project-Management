@@ -5,6 +5,7 @@ import { UserProfileProvider } from "../hooks/userProfile";
 import { getToken } from "../services/storage.service";
 import Loader from "../components/Loader";
 import { lazy, Suspense } from "react";
+import CommonLayout from "../pages/private-layout/CommonLayout";
 
 const PublicRoutes= ()=>{
   const token= getToken();
@@ -37,14 +38,16 @@ const AppRoutes = () => {
             </Route>
 
             <Route element={<PrivateRoutes />}>
-              <Route path="/dashboard" element={<Dashboard />}>
-                {" "}
+              <Route element={<CommonLayout />}>
+                <Route path="/dashboard" element={<Dashboard />}>
+                  {" "}
+                </Route>
+                <Route path="/dashboard/profile" element={<Profile />}></Route>
+                <Route path="/dashboard/projects" element={<ProjectList />}></Route>
+                <Route path="/dashboard/projects/add-projects" element={<AddProjects />}></Route>
+                <Route path="/dashboard/projects/edit/:id" element={<UpdateProject />}></Route>
+                <Route path="/dashboard/projects/:id" element={<ViewMore />}></Route>
               </Route>
-              <Route path="/dashboard/profile" element={<Profile />}></Route>
-              <Route path="/dashboard/projects" element={<ProjectList />}></Route>
-              <Route path="/dashboard/projects/add-projects" element={<AddProjects />}></Route>
-              <Route path="/dashboard/projects/edit/:id" element={<UpdateProject />}></Route>
-              <Route path="/dashboard/projects/:id" element={<ViewMore />}></Route>
             </Route>
           </Routes>
           </Suspense>

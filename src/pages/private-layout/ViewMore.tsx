@@ -1,8 +1,6 @@
 import './viewmore.css';
 import { Box, Tab, Tabs } from "@mui/material";
 import Breadcrumb from "../../components/Breadcrumb";
-import Navbar from "../../components/Navbar";
-import Sidebar from "../../components/Sidebar";
 import { ProjectData, TabPanelProps } from "../../interfaces";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -178,100 +176,40 @@ const ViewMore = () => {
     legend: { hidden: true },
   };
   return (
-    <div className="vh-100 d-flex">
-      <Sidebar />
-      <div className="d-flex flex-column flex-grow-1">
-        <Navbar />
-        <div
-          className="main-container d-flex flex-column"
-        >
-          <div
-            className="sub-contain d-flex justify-content-start"
-          >
-            <Breadcrumb projectName={formData.projectName} />
-          </div>
-          <div className="container mt-5 p-4 bg-white shadow rounded">
-            <div className="text-center mb-4">
-              <h1 className="text-primary">{formData.projectName}</h1>
-              <p className="text-secondary">Project Details</p>
-            </div>
-            <div className="profile-tab nav nav-tabs mb-4">
-              <Box>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                  <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="basic tabs example"
-                  >
-                    <Tab label="Project Details" {...a11yProps(0)} />
-                    <Tab label="Charts" {...a11yProps(1)} />
-                    <Tab label="Timeline" {...a11yProps(2)} />
-                  </Tabs>
-                </Box>
-                <div className="tab-content">
-                  <CustomTabPanel value={value} index={0}>
-                    {formData ? (
-                      <>
-                        <div className="tab-pane fade show active">
-                          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                            {projectDetails.map((detail, index) => (
-                              <div className={detail.ClassName || "col"} key={index}>
-                                <div className="card h-100">
-                                  <div className="card-body">
-                                    <h5 className="card-title text-primary">{detail.title}</h5>
-                                    <p className="card-text">{detail.content}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <p>Loading project data...</p>
-                    )}
-                  </CustomTabPanel>
-                  <CustomTabPanel value={value} index={1}>
-                    <div className="tab-pane d-flex w-full flex-wrap justify-content-start charts">
-                      <BarChart
-                        width={500}
-                        height={250}
-                        series={[{ data: graphData, label: "Project Count", id: "graphId" }]}
-                        xAxis={[{ data: xLabels, scaleType: "band" }]}
-                      />
-                      <LineChart
-                        width={500}
-                        height={250}
-                        series={[
-                          { data: graphData, label: "Project Count", yAxisId: "leftAxisId" },
-                        ]}
-                        xAxis={[{ scaleType: "point", data: xLabels }]}
-                        yAxis={[{ id: "leftAxisId" }, { id: "rightAxisId" }]}
-                        rightAxis="rightAxisId"
-                      />
-                      <PieChart
-                        series={[
-                          {
-                            outerRadius: 100,
-                            data: pieChartData,
-                            arcLabel: (d) => `${d.value}`
-                          },
-                        ]}
-                        sx={{
-                          [`& .${pieArcLabelClasses.root}`]: {
-                            fill: "white",
-                            fontSize: 14,
-                          },
-                        }}
-                        {...sizing}
-                      />
-                    </div>
-                  </CustomTabPanel>
-                  <CustomTabPanel value={value} index={2}>
+    <div
+      className="main-container d-flex flex-column"
+    >
+      <div
+        className="sub-contain d-flex justify-content-start"
+      >
+        <Breadcrumb projectName={formData.projectName} />
+      </div>
+      <div className="container mt-5 p-4 bg-white shadow rounded">
+        <div className="text-center mb-4">
+          <h1 className="text-primary">{formData.projectName}</h1>
+          <p className="text-secondary">Project Details</p>
+        </div>
+        <div className="profile-tab nav nav-tabs mb-4">
+          <Box>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="basic tabs example"
+              >
+                <Tab label="Project Details" {...a11yProps(0)} />
+                <Tab label="Charts" {...a11yProps(1)} />
+                <Tab label="Timeline" {...a11yProps(2)} />
+              </Tabs>
+            </Box>
+            <div className="tab-content">
+              <CustomTabPanel value={value} index={0}>
+                {formData ? (
+                  <>
                     <div className="tab-pane fade show active">
                       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                        {projectTimeline.map((detail, index) => (
-                          <div className="col" key={index}>
+                        {projectDetails.map((detail, index) => (
+                          <div className={detail.ClassName || "col"} key={index}>
                             <div className="card h-100">
                               <div className="card-body">
                                 <h5 className="card-title text-primary">{detail.title}</h5>
@@ -282,11 +220,65 @@ const ViewMore = () => {
                         ))}
                       </div>
                     </div>
-                  </CustomTabPanel>
+                  </>
+                ) : (
+                  <p>Loading project data...</p>
+                )}
+              </CustomTabPanel>
+              <CustomTabPanel value={value} index={1}>
+                <div className="tab-pane d-flex w-full flex-wrap justify-content-start charts">
+                  <BarChart
+                    width={500}
+                    height={250}
+                    series={[{ data: graphData, label: "Project Count", id: "graphId" }]}
+                    xAxis={[{ data: xLabels, scaleType: "band" }]}
+                  />
+                  <LineChart
+                    width={500}
+                    height={250}
+                    series={[
+                      { data: graphData, label: "Project Count", yAxisId: "leftAxisId" },
+                    ]}
+                    xAxis={[{ scaleType: "point", data: xLabels }]}
+                    yAxis={[{ id: "leftAxisId" }, { id: "rightAxisId" }]}
+                    rightAxis="rightAxisId"
+                  />
+                  <PieChart
+                    series={[
+                      {
+                        outerRadius: 100,
+                        data: pieChartData,
+                        arcLabel: (d) => `${d.value}`
+                      },
+                    ]}
+                    sx={{
+                      [`& .${pieArcLabelClasses.root}`]: {
+                        fill: "white",
+                        fontSize: 14,
+                      },
+                    }}
+                    {...sizing}
+                  />
                 </div>
-              </Box>
+              </CustomTabPanel>
+              <CustomTabPanel value={value} index={2}>
+                <div className="tab-pane fade show active">
+                  <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {projectTimeline.map((detail, index) => (
+                      <div className="col" key={index}>
+                        <div className="card h-100">
+                          <div className="card-body">
+                            <h5 className="card-title text-primary">{detail.title}</h5>
+                            <p className="card-text">{detail.content}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CustomTabPanel>
             </div>
-          </div>
+          </Box>
         </div>
       </div>
     </div>
