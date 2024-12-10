@@ -1,11 +1,12 @@
-import { getToken } from "../services/storage.service";
+import { getToken, setAuthToken } from "../services/storage.service";
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { handleAuthError } from "../utility/authUtils";
+import { useNavigate } from "react-router-dom";
 
 const Interceptor = ({ children }: { children: React.ReactNode }) => {
   const isInterceptorSet = useRef(false);
-
+  const navigate = useNavigate();
   const apiInterceptor = () => {
     if (isInterceptorSet.current) return;
 
@@ -58,6 +59,10 @@ const Interceptor = ({ children }: { children: React.ReactNode }) => {
         const res = await originalFetch(input, modifiedInit);
         if (!res.ok) {
           handleAuthError(res.status, res.statusText);
+          if(res.status === 401 || res.status === 419){
+            setAuthToken("");
+            navigate("/login");
+          }
         }
         return res;
       } catch (error) {
