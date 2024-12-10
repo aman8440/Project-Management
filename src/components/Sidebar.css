@@ -1,5 +1,5 @@
 .sidebar-container {
-  width: 50px;
+  width: 65px;
   height: 100vh;
   background-color: #2b303b;
   position: fixed;
@@ -19,7 +19,7 @@
 }
 .sidebar-container .imgContainer .logo {
   margin-top: 15px;
-  margin-left: 10px;
+  margin-left: 14px;
   display: flex;
   gap: 10px;
 }
@@ -31,7 +31,7 @@
   height: 32px;
   border-radius: 4px;
   margin-top: 10px;
-  margin-left: 10px;
+  margin-left: 14px;
   margin-right: 14px;
   display: flex;
   justify-content: center;
@@ -75,12 +75,15 @@
 }
 .sidebar-container:hover .imgContainer .logo::after {
   content: "Search Portal";
-  font-size: 15.45px;
+  font-size: 16px;
   font-weight: 600;
   align-items: center;
   display: flex;
   white-space: nowrap;
   line-height: 18.1px
+}
+.sidebar-container .imgContainer .aws{
+  align-items: center !important;
 }
 .sidebar-container:hover .imgContainer .home,
 .sidebar-container:hover .imgContainer .mask,
@@ -91,7 +94,7 @@
   align-items: center;
   display: flex;
   justify-content: start;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   gap: 10px;
   white-space: nowrap;
@@ -105,6 +108,7 @@
 }
 .sidebar-container:hover .imgContainer .aws::after {
   content: "| Dashboard";
+  margin-left: -4px;
 }
 .sidebar-container:hover .imgContainer .add::after {
   content: "| Add Project";
