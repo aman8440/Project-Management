@@ -74,11 +74,10 @@
   position: relative;
   border-radius: 8px;
 }
-
-.search-input .space-y-2{
+.search-input {
   margin-bottom: 0px !important;
 }
-.search-input .space-y-2 .MuiFormControl-root .MuiInputBase-root{
+.search-input .MuiFormControl-root .MuiInputBase-root{
   height: 47px !important;
   position: relative;
   width: 360px;

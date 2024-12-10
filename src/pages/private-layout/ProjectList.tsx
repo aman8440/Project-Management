@@ -1,10 +1,9 @@
 import './projectList.css'
 import React from "react";
 import { useEffect, useState } from "react";
-import { InputAdornment, Paper, Tooltip, tooltipClasses } from "@mui/material";
+import { InputAdornment, Paper, TextField, Tooltip, tooltipClasses } from "@mui/material";
 import { DataGrid, GridSortDirection, GridSortModel, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
 import { FilterDataProp, RowData } from "../../interfaces";
-import Input from "../../components/Input";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -277,15 +276,13 @@ const ProjectList = () => {
                   },
                 }}
               >
-                <Input
+                <TextField
                   type="text"
                   name="search"
                   placeholder="Search Projects"
-                  label=""
+                  className='search-project'
                   value={search}
                   onChange={handleSearchChange}
-                  register={null}
-                  error={null}
                   sx={{
 
                     '& .MuiOutlinedInput-root': {
@@ -296,12 +293,14 @@ const ProjectList = () => {
                       }),
                     },
                   }}
-                  inputSlotProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    },
                   }}
                 />
               </Tooltip>

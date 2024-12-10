@@ -3,19 +3,18 @@ import {PrivateRoutes} from "./PrivateRoute";
 import Interceptor from "../hooks/interceptor";
 import { UserProfileProvider } from "../hooks/userProfile";
 import { getToken } from "../services/storage.service";
-import Loader from "../components/Loader";
 import { lazy, Suspense } from "react";
-import CommonLayout from "../pages/private-layout/CommonLayout";
 
 const PublicRoutes= ()=>{
   const token= getToken();
   return token ? <Navigate to="/dashboard/projects"/> : <Outlet/>;
 }
 
+const Loader = lazy(() => import("../components/Loader"));
 const Signin = lazy(() => import("../pages/public-layout/Signin"));
 const ForgetPass = lazy(() => import("../pages/public-layout/ForgetPass"));
 const ChangePass = lazy(() => import("../pages/public-layout/ChangePass"));
-
+const CommonLayout = lazy(() => import("../pages/private-layout/CommonLayout"));
 const Dashboard = lazy(() => import("../pages/private-layout/Dashboard"));
 const Profile = lazy(() => import("../pages/private-layout/Profile"));
 const ProjectList = lazy(() => import("../pages/private-layout/ProjectList"));
