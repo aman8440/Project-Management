@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { InputAdornment, Paper, Tooltip, tooltipClasses } from "@mui/material";
 import { DataGrid, GridSortDirection, GridSortModel, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
 import { FilterDataProp, RowData } from "../../interfaces";
-import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
 import Input from "../../components/Input";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -253,119 +251,113 @@ const ProjectList = () => {
   }, [paginationModel, sortModel, search]);
 
   return (
-    <div className="vh-100 d-flex" style={{overflow:'hidden'}}>
-      <Sidebar />
-      <div className="d-flex flex-column flex-grow-1">
-        <Navbar />
-        <div className="d-flex flex-column justify-content-center align-items-center w-full">
-          <div className="d-flex justify-content-start breadcrum-position">
-            <Breadcrumb/>
+    <div className="d-flex flex-column justify-content-center align-items-center w-full">
+      <div className="d-flex justify-content-start breadcrum-position">
+        <Breadcrumb/>
+      </div>
+      <div className="w-full align-items-center w-full list-container">
+        <div className="d-flex justify-content-between w-full align-items-start mb-4">
+          <div className="d-flex">
+            <h2 className="heading mt-2">Projects</h2>
           </div>
-        <div className="w-full align-items-center w-full list-container">
-          <div className="d-flex justify-content-between w-full align-items-start mb-4">
-            <div className="d-flex">
-              <h2 className="heading mt-2">Projects</h2>
-            </div>
-            <div className="d-flex w-full justify-content-between">
-              <div className="search-input w-full">
-                <Tooltip
-                  open={searchError}
-                  title="Please enter at least 3 characters"
-                  placement="bottom-start"
-                  slotProps={{
-                    popper: {
-                      sx: {
-                        [`&.${tooltipClasses.popper}[data-popper-placement*="bottom"] .${tooltipClasses.tooltip}`]:
-                          {
-                            marginTop: '0px',
-                          },
-                      },
+          <div className="d-flex w-full justify-content-between">
+            <div className="search-input w-full">
+              <Tooltip
+                open={searchError}
+                title="Please enter at least 3 characters"
+                placement="bottom-start"
+                slotProps={{
+                  popper: {
+                    sx: {
+                      [`&.${tooltipClasses.popper}[data-popper-placement*="bottom"] .${tooltipClasses.tooltip}`]:
+                        {
+                          marginTop: '0px',
+                        },
+                    },
+                  },
+                }}
+              >
+                <Input
+                  type="text"
+                  name="search"
+                  placeholder="Search Projects"
+                  label=""
+                  value={search}
+                  onChange={handleSearchChange}
+                  register={null}
+                  error={null}
+                  sx={{
+
+                    '& .MuiOutlinedInput-root': {
+                      ...(searchError && {
+                        '& fieldset': {
+                          borderColor: 'error.main',
+                        },
+                      }),
                     },
                   }}
-                >
-                  <Input
-                    type="text"
-                    name="search"
-                    placeholder="Search Projects"
-                    label=""
-                    value={search}
-                    onChange={handleSearchChange}
-                    register={null}
-                    error={null}
-                    sx={{
-
-                      '& .MuiOutlinedInput-root': {
-                        ...(searchError && {
-                          '& fieldset': {
-                            borderColor: 'error.main',
-                          },
-                        }),
-                      },
-                    }}
-                    inputSlotProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <SearchIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Tooltip>
-              </div>
-              <Button text={"Filter"} type={'button'} className='filter-btn' onClick={() => setSidebarOpen(true)}
-                startIconPass={<FilterAltOutlinedIcon />}
-              />
-              <Button text={"Add Projects"} type={'button'} className='add-project-btn' onClick={handleNavigateToAddProjects}
-                startIconPass={<CreateNewFolderOutlinedIcon />}
-              />
+                  inputSlotProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Tooltip>
             </div>
-          </div>
-          <Paper>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              rowCount={totalRows}
-              paginationMode="server"
-              sortingMode="server"
-              checkboxSelection
-              onRowDoubleClick={handleRowDoubleClick}
-              onPaginationModelChange={(newModel) => setPaginationModel({
-                page: newModel.page + 1,
-                pageSize: newModel.pageSize || 10,
-              })}
-              onSortModelChange={(newModel) => setSortModel(newModel)}
-              paginationModel={{
-                page: paginationModel.page - 1,
-                pageSize: paginationModel.pageSize
-              }}
-              pageSizeOptions={[10, 15, 20]}
-              sx={{ border: 0 }}
-              slots={{
-                toolbar: CustomToolbar,
-              }}
+            <Button text={"Filter"} type={'button'} className='filter-btn' onClick={() => setSidebarOpen(true)}
+              startIconPass={<FilterAltOutlinedIcon />}
             />
-          </Paper>
-          <AlertDialogSlide
-            open={open}
-            onClose={handleClose}
-            title="Delete Project"
-            content="Are you sure you want to delete this project?"
-            actions={[
-              { label: 'Cancel', onClick: handleClose, color: "secondary" },
-              { label: 'Yes', onClick: confirmDelete,  color: "primary"},
-            ]}
+            <Button text={"Add Projects"} type={'button'} className='add-project-btn' onClick={handleNavigateToAddProjects}
+              startIconPass={<CreateNewFolderOutlinedIcon />}
+            />
+          </div>
+        </div>
+        <Paper>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            rowCount={totalRows}
+            paginationMode="server"
+            sortingMode="server"
+            checkboxSelection
+            onRowDoubleClick={handleRowDoubleClick}
+            onPaginationModelChange={(newModel) => setPaginationModel({
+              page: newModel.page + 1,
+              pageSize: newModel.pageSize || 10,
+            })}
+            onSortModelChange={(newModel) => setSortModel(newModel)}
+            paginationModel={{
+              page: paginationModel.page - 1,
+              pageSize: paginationModel.pageSize
+            }}
+            pageSizeOptions={[10, 15, 20]}
+            sx={{ border: 0 }}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
           />
-        </div>
-        <FilterSidebar
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          onApply={handleApplyFilters}
-          onReset={handleResetFilters}
-          filters={filters}
-          setFilters={setFilters}
+        </Paper>
+        <AlertDialogSlide
+          open={open}
+          onClose={handleClose}
+          title="Delete Project"
+          content="Are you sure you want to delete this project?"
+          actions={[
+            { label: 'Cancel', onClick: handleClose, color: "secondary" },
+            { label: 'Yes', onClick: confirmDelete,  color: "primary"},
+          ]}
         />
-        </div>
       </div>
+      <FilterSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        onApply={handleApplyFilters}
+        onReset={handleResetFilters}
+        filters={filters}
+        setFilters={setFilters}
+      />
     </div>
   );
 }
