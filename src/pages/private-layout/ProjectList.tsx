@@ -176,7 +176,7 @@ const ProjectList = () => {
       url.searchParams.append("page", (page).toString());
       url.searchParams.append("limit", (pageSize).toString());
       if (search.length >= 3) {
-        url.searchParams.append("search", search);
+        url.searchParams.append("search", search.trim());
       }
       url.searchParams.append("sort", sort);
       url.searchParams.append("order", order);
@@ -228,7 +228,7 @@ const ProjectList = () => {
     setSearchParams({
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
-      search: search,
+      search: search.trim(),
       sort: sortModel[0]?.field || "id",
       order: sortModel[0]?.sort || "asc",
       ...filterParams,
