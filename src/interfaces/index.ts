@@ -21,7 +21,10 @@ export interface FilterType {
   page: number;
   pageSize: number;
 }
-
+export interface LoaderContextType {
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
 export interface TabPanelProps {
   children?: React.ReactNode;
   index: number;

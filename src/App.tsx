@@ -3,18 +3,28 @@ import { BrowserRouter} from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import AppRoutes from './routes/AppRoutes';
 import { ToastContainer } from 'react-toastify';
+import Loader from './components/Loader';
+import { LoaderProvider, useLoader } from './hooks/LoaderContext';
+
+const LoaderWrapper = () => {
+  const { loading } = useLoader();
+  return loading ? <Loader/> : null;
+}
 
 function App() {
   return (
     <>
       <RecoilRoot>
-        <BrowserRouter>
-          <ToastContainer position='top-right' />
-          <AppRoutes />
-        </BrowserRouter>
+        <LoaderProvider>
+          <BrowserRouter>
+            <ToastContainer position='top-right' />
+            <LoaderWrapper />
+            <AppRoutes />
+          </BrowserRouter>
+        </LoaderProvider>
       </RecoilRoot>
     </>
   )
 }
 
-export default App
+export default App;
