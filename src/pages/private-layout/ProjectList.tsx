@@ -19,6 +19,7 @@ import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutl
 import AlertDialogSlide from "../../components/AlertDialogSlide";
 import { toast } from 'react-toastify';
 import { ProjectManagementService } from '../../swagger/api';
+import { useLoader } from '../../hooks/LoaderContext';
 
 function CustomToolbar() {
   return (
@@ -57,7 +58,7 @@ const ProjectList = () => {
     projectStatus: '',
     projectTech: []
   });
-
+  const { loading, setLoading } = useLoader();
   const navigate= useNavigate();
   const [columns] = useState([
     { field: "id", headerName: "Serial No.", width: 90, sortable: true, value: "1" },
@@ -167,6 +168,7 @@ const ProjectList = () => {
 
   const fetchData = async () => {
     const { page, pageSize } = paginationModel;
+    setLoading(true);
     const sort = sortModel[0]?.field || 'id';
     const order = sortModel[0]?.sort || 'asc';
   
@@ -204,6 +206,8 @@ const ProjectList = () => {
       updateQueryParams();
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -310,29 +314,31 @@ const ProjectList = () => {
           </div>
         </div>
         <Paper>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            rowCount={totalRows}
-            paginationMode="server"
-            sortingMode="server"
-            checkboxSelection
-            onRowDoubleClick={handleRowDoubleClick}
-            onPaginationModelChange={(newModel) => setPaginationModel({
-              page: newModel.page + 1,
-              pageSize: newModel.pageSize || 10,
-            })}
-            onSortModelChange={(newModel) => setSortModel(newModel)}
-            paginationModel={{
-              page: paginationModel.page - 1,
-              pageSize: paginationModel.pageSize
-            }}
-            pageSizeOptions={[10, 15, 20]}
-            sx={{ border: 0 }}
-            slots={{
-              toolbar: CustomToolbar,
-            }}
-          />
+          {!loading && 
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              rowCount={totalRows}
+              paginationMode="server"
+              sortingMode="server"
+              checkboxSelection
+              onRowDoubleClick={handleRowDoubleClick}
+              onPaginationModelChange={(newModel) => setPaginationModel({
+                page: newModel.page + 1,
+                pageSize: newModel.pageSize || 10,
+              })}
+              onSortModelChange={(newModel) => setSortModel(newModel)}
+              paginationModel={{
+                page: paginationModel.page - 1,
+                pageSize: paginationModel.pageSize
+              }}
+              pageSizeOptions={[10, 15, 20]}
+              sx={{ border: 0 }}
+              slots={{
+                toolbar: CustomToolbar,
+              }}
+            />
+          }
         </Paper>
         <AlertDialogSlide
           open={open}
