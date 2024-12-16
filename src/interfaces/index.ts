@@ -8,12 +8,13 @@ import { GridApi, GridColDef, GridRowId, GridKeyValue } from "@mui/x-data-grid";
 export type SignInData = z.infer<typeof LoginSchema>;
 
 export interface UserData {
-  fname?: string;
-  lname?: string;
-  phone?: string;
-  email?: string;
-  gender?: string;
-  id?: string
+  id: number
+  fname: string;
+  lname: string;
+  email: string;
+  gender: string;
+  phone: string;
+  status: string;
   image_name?: string
 }
 export interface FilterType {

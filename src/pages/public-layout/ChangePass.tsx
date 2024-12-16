@@ -7,7 +7,7 @@ import Button from "../../components/Button";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useParams, useNavigate } from "react-router-dom";
 import { FormValues } from "../../interfaces";
-import { constVariables } from "../../constants";
+import { AuthenticationService, ResetPassResponse, TokenResetResponse } from "../../swagger/api";
 
 const ChangePass = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,25 +26,14 @@ const ChangePass = () => {
     const validateToken = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${constVariables.base_url}verify-token?reset_token=${reset_token}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (response.status === 200 && data.status === "success") {
+        const response : TokenResetResponse = await AuthenticationService.getVerifyToken(reset_token ?? '');
+        if (response) {
+          if (response.status === "success") {
             setIsTokenValid(true);
           } else {
             setErrorMessage("Invalid or expired token. Please request a new password reset.");
             setIsTokenValid(false);
           }
-        } else {
-          const errorText = await response.text();
-          setErrorMessage(`Error: ${errorText}`);
-          setIsTokenValid(false);
         }
       } catch (error) {
         setErrorMessage("An error occurred while validating the token. Please try again later.");
@@ -58,24 +47,20 @@ const ChangePass = () => {
     validateToken();
   }, [reset_token]);
 
-  const onSubmit = async (data: { password: string; confirmPassword: string }) => {
+  const onSubmit = async (data : FormValues) => {
     setIsLoading(true);
     setErrorMessage(null);
     setSuccessMessage(null);
     try {
-      const response = await fetch(`${constVariables.base_url}reset_password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ reset_token, password: data.password }),
-      });
+      const request : FormValues = { ...data };
+      delete (request as { confirmPassword?: string })["confirmPassword"];
+      const response : ResetPassResponse = await AuthenticationService.postResetPassword(request)
 
-      if (response.status === 201) {
+      if (response.status === "success") {
         setSuccessMessage("Your password has been reset successfully. Redirecting to login...");
         setTimeout(() => navigate("/login"), 3000);
       } else {
-        const responseData = await response.json();
+        const responseData = await response;
         setErrorMessage(responseData.message || "Failed to reset password. Please try again.");
       }
     } catch (error) {

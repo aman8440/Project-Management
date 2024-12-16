@@ -17,8 +17,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 import AlertDialogSlide from "../../components/AlertDialogSlide";
-import { constVariables } from "../../constants";
 import { toast } from 'react-toastify';
+import { ProjectManagementService } from '../../swagger/api';
 
 function CustomToolbar() {
   return (
@@ -120,11 +120,9 @@ const ProjectList = () => {
   };
 
   const confirmDelete = () => {
-    fetch(`${constVariables.base_url}api/project/delete/${rowToDelete}`, { 
-      method: "DELETE" 
-    })
+    ProjectManagementService.deleteApiProjectDelete(rowToDelete || 0)
       .then((response) => {
-        if (response.ok) {
+        if (response.status === "success") {
           toast.success("Project deleted successfully!");
           fetchData();
         } else {
@@ -169,45 +167,43 @@ const ProjectList = () => {
 
   const fetchData = async () => {
     const { page, pageSize } = paginationModel;
-    const sort = sortModel[0]?.field || "id";
-    const order = sortModel[0]?.sort || "asc";
+    const sort = sortModel[0]?.field || 'id';
+    const order = sortModel[0]?.sort || 'asc';
+  
     try {
-      const url = new URL(`${constVariables.base_url}api/project/list`);
-      url.searchParams.append("page", (page).toString());
-      url.searchParams.append("limit", (pageSize).toString());
-      if (search.length >= 3) {
-        url.searchParams.append("search", search.trim());
-      }
-      url.searchParams.append("sort", sort);
-      url.searchParams.append("order", order);
-      if (filters.projectStartAt) {
-        url.searchParams.append("project_startat", formatDate(filters.projectStartAt.toISOString()));
-      }
-      if (filters.projectDeadline) {
-        url.searchParams.append("project_deadline", formatDate(filters.projectDeadline.toISOString()));
-      }
-      if (filters.projectStatus) {
-        url.searchParams.append("project_status", filters.projectStatus);
-      }
-      if (filters.projectTech.length > 0) {
-        url.searchParams.append("project_tech", filters.projectTech.join(","));
-      }
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      updateQueryParams();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const rowsWithIndex = result.data.data.map((row: any) => ({
+      const formattedStartAt = filters.projectStartAt 
+        ? format(filters.projectStartAt, 'yyyy-MM-dd') 
+        : undefined;
+  
+      const formattedDeadline = filters.projectDeadline 
+        ? format(filters.projectDeadline, 'yyyy-MM-dd') 
+        : undefined;
+  
+      const projectTech = filters.projectTech?.length 
+        ? filters.projectTech.join(',') 
+        : undefined;
+  
+      const response = await ProjectManagementService.getApiProjectList(
+        search.length >= 3 ? search.trim() : undefined,
+        sort,
+        order,
+        page,
+        pageSize,
+        formattedStartAt,
+        formattedDeadline,
+        filters.projectStatus as "Under Planning" | "Development Started" | "Under Testing" | "Deployed on Dev" | "Live" || undefined,
+        projectTech
+      );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+      const rowsWithIndex : RowData[] = response.data?.projects?.map((row: any, _index: number) => ({
         ...row,
         // id: (page - 1) * pageSize + index + 1
-      }));
+      })) || [];
       setRows(rowsWithIndex);
-      setTotalRows(result.data.total);
+      setTotalRows(response.data?.total as number);
+      updateQueryParams();
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
   };
 

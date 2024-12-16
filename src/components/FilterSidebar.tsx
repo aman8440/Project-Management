@@ -9,8 +9,9 @@ import { Drawer, FormControl, InputLabel, MenuItem, Select, Box, Autocomplete, T
 import { DateRange } from '@mui/x-date-pickers-pro/models';
 import Button from './Button';
 import RestoreIcon from '@mui/icons-material/Restore';
-import { constVariables } from '../constants';
 import { toast } from 'react-toastify';
+import { GetStatusRequest, ProjectManagementService } from '../swagger/api';
+import { format } from 'date-fns';
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isOpen,
@@ -68,17 +69,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const fetchStatuses = async (startDate: Date | null, endDate: Date | null) => {
     if (startDate && endDate) {
       try {
-        const data ={
-          project_startat: startDate,
-          project_deadline: endDate
+        const data : GetStatusRequest ={
+          project_startat: format(new Date(startDate), 'yyyy-MM-dd'),
+          project_deadline: format(new Date(endDate), 'yyyy-MM-dd')
         };
-        const response = await fetch(`${constVariables.base_url}api/project/status`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        const res = await response.json();
-        const statusArray : string[] = Object.values(res.data);
+        const response = await ProjectManagementService.postApiProjectStatus(data);
+        const statusArray = response.data ? Object.values(response.data) : [];
         setStatuses(statusArray);
         setShowStatusField(true);
       } catch (error) {
@@ -90,13 +86,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const fetchTechnologies = async (project_status: string) => {
     if (project_status) {
       try {
-        const response = await fetch(`${constVariables.base_url}api/project/tech`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ project_status }),
-        });
-        const data = await response.json();
-        const technologies = Object.values(data.data);
+        const response = await ProjectManagementService.postApiProjectTech({project_status});
+        const technologies = Object.values(response.data);
         setTechOptions(technologies as string[]);
         setShowTechField(true);
       } catch (error) {

@@ -11,7 +11,7 @@ import {
   pieArcLabelClasses,
   PieChart,
 } from "@mui/x-charts";
-import { constVariables } from "../../constants";
+import { GetProjectCountResponse, GetProjectDataByIdResponse, ProjectCountService, ProjectManagementService, ProjectStatusService } from '../../swagger/api';
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -40,7 +40,7 @@ const ViewMore = () => {
   const [value, setValue] = React.useState(0);
   const [graphData, setGraphData] = useState<number[]>([]);
   const [xLabels, setXLabels] = useState<string[]>([]);
-  const [pieChartData, setPieChartData] = useState([]);
+  const [pieChartData, setPieChartData] = useState<{ label: string; value: number }[]>([]);
 
   const handleChange = async (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -51,7 +51,7 @@ const ViewMore = () => {
   };
 
   const [, setIsLoading] = useState<boolean>(false);
-  const { id } = useParams();
+  const { id } = useParams() ?? "";
 
   const [formData, setFormData] = useState<ProjectData>({
     projectName: "",
@@ -73,27 +73,21 @@ const ViewMore = () => {
     const fetchProjectData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `${constVariables.base_url}api/project/details/${id}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const project = await response.json();
-        setFormData(project);
+        const response: GetProjectDataByIdResponse = await ProjectManagementService.getApiProjectDetails(parseInt(id as string));
         setFormData({
-          projectName: project.project_name,
-          projectTech: project.project_tech.split(", "),
-          projectStartAt: dayjs(project.project_startat).toDate(),
-          projectDeadline: dayjs(project.project_deadline).toDate(),
-          projectLead: project.project_lead,
-          teamSize: parseInt(project.team_size),
-          projectClient: project.project_client,
-          projectManagementTool: project.project_management_tool,
-          projectManagementUrl: project.project_management_url,
-          projectDescription: project.project_description,
-          projectRepoTool: project.project_repo_tool,
-          projectRepoUrl: project.project_repo_url,
-          projectStatus: project.project_status,
+          projectName: response.project_name,
+          projectTech: response.project_tech.split(", "),
+          projectStartAt: dayjs(response.project_startat).toDate(),
+          projectDeadline: dayjs(response.project_deadline).toDate(),
+          projectLead: response.project_lead,
+          teamSize: response.team_size,
+          projectClient: response.project_client,
+          projectManagementTool: response.project_management_tool,
+          projectManagementUrl: response.project_management_url,
+          projectDescription: response.project_description,
+          projectRepoTool: response.project_repo_tool,
+          projectRepoUrl: response.project_repo_url,
+          projectStatus: response.project_status,
         });
       } catch (error) {
         console.error("Error fetching project data:", error);
@@ -106,13 +100,12 @@ const ViewMore = () => {
 
   const fetchGraphData = async () => {
     try {
-      const response = await fetch(`${constVariables.base_url}api/project/getProjectCount`);
-      const responseData = await response.json();
+      const response : GetProjectCountResponse = await ProjectCountService.getApiProjectGetProjectCount();
       const month_data: string[] = [];
       const count_data: number[] = [];
-      responseData.data.forEach((item: { month_name: string; project_count: string }) => {
+      response.data?.forEach((item: { month_name: string; project_count: number }) => {
         month_data.push(item.month_name);
-        count_data.push(parseInt(item.project_count));
+        count_data.push(item.project_count);
       });
       setGraphData(count_data);
       setXLabels(month_data);
@@ -122,11 +115,10 @@ const ViewMore = () => {
   };
   const fetchPieData = async () => {
     try {
-      const response = await fetch(`${constVariables.base_url}api/project/getStatusCount`);
-      const responseData = await response.json();
-      const pieChartData = responseData.data.map((item :{ project_status: string; project_count: string }) => ({
+      const response = await ProjectStatusService.getApiProjectGetStatusCount();
+      const pieChartData = response.data.map((item :{ project_status: string; project_count: number }) => ({
         label: item.project_status,
-        value: parseInt(item.project_count),
+        value: item.project_count,
       }));
       setPieChartData(pieChartData);
     } catch (error) {
