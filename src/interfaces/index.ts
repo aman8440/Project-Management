@@ -108,13 +108,7 @@ export interface GridValueGetterParams<V = any, R = any> {
   api: GridApi;
   getValue: (id: GridRowId, field: string) => GridKeyValue;
 }
-export interface AuthContextTypeData {
-  fname: string;
-  lname: string;
-  phone: string;
-  email: string;
-  gender: string;
-}
+
 export interface AuthGuardProps {
   children: React.ReactNode;
 }
@@ -126,6 +120,7 @@ export interface AuthProviderProps {
 export interface FormValues {
   password: string;
   confirmPassword: string;
+  reset_token: string;
 }
 
 export interface AddUserData {
@@ -167,79 +162,4 @@ export interface InputProps extends Omit<TextFieldProps, 'name' | 'value' | 'err
   fullWidth?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputSlotProps?: any;
-}
-
-export interface SearchInputProps {
-  sortBy: string;
-  sortOrder: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setUserData: any,
-  input: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setInput: any,
-  recordsPerPage: number,
-  page: number,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setPage: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setTotalUsers: any
-}
-
-export interface User {
-  user_id: number;
-  user_name: string;
-  user_email: string;
-  user_number: string;
-  user_created_at: string;
-}
-
-export interface UserListProps {
-  user: User;
-  handleDelete: (id: number) => void;
-}
-
-export interface useUserInterface {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setUserData: any;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export interface UserDetailsInterface {
-  user_name: string,
-  user_email: string,
-  user_number: string,
-  user_created_at: string
-}
-
-export interface PaginationProps {
-  pageProp: number;
-  goAhead: () => void;
-  goBack: () => void;
-  page : number
-  totalPages: number
-}
-
-export interface EditedUserData {
-  user_name: string,
-  user_email: string,
-  user_number: string,
-}
-
-export interface EditFormData {
-  name: string,
-  email: string,
-  number: string,
-  roleId: number
-}
-
-
-export interface UserStateData {
-  id?: number,
-  role_id?: number
-}
-
-export interface UserStateDataTwo{
-  user_email: string,
-  user_id: number,
-  user_role_id: number
 }

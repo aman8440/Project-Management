@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+src/swagger
+
+src/constants
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
