@@ -1,7 +1,6 @@
 import './form.css';
 import { useState, useEffect } from "react";
 import Breadcrumb from "../../components/Breadcrumb";
-import { getToken } from "../../services/storage.service";
 import Input from "../../components/Input";
 import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
@@ -17,8 +16,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema } from "../../schema";
 import { useNavigate, useParams } from "react-router-dom";
 import { useUserProfile } from "../../hooks/userProfile";
-import { constVariables } from "../../constants";
 import { toast } from "react-toastify";
+import { GetProjectDataByIdResponse, ProjectManagementService, UpdateProjectRequest } from '../../swagger/api';
+import { format } from 'date-fns';
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -77,44 +77,35 @@ const UpdateProject = () => {
     const fetchProjectData = async () => {
       setIsLoading(true);
       try {
-        const token = getToken();
-        const response = await fetch(`${constVariables.base_url}api/project/details/${id}`, {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const project = await response.json();
-        setFormData(project);
+        const response: GetProjectDataByIdResponse = await ProjectManagementService.getApiProjectDetails(parseInt(id as string));
         setFormData({
-          projectName: project.project_name,
-          projectTech: project.project_tech.split(', '),
-          projectStartAt: dayjs(project.project_startat).toDate(),
-          projectDeadline: dayjs(project.project_deadline).toDate(),
-          projectLead: project.project_lead,
-          teamSize: parseInt(project.team_size),
-          projectClient: project.project_client,
-          projectManagementTool: project.project_management_tool,
-          projectManagementUrl: project.project_management_url,
-          projectDescription: project.project_description,
-          projectRepoTool: project.project_repo_tool,
-          projectRepoUrl: project.project_repo_url,
-          projectStatus: project.project_status
+          projectName: response.project_name,
+          projectTech: response.project_tech.split(', '),
+          projectStartAt: dayjs(response.project_startat).toDate(),
+          projectDeadline: dayjs(response.project_deadline).toDate(),
+          projectLead: response.project_lead,
+          teamSize: response.team_size,
+          projectClient: response.project_client,
+          projectManagementTool: response.project_management_tool,
+          projectManagementUrl: response.project_management_url,
+          projectDescription: response.project_description,
+          projectRepoTool: response.project_repo_tool,
+          projectRepoUrl: response.project_repo_url,
+          projectStatus: response.project_status
         });
-        setValue("projectName", project.project_name);
-        setValue("projectTech", project.project_tech.split(', '));
-        setValue("projectStartAt", dayjs(project.project_startat).toDate());
-        setValue("projectDeadline", dayjs(project.project_deadline).toDate());
-        setValue("projectLead", project.project_lead);
-        setValue("teamSize", parseInt(project.team_size));
-        setValue("projectClient", project.project_client);
-        setValue("projectManagementTool", project.project_management_tool);
-        setValue("projectManagementUrl", project.project_management_url);
-        setValue("projectDescription", project.project_description);
-        setValue("projectRepoTool", project.project_repo_tool);
-        setValue("projectRepoUrl", project.project_repo_url);
-        setValue("projectStatus", project.project_status);
+        setValue("projectName", response.project_name);
+        setValue("projectTech", response.project_tech.split(', '));
+        setValue("projectStartAt", dayjs(response.project_startat).toDate());
+        setValue("projectDeadline", dayjs(response.project_deadline).toDate());
+        setValue("projectLead", response.project_lead);
+        setValue("teamSize", response.team_size);
+        setValue("projectClient", response.project_client);
+        setValue("projectManagementTool", response.project_management_tool);
+        setValue("projectManagementUrl", response.project_management_url);
+        setValue("projectDescription", response.project_description);
+        setValue("projectRepoTool", response.project_repo_tool);
+        setValue("projectRepoUrl", response.project_repo_url);
+        setValue("projectStatus", response.project_status);
       } catch (error) {
         console.error('Error fetching project data:', error);
       } finally {
@@ -131,10 +122,10 @@ const UpdateProject = () => {
     if (field === 'teamSize') {
       value = Number(value);
     }
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: value,
-    }));
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, [field]: value };
+      return updatedData;
+    });
     setValue(field as keyof ProjectData, value, { 
       shouldValidate: true 
     });
@@ -142,11 +133,11 @@ const UpdateProject = () => {
 
   const onSubmit: SubmitHandler<ProjectData> = async (data) => {
     setIsLoading(true);
-    const payload = {
+    const payload : UpdateProjectRequest = {
       project_name: data.projectName,
       project_tech: formData.projectTech,
-      project_startat: formData?.projectStartAt ? formData.projectStartAt.toISOString() : null,
-      project_deadline: formData?.projectDeadline ? formData.projectDeadline.toISOString() : null,
+      project_startat: formData.projectStartAt ? format(new Date(formData.projectStartAt), 'yyyy-MM-dd') : '',
+      project_deadline: formData.projectDeadline ? format(new Date(formData.projectDeadline), 'yyyy-MM-dd') : '',
       project_lead: data.projectLead,
       team_size: data.teamSize,
       project_client: data.projectClient,
@@ -156,18 +147,10 @@ const UpdateProject = () => {
       project_repo_tool: data.projectRepoTool,
       project_repo_url: data.projectRepoUrl,
       project_status: data.projectStatus,
-      updated_by: userProfile?.fname || "Unknown",
+      updated_by: userProfile?.fname || "",
     };
     try {
-      const token = getToken();
-      const response = await fetch(`${constVariables.base_url}api/project/update/${id}`, {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      await ProjectManagementService.putApiProjectUpdate(parseInt(id as string),payload)
       toast.success("Data updated successful!");
       navigate('/dashboard/projects');
     } catch (error) {

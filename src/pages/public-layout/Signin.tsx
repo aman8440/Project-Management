@@ -10,11 +10,10 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {  setAuthToken } from "../../services/storage.service";
-import loginLogo from '../../assets/img/login_logo.svg'
-import React from "react";
+import loginLogo from '../../assets/img/login_logo.svg';
 import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { constVariables } from "../../constants";
+import { AdminLoginRequest, AdminLoginResponse, AuthenticationService } from '../../swagger/api';
 
 export default function Signin() {
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ export default function Signin() {
     resolver: zodResolver(LoginSchema),
   });
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -39,24 +38,19 @@ export default function Signin() {
     event.preventDefault();
   };
 
-  const onSubmit = async (data: SignInData) => {
+  const onSubmit = async (data: AdminLoginRequest) => {
     setIsLoading(true);
     
     try {
-      const response = await fetch(`${constVariables.base_url}api/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response : AdminLoginResponse = await AuthenticationService.postApiLogin(data)
 
       const responseData: {
-        token: string;
+        token?: string;
         message?: string;
-      } = await response.json();
+        status?: string;
+      } = await response;
   
-      if (response.status === 200 && responseData?.token) {
+      if (response.status === 'success' && responseData?.token) {
         setAuthToken(responseData.token);
         toast.success("Login successful!");
         navigate("/dashboard/projects");

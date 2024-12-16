@@ -8,6 +8,7 @@ import coverImage from '../../assets/img/cover_img.webp';
 import { ChangeEvent, useState } from "react";
 import { constVariables } from "../../constants";
 import { toast } from 'react-toastify';
+import { FileManagementService, ProfileImageUploadRequest } from '../../swagger/api';
 
 const Profile = () => {
   const {userProfile}= useUserProfile();
@@ -30,22 +31,18 @@ const Profile = () => {
       toast.error("File is too large. Maximum size is 5MB.");
       return;
     }
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("id", userProfile?.id ?? '');
+    const formData: ProfileImageUploadRequest = {
+      id: userProfile?.id ?? 0,
+      file: file,
+    };
     try {
-      const response = await fetch(`${constVariables.base_url}me/profile`, {
-        method: "POST",
-        body: formData,
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const response = await FileManagementService.postMeProfile(formData);
+      if(response.status === "success"){
+        if (type === "profile") setProfileImage(response.image_name);
+        if (type === "cover") setCoverImage(response.image_name);
+        window.location.reload(); 
+        toast.success("Image Uploaded Sucessfully!");
       }
-      const data = await response.json();
-      if (type === "profile") setProfileImage(data.url);
-      if (type === "cover") setCoverImage(data.url);
-      window.location.reload(); 
-      toast.success("Image Uploaded Sucessfully!");
     } catch (error) {
       console.error("Error uploading image:", error);
     }
@@ -53,11 +50,8 @@ const Profile = () => {
 
   const handleImageDelete = async (type: "profile" | "cover") => {
     try {
-      const data = { id: userProfile?.id }; 
-      await fetch(`${constVariables.base_url}me/profile/delete`, {
-        method: "POST",
-        body: JSON.stringify(data)
-      });
+      const data = { id: userProfile?.id ?? 0 };
+      await FileManagementService.postMeProfileDelete(data);
 
       if (type === "profile") setProfileImage(null);
       if (type === "cover") setCoverImage(null);

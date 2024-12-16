@@ -1,7 +1,6 @@
 import './form.css';
 import { useState } from "react";
 import Breadcrumb from "../../components/Breadcrumb"
-import { getToken } from "../../services/storage.service";
 import Input from "../../components/Input";
 import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
@@ -17,8 +16,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema } from "../../schema";
 import { useNavigate } from "react-router-dom";
 import { useUserProfile } from "../../hooks/userProfile";
-import { constVariables } from "../../constants";
 import { toast } from "react-toastify";
+import { format } from 'date-fns';
+import { ProjectManagementService } from '../../swagger/api';
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -86,8 +86,8 @@ const AddProjects = () => {
     const payload = {
       project_name: data.projectName,
       project_tech: formData.projectTech,
-      project_startat: formData.projectStartAt ? formData.projectStartAt.toISOString() : null,
-      project_deadline: formData.projectDeadline ? formData.projectDeadline.toISOString() : null,
+      project_startat: formData.projectStartAt ? format(new Date(formData.projectStartAt), 'yyyy-MM-dd') : '',
+      project_deadline: formData.projectDeadline ? format(new Date(formData.projectDeadline), 'yyyy-MM-dd') : '',
       project_lead: data.projectLead,
       team_size: data.teamSize,
       project_client: data.projectClient,
@@ -101,15 +101,8 @@ const AddProjects = () => {
       updated_by: userProfile?.fname || "Unknown",
     };
     try {
-      const token= getToken();
-      const response = await fetch(`${constVariables.base_url}api/project/create` ,{
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-       body:JSON.stringify(payload)});
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      else{
+      const response = await ProjectManagementService.postApiProjectCreate(payload);
+      if(response.status==="success"){
         navigate('/dashboard/projects');
         toast.success("Data Inserted Successfully");
       }

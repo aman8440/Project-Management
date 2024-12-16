@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { emailSchema } from "../../schema";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
-import { constVariables } from "../../constants";
+import { AuthenticationService, ForgetPassRequest } from "../../swagger/api";
 
 interface FormValues {
   email: string;
@@ -19,18 +19,12 @@ const ForgetPass = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(emailSchema),
   });
-  const onSubmit = async (data: { email: string }) => {
+  const onSubmit = async (data : ForgetPassRequest) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${constVariables.base_url}forgot_password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: data.email }),
-      });
-      const responseData = await response.json();
-      if (response.status === 200) {
+      const response = await AuthenticationService.postForgotPassword(data);
+      const responseData = await response;
+      if (response.status === 'success') {
         setMessage("Password reset link has been sent to your email.");
         setTimeout(() => navigate("/login"), 3000);
         console.log(responseData);
