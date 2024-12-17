@@ -4,7 +4,7 @@ import { RecoilRoot } from "recoil";
 import AppRoutes from './routes/AppRoutes';
 import { ToastContainer } from 'react-toastify';
 import Loader from './components/Loader';
-import { LoaderProvider, useLoader } from './hooks/LoaderContext';
+import { LoaderProvider, useLoader } from './hooks/loaderContext';
 
 const LoaderWrapper = () => {
   const { loading } = useLoader();

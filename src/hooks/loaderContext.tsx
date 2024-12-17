@@ -12,7 +12,6 @@ export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     </LoaderContext.Provider>
   );
 };
-
 // eslint-disable-next-line react-refresh/only-export-components
 export const useLoader = (): LoaderContextType => {
   const context = useContext(LoaderContext);

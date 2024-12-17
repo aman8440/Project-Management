@@ -9,15 +9,18 @@ import { ChangeEvent, useState } from "react";
 import { constVariables } from "../../constants";
 import { toast } from 'react-toastify';
 import { FileManagementService, ProfileImageUploadRequest } from '../../swagger/api';
+import { useLoader } from '../../hooks/loaderContext';
 
 const Profile = () => {
   const {userProfile}= useUserProfile();
   const [hover, setHover] = useState(false);
-
+  const { loading, setLoading } = useLoader();
   const [, setProfileImage] = useState<string | null>(null);
   const [coverImageSet, setCoverImage] =  useState<string | null>(null);
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>, type: "profile" | "cover") => {
+
+    setLoading(true);
     const file = e.target.files?.[0];
     if (!file) return;
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif','image/jpg','image/webp', 'image/svg'];
@@ -25,10 +28,12 @@ const Profile = () => {
 
     if (!allowedTypes.includes(file.type)) {
       toast.error("Invalid file type. Please upload an image.");
+      setLoading(false);
       return;
     }
     if (file.size > maxSize) {
       toast.error("File is too large. Maximum size is 5MB.");
+      setLoading(false);
       return;
     }
     const formData: ProfileImageUploadRequest = {
@@ -45,10 +50,13 @@ const Profile = () => {
       }
     } catch (error) {
       console.error("Error uploading image:", error);
+    } finally{
+      setLoading(false);
     }
   };
 
   const handleImageDelete = async (type: "profile" | "cover") => {
+    setLoading(true);
     try {
       const data = { id: userProfile?.id ?? 0 };
       await FileManagementService.postMeProfileDelete(data);
@@ -59,6 +67,8 @@ const Profile = () => {
       toast.success("Image Deleted Sucessfully!");
     } catch (error) {
       console.error("Error deleting image:", error);
+    } finally{
+      setLoading(false);
     }
   };
   const coverImageUrl = coverImageSet !==null ? `${constVariables.base_url}assets/images/uploads/`+coverImageSet : coverImage;
@@ -92,7 +102,7 @@ const Profile = () => {
                         : "/default-avatar.png"
                     }
                   />
-                  {hover && (
+                  {hover && !loading && (
                     <Box className="user-box">
                       <Box className="user-sub-box">
                         <IconButton color="primary">

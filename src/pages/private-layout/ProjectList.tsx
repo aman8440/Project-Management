@@ -19,7 +19,8 @@ import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutl
 import AlertDialogSlide from "../../components/AlertDialogSlide";
 import { toast } from 'react-toastify';
 import { ProjectManagementService } from '../../swagger/api';
-import { useLoader } from '../../hooks/LoaderContext';
+import { useLoader } from '../../hooks/loaderContext';
+import useDebounce from '../../hooks/useDebounce';
 
 function CustomToolbar() {
   return (
@@ -48,6 +49,7 @@ const ProjectList = () => {
     },
   ]);
   const [search, setSearch] = useState(searchParams.get("search") || "");
+  const debouncedSearch = useDebounce(search, 2000);
   const [searchError, setSearchError] = useState(false);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -58,7 +60,7 @@ const ProjectList = () => {
     projectStatus: '',
     projectTech: []
   });
-  const { loading, setLoading } = useLoader();
+  const { setLoading } = useLoader();
   const navigate= useNavigate();
   const [columns] = useState([
     { field: "id", headerName: "Serial No.", width: 90, sortable: true, value: "1" },
@@ -171,7 +173,6 @@ const ProjectList = () => {
     setLoading(true);
     const sort = sortModel[0]?.field || 'id';
     const order = sortModel[0]?.sort || 'asc';
-  
     try {
       const formattedStartAt = filters.projectStartAt 
         ? format(filters.projectStartAt, 'yyyy-MM-dd') 
@@ -186,7 +187,7 @@ const ProjectList = () => {
         : undefined;
   
       const response = await ProjectManagementService.getApiProjectList(
-        search.length >= 3 ? search.trim() : undefined,
+        debouncedSearch.length >= 3 ? debouncedSearch.trim() : undefined,
         sort,
         order,
         page,
@@ -210,7 +211,6 @@ const ProjectList = () => {
       setLoading(false);
     }
   };
-
   const updateQueryParams = () => {
     const filterParams: Record<string, string> = {};
     if (filters.projectStartAt) {
@@ -228,7 +228,7 @@ const ProjectList = () => {
     setSearchParams({
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
-      search: search.trim(),
+      search: debouncedSearch.trim(),
       sort: sortModel[0]?.field || "id",
       order: sortModel[0]?.sort || "asc",
       ...filterParams,
@@ -247,7 +247,7 @@ const ProjectList = () => {
   useEffect(() => {
     updateQueryParams();
     fetchData();
-  }, [paginationModel, sortModel, search]);
+  }, [paginationModel, sortModel, debouncedSearch]);
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center w-full">
@@ -314,31 +314,29 @@ const ProjectList = () => {
           </div>
         </div>
         <Paper>
-          {!loading && 
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              rowCount={totalRows}
-              paginationMode="server"
-              sortingMode="server"
-              checkboxSelection
-              onRowDoubleClick={handleRowDoubleClick}
-              onPaginationModelChange={(newModel) => setPaginationModel({
-                page: newModel.page + 1,
-                pageSize: newModel.pageSize || 10,
-              })}
-              onSortModelChange={(newModel) => setSortModel(newModel)}
-              paginationModel={{
-                page: paginationModel.page - 1,
-                pageSize: paginationModel.pageSize
-              }}
-              pageSizeOptions={[10, 15, 20]}
-              sx={{ border: 0 }}
-              slots={{
-                toolbar: CustomToolbar,
-              }}
-            />
-          }
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            rowCount={totalRows}
+            paginationMode="server"
+            sortingMode="server"
+            checkboxSelection
+            onRowDoubleClick={handleRowDoubleClick}
+            onPaginationModelChange={(newModel) => setPaginationModel({
+              page: newModel.page + 1,
+              pageSize: newModel.pageSize || 10,
+            })}
+            onSortModelChange={(newModel) => setSortModel(newModel)}
+            paginationModel={{
+              page: paginationModel.page - 1,
+              pageSize: paginationModel.pageSize
+            }}
+            pageSizeOptions={[10, 15, 20]}
+            sx={{ border: 0 }}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
+          />
         </Paper>
         <AlertDialogSlide
           open={open}
