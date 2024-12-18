@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { InputAdornment, Paper, TextField, Tooltip, tooltipClasses } from "@mui/material";
 import { DataGrid, GridSortDirection, GridSortModel, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
-import { FilterDataProp, RowData } from "../../interfaces";
+import { FilterDataProp, FilterState, RowData } from "../../interfaces";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -21,6 +21,8 @@ import { toast } from 'react-toastify';
 import { ProjectManagementService } from '../../swagger/api';
 import { useLoader } from '../../hooks/loaderContext';
 import useDebounce from '../../hooks/useDebounce';
+import CloseIcon from '@mui/icons-material/Close';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
 
 function CustomToolbar() {
   return (
@@ -51,14 +53,24 @@ const ProjectList = () => {
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const debouncedSearch = useDebounce(search, 2000);
   const [searchError, setSearchError] = useState(false);
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const [filterState, setFilterState] = useState<FilterState>({
+    visibleFilter: false,
+    dependentField: true,
+    inDependentField: true,
+    statuses: [],
+    techOptions: [],
+    techSearch: '',
+    showStatusField: false,
+    showTechField: false,
+    toolSearch: ''
+  })
   const [filters, setFilters] = useState<FilterDataProp>({
     projectStartAt: null,
     projectDeadline: null,
     projectStatus: '',
-    projectTech: []
+    projectTech: [],
+    projectManagementTool: ""
   });
   const { setLoading } = useLoader();
   const navigate= useNavigate();
@@ -142,6 +154,18 @@ const ProjectList = () => {
   const handleApplyFilters = () => {
     setSidebarOpen(false);
     fetchData();
+    const hasValidFilter = Object.values(filters).some(
+      value => value && (!(Array.isArray(value)) || value.length > 0)
+    );
+    const isIndependentField = !!filters.projectManagementTool;
+    const isDependentField = !!( filters.projectStartAt || filters.projectDeadline || filters.projectStatus || (Array.isArray(filters.projectTech) && filters.projectTech.length > 0)
+    )
+    setFilterState({
+      ...filterState,
+      visibleFilter:hasValidFilter,
+      dependentField:isDependentField,
+      inDependentField:isIndependentField
+    })
   };
 
   const handleResetFilters = () => {
@@ -150,12 +174,47 @@ const ProjectList = () => {
       projectDeadline: null,
       projectStatus: "",
       projectTech: [],
+      projectManagementTool: ""
     });
+    setSidebarOpen(false);
+    setSearchParams({
+      page: paginationModel.page.toString(),
+      limit: paginationModel.pageSize.toString(),
+      search: debouncedSearch.trim(),
+      sort: sortModel[0]?.field || "id",
+      order: sortModel[0]?.sort || "asc",
+    })
+    filters.projectStartAt = null;
+    filters.projectDeadline = null;
+    filters.projectTech = [];
+    filters.projectStatus = "";
+    filters.projectManagementTool = "";
+    fetchData();
+    setFilterState({
+      ...filterState,
+      visibleFilter:false,
+      dependentField:false,
+      inDependentField:false,
+      statuses:[],
+      techOptions:[],
+      techSearch:'',
+      showStatusField:false,
+      showTechField:false,
+      toolSearch:''
+    })
   };
 
-  const formatDate = (date: string) => {
-    const d = new Date(date);
-    return format(d, 'yyyy-MM-dd');
+  const formatDate = (date: string | Date | null) => {
+    if (date && typeof date === 'string') {
+      const parsedDate = new Date(date);
+      if (!isNaN(parsedDate.getTime())) {
+        return format(parsedDate, 'yyyy-MM-dd');
+      }
+    }
+    if (date instanceof Date && !isNaN(date.getTime())) {
+      return format(date, 'yyyy-MM-dd');
+    }
+    return '';
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,7 +254,8 @@ const ProjectList = () => {
         formattedStartAt,
         formattedDeadline,
         filters.projectStatus as "Under Planning" | "Development Started" | "Under Testing" | "Deployed on Dev" | "Live" || undefined,
-        projectTech
+        projectTech,
+        filters.projectManagementTool || undefined
       );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
       const rowsWithIndex : RowData[] = response.data?.projects?.map((row: any, _index: number) => ({
@@ -214,16 +274,21 @@ const ProjectList = () => {
   const updateQueryParams = () => {
     const filterParams: Record<string, string> = {};
     if (filters.projectStartAt) {
-      filterParams.project_start_at = formatDate(filters.projectStartAt.toISOString());
+      filterParams.project_start_at = formatDate(filters.projectStartAt.toISOString()) as string;
     }
     if (filters.projectDeadline) {
-      filterParams.project_deadline = formatDate(filters.projectDeadline.toISOString());
+      filterParams.project_deadline = formatDate(filters.projectDeadline.toISOString()) as string;
     }
     if (filters.projectStatus) {
       filterParams.project_status = filters.projectStatus;
     }
-    if (filters.projectTech.length > 0) {
-      filterParams.project_tech = filters.projectTech.join(","); 
+    if(filters.projectTech !== undefined){
+      if (filters.projectTech.length > 0) {
+        filterParams.project_tech = filters.projectTech?.join(","); 
+      }
+    }
+    if (filters.projectManagementTool) {
+      filterParams.project_management_tool = filters.projectManagementTool;
     }
     setSearchParams({
       page: paginationModel.page.toString(),
@@ -242,6 +307,77 @@ const ProjectList = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleRowDoubleClick = (param:any) => {
     navigate(`/dashboard/projects/${param.row.id}`);
+  };
+
+  const removeDependentFilters = () => {
+    const updatedFilters={
+      ...filters,
+      projectStartAt: null,
+      projectDeadline: null,
+      projectStatus: "",
+      projectTech: []
+    }
+    setFilters(updatedFilters);
+    setSearchParams({
+      page: paginationModel.page.toString(),
+      limit: paginationModel.pageSize.toString(),
+      search: debouncedSearch.trim(),
+      sort: sortModel[0]?.field || "id",
+      order: sortModel[0]?.sort || "asc",
+      projectManagementTool: filters.projectManagementTool ?? '',
+    });
+    filters.projectStartAt = null;
+    filters.projectDeadline = null;
+    filters.projectTech = [];
+    filters.projectStatus = "";
+    fetchData();  
+    setFilterState({
+      ...filterState,
+      dependentField:false,
+      visibleFilter:Object.values(updatedFilters).some(
+        value =>
+          value !== null && 
+          ((typeof value === 'string' && value.trim() !== '') || 
+            (Array.isArray(value) && value.length > 0))
+      ),
+      statuses:[],
+      techOptions:[],
+      techSearch:'',
+      showStatusField:false,
+      showTechField:false
+    })
+  };
+
+  const removeIndependentFilter = () => {
+    const updatedFilters={
+      ...filters,
+      projectManagementTool: "",
+    }
+    setFilters(updatedFilters);
+    setSearchParams({
+      page: paginationModel.page.toString(),
+      limit: paginationModel.pageSize.toString(),
+      search: debouncedSearch.trim(),
+      sort: sortModel[0]?.field || "id",
+      order: sortModel[0]?.sort || "asc",
+      projectStartAt: formatDate(filters.projectStartAt?.toISOString() ?? '') ?? '',
+      projectDeadline: formatDate(filters.projectDeadline?.toISOString() ?? '') ?? '',
+      projectStatus: filters.projectStatus || "",
+      projectTech: filters.projectTech?.join(', ') || [],
+    });
+    filters.projectManagementTool = "";
+    fetchData();
+    setFilterState({
+      ...filterState,
+      inDependentField:false,
+      visibleFilter:Object.values(updatedFilters).some(
+        value =>
+          value !== null &&
+          ((typeof value === 'string' && value.trim() !== '') ||
+            (Array.isArray(value) && value.length > 0))
+      ),
+      toolSearch:''
+    })
   };
 
   useEffect(() => {
@@ -313,6 +449,48 @@ const ProjectList = () => {
             />
           </div>
         </div>
+        {filterState.visibleFilter && (
+          <div className="filters-content d-flex justify-content-between w-full align-items-start">
+            <div className="filters-sub-content d-flex">
+              <div className="filters-field d-flex">
+                {filterState.dependentField && (
+                  <div className="field-name d-flex">
+                    {filters.projectStartAt && (  
+                      <div className="dependent-field d-flex">
+                        <h4 className='header'>Project Start Date: {formatDate((filters.projectStartAt ?? ''))}</h4>
+                      </div>
+                    )}
+                    {filters.projectDeadline && (
+                      <div className="dependent-field d-flex">
+                        <h4 className='header'>Project End Date: {formatDate((filters.projectDeadline ?? ''))}</h4>
+                      </div>
+                    )}
+                    {filters.projectStatus && (
+                      <div className="dependent-field d-flex">
+                        <h4 className='header'>Project Status: {filters.projectStatus}</h4>
+                      </div>
+                    )}
+                    {Array.isArray(filters.projectTech) && filters.projectTech.length > 0 && (
+                      <div className="dependent-field d-flex">
+                        <h4 className='header'>Project Tech: {filters.projectTech?.join(', ')}</h4>
+                      </div>
+                    )}
+                    <span className='icon' onClick={removeDependentFilters}><CloseIcon/></span>
+                  </div>
+                )}
+                {filterState.inDependentField && (
+                  <div className="field-name d-flex justify-content-between w-full">
+                    <h4 className='header'>Project Tool: {filters.projectManagementTool}</h4>
+                    <span className='icon' onClick={removeIndependentFilter}><CloseIcon/></span>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="filters-btn d-flex">
+              <Button text={"Clear All"} type={'button'} className='filter-btn align-self-start' onClick={handleResetFilters} startIconPass={<ClearAllIcon />} />
+            </div>
+          </div>
+        )}
         <Paper>
           <DataGrid
             rows={rows}
@@ -356,6 +534,8 @@ const ProjectList = () => {
         onReset={handleResetFilters}
         filters={filters}
         setFilters={setFilters}
+        filterState={filterState}
+        setFilterState={setFilterState}
       />
     </div>
   );

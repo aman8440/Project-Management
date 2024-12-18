@@ -1,5 +1,5 @@
 import './filterSidebar.css';
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { FilterDataProp, FilterSidebarProps } from '../interfaces';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -13,26 +13,17 @@ import { toast } from 'react-toastify';
 import { GetStatusRequest, ProjectManagementService } from '../swagger/api';
 import { format } from 'date-fns';
 
-const FilterSidebar: React.FC<FilterSidebarProps> = ({
-  isOpen,
-  onClose,
-  onApply,
-  onReset,
-  filters,
-  setFilters
-}) => {
-  const [localFilters, setLocalFilters] = useState<FilterDataProp>(filters);
-  const [statuses, setStatuses] = useState<string[]>([]);
-  const [techOptions, setTechOptions] = useState<string[]>([]);
-  const [techSearch, setTechSearch] = useState('');
-  const [showStatusField, setShowStatusField] = useState(false);
-  const [showTechField, setShowTechField] = useState(false);
+const PROJECT_MANAGEMENT_TOOLS = [
+  'Jira', 'Trello', 'Asana', 'Monday.com', 'Basecamp', 
+  'ClickUp', 'Notion', 'Microsoft Project', 'Linear', 
+  'Smartsheet', 'Wrike', 'Teamwork', 'Todoist', 
+  'ProofHub', 'Zoho Projects', 'Confluence'
+];
 
+const FilterSidebar: React.FC<FilterSidebarProps> = ({
+  isOpen, onClose, onApply, onReset, filters, setFilters, filterState, setFilterState}) => {
+    const {statuses, techOptions, techSearch, showStatusField, showTechField, toolSearch}= filterState;
   const handleFilterChange = useCallback((key: keyof FilterDataProp, value: FilterDataProp[keyof FilterDataProp]) => {
-    setLocalFilters(prev => ({ 
-      ...prev, 
-      [key]: value 
-    }));
     setFilters(prev => ({ 
       ...prev, 
       [key]: value 
@@ -40,8 +31,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   }, [setFilters]);
   
   const applyFilters = () => {
-    setFilters(localFilters);
-    onApply(localFilters);
+    setFilters(filters);
+    onApply(filters);
     onClose();
   };
 
@@ -50,15 +41,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       projectStartAt: null,
       projectDeadline: null,
       projectStatus: '',
-      projectTech: []
+      projectTech: [],
+      projectManagementTool: ''
     };
-    setLocalFilters(resetState);
     setFilters(resetState);
-    setStatuses([]);
-    setTechOptions([]);
-    setTechSearch('');
-    setShowStatusField(false);
-    setShowTechField(false);
     onReset();
   };
 
@@ -75,8 +61,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         };
         const response = await ProjectManagementService.postApiProjectStatus(data);
         const statusArray = response.data ? Object.values(response.data) : [];
-        setStatuses(statusArray);
-        setShowStatusField(true);
+        setFilterState({
+          ...filterState,
+          statuses:statusArray,
+          showStatusField:true
+        })
       } catch (error) {
         console.error('Error fetching statuses:', error);
       }
@@ -88,8 +77,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       try {
         const response = await ProjectManagementService.postApiProjectTech({project_status});
         const technologies = Object.values(response.data);
-        setTechOptions(technologies as string[]);
-        setShowTechField(true);
+        setFilterState({
+          ...filterState,
+          techOptions:technologies,
+          showTechField:true
+        })
       } catch (error) {
         console.error('Error fetching technologies:', error);
       }
@@ -99,6 +91,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const filteredTechOptions = techOptions.filter((tech) =>
     tech.toLowerCase().includes(techSearch.toLowerCase())
   );
+
+  const filteredToolOptions = PROJECT_MANAGEMENT_TOOLS.filter(tool =>
+    (tool || "").toLowerCase().includes((toolSearch || "").toLowerCase())
+  );
   return (
     <Drawer anchor="right" className='filter-drawer' open={isOpen} onClose={onClose}>
       <Box className="filter-box">
@@ -107,7 +103,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           <Button
             type="button"
             text="Reset"
-            className='reset-btn align-self-start '
+            className='reset-btn align-self-start'
             onClick={resetFilters}
             startIconPass={<RestoreIcon />}
           />
@@ -121,8 +117,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateRangePicker
                 value={[
-                  localFilters.projectStartAt ? dayjs(localFilters.projectStartAt) : null,
-                  localFilters.projectDeadline ? dayjs(localFilters.projectDeadline) : null,
+                  filters.projectStartAt ? dayjs(filters.projectStartAt) : null,
+                  filters.projectDeadline ? dayjs(filters.projectDeadline) : null,
                 ]}
                 onChange={(newValue: DateRange<dayjs.Dayjs> | null) => {
                   if (newValue) {
@@ -148,7 +144,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               <FormControl fullWidth sx={{ marginTop: 3 }}>
                 <InputLabel>Project Status</InputLabel>
                 <Select
-                  value={localFilters.projectStatus || ''}
+                  value={filters.projectStatus || ''}
                   label="Project Status"
                   onChange={(e) => {
                     const selectedStatus = e.target.value;
@@ -168,16 +164,38 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               <Autocomplete
                 multiple
                 fullWidth
-                value={localFilters.projectTech || []}
+                value={filters.projectTech || []}
                 options={filteredTechOptions}
                 onChange={(_e, newValue) => handleFilterChange('projectTech', newValue)}
                 inputValue={techSearch}
-                onInputChange={(_e, newInputValue) => setTechSearch(newInputValue)}
+                onInputChange={(_e, newInputValue) => setFilterState((prev)=>({
+                  ...prev,
+                  techSearch:newInputValue
+                }))}
                 className="mt-4"
                 renderInput={(params) => <TextField {...params} label="Project Technologies" />}
                 getOptionLabel={(option) => option}
               />
             )}
+            <Autocomplete
+              fullWidth={true}
+              value={filters.projectManagementTool}
+              onChange={(_e, newValue) => {
+                handleFilterChange('projectManagementTool', newValue);
+                setFilterState({
+                  ...filterState,
+                  toolSearch:newValue ?? ''
+                })
+              }}
+              onInputChange={(_e, newInputValue) => setFilterState((prev)=>({
+                ...prev,
+                toolSearch:newInputValue
+              }))}
+              className='mt-3'
+              options={filteredToolOptions}
+              renderInput={(params) => <TextField {...params} label="Project Management Tool" name="projectManagementTool" />}
+              getOptionLabel={(option) => option}
+            />
           </div>
           <Box className="action-btn">
             <Button
