@@ -82,6 +82,18 @@ export interface ProjectData{
   projectStatus: string;
 }
 
+export interface FilterState {
+  visibleFilter: boolean;
+  dependentField: boolean;
+  inDependentField: boolean;
+  statuses: string[];
+  techOptions: string[];
+  techSearch: string;
+  showStatusField: boolean;
+  showTechField: boolean;
+  toolSearch: string;
+}
+
 export interface FilterSidebarProps {
   isOpen: boolean;
   onClose: () => void;
@@ -89,13 +101,16 @@ export interface FilterSidebarProps {
   onReset: () => void;
   filters: FilterDataProp;
   setFilters: React.Dispatch<React.SetStateAction<FilterDataProp>>;
+  filterState: FilterState;
+  setFilterState: React.Dispatch<React.SetStateAction<FilterState>>;
 }
 
 export interface FilterDataProp{
-  projectStartAt: Date | null;
-  projectDeadline: Date | null; 
-  projectStatus: string;
-  projectTech: string[];
+  projectStartAt?: Date | null;
+  projectDeadline?: Date | null; 
+  projectStatus?: string;
+  projectTech?: string[];
+  projectManagementTool?: string;
 }
 
 export interface DynamicFilters {
