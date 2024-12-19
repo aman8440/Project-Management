@@ -7,7 +7,7 @@ import { lazy, Suspense } from "react";
 
 const PublicRoutes= ()=>{
   const token= getToken();
-  return token ? <Navigate to="/dashboard/projects"/> : <Outlet/>;
+  return token ? <Navigate to="/dashboard/extract"/> : <Outlet/>;
 }
 
 const Loader = lazy(() => import("../components/Loader"));
@@ -21,6 +21,10 @@ const ProjectList = lazy(() => import("../pages/private-layout/ProjectList"));
 const AddProjects = lazy(() => import("../pages/private-layout/AddProjects"));
 const UpdateProject = lazy(() => import("../pages/private-layout/UpdateProject"));
 const ViewMore = lazy(() => import("../pages/private-layout/ViewMore"));
+const ExtractList = lazy(() => import("../pages/private-layout/Extract/ExtractList"));
+const AddExtract = lazy(() => import("../pages/private-layout/Extract/AddExtract"));
+const UpdateExtract = lazy(() => import("../pages/private-layout/Extract/UpdateExtract"));
+const DetailExtract = lazy(() => import("../pages/private-layout/Extract/DetailExtract"));
 
 const AppRoutes = () => {
   return (
@@ -46,6 +50,10 @@ const AppRoutes = () => {
                 <Route path="/dashboard/projects/add-projects" element={<AddProjects />}></Route>
                 <Route path="/dashboard/projects/edit/:id" element={<UpdateProject />}></Route>
                 <Route path="/dashboard/projects/:id" element={<ViewMore />}></Route>
+                <Route path="/dashboard/extract" element={<ExtractList />}></Route>
+                <Route path="/dashboard/extract/add-extract" element={<AddExtract />}></Route>
+                <Route path="/dashboard/extract/edit/:id" element={<UpdateExtract />}></Route>
+                <Route path="/dashboard/extract/:id" element={<DetailExtract />}></Route>
               </Route>
             </Route>
           </Routes>

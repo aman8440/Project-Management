@@ -59,7 +59,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  border-radius: 8px;
+  border-radius: 12px !important;
   background-color: transparent !important; 
   border: 0.86px solid #9B9CA0 !important;
   margin-right: 10px !important; 
@@ -72,7 +72,8 @@
   display: flex;
   align-items: center;
   position: relative;
-  border-radius: 8px;
+  border-radius: 12px;
+  background-color: #3B82F6 !important;
 }
 .search-input {
   margin-bottom: 0px !important;
@@ -122,4 +123,34 @@
 }
 .filters-content .filters-btn{
   margin-bottom: 10px !important;
+}
+.select-info-bar{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2px;
+  border-top: 1px solid #ccc;
+  z-index: 100;
+  padding: 0.5rem 1.5rem;
+}
+.select-info-bar .action-buttons{
+  margin-right: 15px;
+}
+.select-info-bar .action-buttons .cancel-button-select{
+  background-color: transparent;
+  border: 0.8px solid #9B9CA0;
+  color: #0d1831;
+  border-radius: 8px;
+}
+.select-info-bar .action-buttons .delete-button-select{
+  background-color: #ef4444;
+  border-radius: 8px;
+}
+.avatar-document-name{
+  height: 100%;
+}
+.avatar-document-name .MuiAvatar-root{
+  width: 23px !important;
+  height: 25px !important;
 }

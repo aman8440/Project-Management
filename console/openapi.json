@@ -1,0 +1,3905 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "QSight",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/health-check": {
+      "get": {
+        "tags": [
+          "Health Check"
+        ],
+        "summary": "Simple health check.",
+        "operationId": "readiness_check_api_v1_health_check_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signup": {
+      "post": {
+        "tags": [
+          "AUTH ENDPOINTS"
+        ],
+        "summary": "Signup",
+        "operationId": "signup_api_v1_auth_signup_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSignUp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_Token_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "AUTH ENDPOINTS"
+        ],
+        "summary": "Login",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLogin"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_Token_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/users/me": {
+      "get": {
+        "tags": [
+          "AUTH ENDPOINTS"
+        ],
+        "summary": "Read Users Me",
+        "operationId": "read_users_me_api_v1_auth_users_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_Dict_str__Any__"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "AUTH ENDPOINTS"
+        ],
+        "summary": "Forgot Password",
+        "operationId": "forgot_password_api_v1_auth_forgot_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_Dict_str__str__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/reset-password": {
+      "post": {
+        "tags": [
+          "AUTH ENDPOINTS"
+        ],
+        "summary": "Reset Password",
+        "operationId": "reset_password_api_v1_auth_reset_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetConfirm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_Dict_str__str__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/files/upload": {
+      "post": {
+        "tags": [
+          "FILES ENDPOINTS"
+        ],
+        "summary": "Upload File",
+        "description": "Endpoint for uploading a file to S3.\n\n:param file: The file to upload\n:param file_path: The path in S3 where the file should be stored\n:return: The file path in S3",
+        "operationId": "upload_file_api_v1_files_upload_post",
+        "parameters": [
+          {
+            "name": "file_path",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "File Path"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_file_api_v1_files_upload_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_Any_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/files/download": {
+      "get": {
+        "tags": [
+          "FILES ENDPOINTS"
+        ],
+        "summary": "Download File",
+        "description": "Endpoint for downloading a file from S3.\n\n:param file_path: The path to the file in S3\n:return: The file content as a streaming response",
+        "operationId": "download_file_api_v1_files_download_get",
+        "parameters": [
+          {
+            "name": "filePath",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Filepath"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/files/sns/textract": {
+      "post": {
+        "tags": [
+          "FILES ENDPOINTS"
+        ],
+        "summary": "Sns Endpoint",
+        "description": "Handles SNS subscription and Textract notifications.",
+        "operationId": "sns_endpoint_api_v1_files_sns_textract_post",
+        "parameters": [
+          {
+            "name": "x-amz-sns-message-type",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "X-Amz-Sns-Message-Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document/": {
+      "post": {
+        "tags": [
+          "DOCUMENT ENDPOINTS"
+        ],
+        "summary": "Create Document",
+        "operationId": "create_document_api_v1_document__post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_document_api_v1_document__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_List_DocumentResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DOCUMENT ENDPOINTS"
+        ],
+        "summary": "Delete Documents",
+        "operationId": "delete_documents_api_v1_document__delete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_NoneType_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document/documents": {
+      "get": {
+        "tags": [
+          "DOCUMENT ENDPOINTS"
+        ],
+        "summary": "Get Documents",
+        "operationId": "get_documents_api_v1_document_documents_get",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Pagenumber"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 5,
+              "title": "Size"
+            }
+          },
+          {
+            "name": "searchText",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Searchtext"
+            }
+          },
+          {
+            "name": "sortColumn",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": "updated_at",
+              "title": "Sortcolumn"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "desc",
+                    "asc"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": "desc",
+              "title": "Sortdirection"
+            }
+          },
+          {
+            "name": "orFields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "isTemplate",
+                  "isTemplateApply"
+                ],
+                "type": "string"
+              },
+              "default": [],
+              "title": "Orfields"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Startdate"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Enddate"
+            }
+          },
+          {
+            "name": "processingStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/DocumentStatusEnum"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Processingstatus"
+            }
+          },
+          {
+            "name": "extension",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Extension"
+            }
+          },
+          {
+            "name": "isTemplate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Istemplate"
+            }
+          },
+          {
+            "name": "isTemplateApply",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Istemplateapply"
+            }
+          },
+          {
+            "name": "isDeleted",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Isdeleted"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_DocumentPaginatedResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document/{doc_id}": {
+      "get": {
+        "tags": [
+          "DOCUMENT ENDPOINTS"
+        ],
+        "summary": "Get Document",
+        "operationId": "get_document_api_v1_document__doc_id__get",
+        "parameters": [
+          {
+            "name": "doc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Doc Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_DocumentResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "DOCUMENT ENDPOINTS"
+        ],
+        "summary": "Update Document",
+        "operationId": "update_document_api_v1_document__doc_id__put",
+        "parameters": [
+          {
+            "name": "doc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Doc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_DocumentResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document/save-as-template": {
+      "post": {
+        "tags": [
+          "DOCUMENT ENDPOINTS"
+        ],
+        "summary": "Save As Template",
+        "operationId": "save_as_template_api_v1_document_save_as_template_post",
+        "parameters": [
+          {
+            "name": "templateName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Templatename"
+            }
+          },
+          {
+            "name": "documentId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Documentid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_DocumentResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document/apply-template": {
+      "post": {
+        "tags": [
+          "DOCUMENT ENDPOINTS"
+        ],
+        "summary": "Apply Template",
+        "operationId": "apply_template_api_v1_document_apply_template_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplyTemplateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_DocumentResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document-tables/tables/{document_id}": {
+      "get": {
+        "tags": [
+          "DOCUMENT TABLES ENDPOINTS"
+        ],
+        "summary": "Get Tables For Document",
+        "operationId": "get_tables_for_document_api_v1_document_tables_tables__document_id__get",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by page number",
+              "title": "Page Number"
+            },
+            "description": "Filter by page number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_List_DocumentTableResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document-tables/tables/{document_id}/{table_number}": {
+      "put": {
+        "tags": [
+          "DOCUMENT TABLES ENDPOINTS"
+        ],
+        "summary": "Update Table",
+        "operationId": "update_table_api_v1_document_tables_tables__document_id___table_number__put",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "table_number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Table Number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TableUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_DocumentTableResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/critical-values/critical_values/": {
+      "post": {
+        "tags": [
+          "CRITICAL VALUES ENDPOINTS",
+          "CriticalValues"
+        ],
+        "summary": "Create Critical Value",
+        "operationId": "create_critical_value_api_v1_critical_values_critical_values__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriticalValuesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_CriticalValuesResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/critical-values/critical_values/{document_id}": {
+      "get": {
+        "tags": [
+          "CRITICAL VALUES ENDPOINTS",
+          "CriticalValues"
+        ],
+        "summary": "Get",
+        "operationId": "get_api_v1_critical_values_critical_values__document_id__get",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_list_CriticalValuesResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/critical-values/critical_values/{id}": {
+      "put": {
+        "tags": [
+          "CRITICAL VALUES ENDPOINTS",
+          "CriticalValues"
+        ],
+        "summary": "Update Critical Value",
+        "operationId": "update_critical_value_api_v1_critical_values_critical_values__id__put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriticalValuesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_CriticalValuesResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "CRITICAL VALUES ENDPOINTS",
+          "CriticalValues"
+        ],
+        "summary": "Delete Critical Value",
+        "operationId": "delete_critical_value_api_v1_critical_values_critical_values__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_NoneType_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/data-transformation/": {
+      "post": {
+        "tags": [
+          "TRANSFORMATION ENDPOINTS"
+        ],
+        "summary": "Create Transformation",
+        "operationId": "create_transformation_api_v1_data_transformation__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransformationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_TransformationResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/data-transformation/{document_id}": {
+      "get": {
+        "tags": [
+          "TRANSFORMATION ENDPOINTS"
+        ],
+        "summary": "Get Transformation",
+        "operationId": "get_transformation_api_v1_data_transformation__document_id__get",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_List_TransformationResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/data-transformation/{id}": {
+      "put": {
+        "tags": [
+          "TRANSFORMATION ENDPOINTS"
+        ],
+        "summary": "Update Transformation",
+        "operationId": "update_transformation_api_v1_data_transformation__id__put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransformationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_TransformationResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "TRANSFORMATION ENDPOINTS"
+        ],
+        "summary": "Delete Transformation",
+        "operationId": "delete_transformation_api_v1_data_transformation__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_NoneType_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/preview-table/": {
+      "post": {
+        "tags": [
+          "PREVIEW TABLE ENDPOINTS"
+        ],
+        "summary": "Create Preview Table",
+        "operationId": "create_preview_table_api_v1_preview_table__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreviewTableRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_PreviewTableResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/preview-table/{document_id}": {
+      "get": {
+        "tags": [
+          "PREVIEW TABLE ENDPOINTS"
+        ],
+        "summary": "Get Preview Table",
+        "operationId": "get_preview_table_api_v1_preview_table__document_id__get",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_List_PreviewTableResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/preview-table/{id}": {
+      "put": {
+        "tags": [
+          "PREVIEW TABLE ENDPOINTS"
+        ],
+        "summary": "Update Preview Table",
+        "operationId": "update_preview_table_api_v1_preview_table__id__put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreviewTableRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_PreviewTableResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "PREVIEW TABLE ENDPOINTS"
+        ],
+        "summary": "Delete Preview Table",
+        "operationId": "delete_preview_table_api_v1_preview_table__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_NoneType_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/template/templates": {
+      "get": {
+        "tags": [
+          "Template ENDPOINTS"
+        ],
+        "summary": "Get Transformation",
+        "operationId": "get_transformation_api_v1_template_templates_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWrapper_List_TemplateSchema__"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApplyTemplateRequest": {
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "title": "Template Id"
+          },
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "template_id",
+          "document_id"
+        ],
+        "title": "ApplyTemplateRequest"
+      },
+      "Body_create_document_api_v1_document__post": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "type": "array",
+            "title": "Files"
+          },
+          "template_id": {
+            "title": "Template Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "files"
+        ],
+        "title": "Body_create_document_api_v1_document__post"
+      },
+      "Body_upload_file_api_v1_files_upload_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_file_api_v1_files_upload_post"
+      },
+      "CriticalStatusEnum": {
+        "type": "string",
+        "enum": [
+          "N",
+          "Y"
+        ],
+        "title": "CriticalStatusEnum"
+      },
+      "CriticalValuesRequest": {
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          },
+          "critical_values": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CriticalValuesSchema"
+            },
+            "type": "object",
+            "title": "Critical Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_id",
+          "critical_values"
+        ],
+        "title": "CriticalValuesRequest"
+      },
+      "CriticalValuesResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          },
+          "critical_values": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CriticalValuesSchema"
+            },
+            "type": "object",
+            "title": "Critical Values"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "document_id",
+          "critical_values",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "CriticalValuesResponse"
+      },
+      "CriticalValuesSchema": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key"
+          },
+          "keyBlock": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keyblock"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "valueBlock": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valueblock"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "CriticalValuesSchema"
+      },
+      "DocumentDeleteRequest": {
+        "properties": {
+          "document_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Document Ids",
+            "description": "List of document IDs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_ids"
+        ],
+        "title": "DocumentDeleteRequest",
+        "example": {
+          "id": [
+            "60c72b2f9b1e8e5b2cbbf9b8"
+          ]
+        }
+      },
+      "DocumentPaginatedResponse": {
+        "properties": {
+          "docs": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentResponse"
+            },
+            "type": "array",
+            "title": "Docs",
+            "description": "List of document data"
+          },
+          "page": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PageInfo"
+              }
+            ],
+            "description": "Addditional Info for Pagination"
+          }
+        },
+        "type": "object",
+        "required": [
+          "docs",
+          "page"
+        ],
+        "title": "DocumentPaginatedResponse"
+      },
+      "DocumentRequest": {
+        "properties": {
+          "document_name": {
+            "type": "string",
+            "title": "Document Name",
+            "description": "Name of the document"
+          },
+          "processing_status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DocumentStatusEnum"
+              }
+            ],
+            "description": "Processing status of the document"
+          },
+          "extension": {
+            "type": "string",
+            "title": "Extension",
+            "description": "File extension of the document"
+          },
+          "document_path": {
+            "type": "string",
+            "title": "Document Path",
+            "description": "Path to the document in storage"
+          },
+          "is_template": {
+            "type": "boolean",
+            "title": "Is Template",
+            "description": "Indicates if the document is a template",
+            "default": false
+          },
+          "is_template_apply": {
+            "type": "boolean",
+            "title": "Is Template Apply",
+            "description": "Indicates if the template should be applied",
+            "default": false
+          },
+          "is_data_published": {
+            "type": "boolean",
+            "title": "Is Data Published",
+            "description": "Indicates if the data is published",
+            "default": false
+          },
+          "template": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TemplateSchema"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "is_deleted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Deleted",
+            "description": "Indicates if the document is deleted",
+            "default": false
+          },
+          "processed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Processed At",
+            "description": "Timestamp when the document was processed"
+          },
+          "published_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published By",
+            "description": "User who published the document"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_name",
+          "processing_status",
+          "extension",
+          "document_path"
+        ],
+        "title": "DocumentRequest",
+        "example": {
+          "document_name": "example.pdf",
+          "document_path": "/path/to/example.pdf",
+          "extension": "pdf",
+          "is_data_published": false,
+          "is_deleted": false,
+          "is_template": false,
+          "is_template_apply": false,
+          "processing_status": "IN_PROGRESS",
+          "published_by": "user_id_123"
+        }
+      },
+      "DocumentResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique identifier for the document"
+          },
+          "document_name": {
+            "type": "string",
+            "title": "Document Name",
+            "description": "Name of the document"
+          },
+          "processing_status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DocumentStatusEnum"
+              }
+            ],
+            "description": "Processing status of the document"
+          },
+          "extension": {
+            "type": "string",
+            "title": "Extension",
+            "description": "File extension of the document"
+          },
+          "document_path": {
+            "type": "string",
+            "title": "Document Path",
+            "description": "Path to the document in storage"
+          },
+          "textract_data_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textract Data Path",
+            "description": "Path to the extracted data"
+          },
+          "is_template": {
+            "type": "boolean",
+            "title": "Is Template",
+            "description": "Indicates if the document is a template"
+          },
+          "is_template_apply": {
+            "type": "boolean",
+            "title": "Is Template Apply",
+            "description": "Indicates if the template should be applied"
+          },
+          "template": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TemplateSchema"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "is_data_published": {
+            "type": "boolean",
+            "title": "Is Data Published",
+            "description": "Indicates if the document data is published",
+            "default": false
+          },
+          "processed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Processed At",
+            "description": "Date and time when document processing completed"
+          },
+          "published_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published By",
+            "description": "User who published the document"
+          },
+          "is_deleted": {
+            "type": "boolean",
+            "title": "Is Deleted",
+            "description": "Indicates if the document is deleted",
+            "default": false
+          },
+          "created_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created By",
+            "description": "User who created the document"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated By",
+            "description": "User who last updated the document"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "Timestamp when the document was created"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "Timestamp when the document was last updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "document_name",
+          "processing_status",
+          "extension",
+          "document_path",
+          "is_template",
+          "is_template_apply"
+        ],
+        "title": "DocumentResponse",
+        "example": {
+          "created_at": "2023-09-01T08:00:00",
+          "created_by": "admin_user",
+          "document_name": "example.pdf",
+          "document_path": "/path/to/example.pdf",
+          "extension": "pdf",
+          "id": "60c72b2f9b1e8e5b2cbbf9b8",
+          "is_data_published": true,
+          "is_deleted": false,
+          "is_template": false,
+          "is_template_apply": false,
+          "processed_at": "2023-09-14T12:45:30",
+          "processing_status": "COMPLETED",
+          "published_by": "user123",
+          "textract_data_path": "/path/to/textract_data.json",
+          "updated_at": "2023-09-14T12:45:30",
+          "updated_by": "editor_user"
+        }
+      },
+      "DocumentStatusEnum": {
+        "type": "string",
+        "enum": [
+          "PROCESSING",
+          "FAILED",
+          "PROCESSED"
+        ],
+        "title": "DocumentStatusEnum"
+      },
+      "DocumentTableResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          },
+          "page_number": {
+            "type": "integer",
+            "title": "Page Number"
+          },
+          "is_critical": {
+            "$ref": "#/components/schemas/CriticalStatusEnum"
+          },
+          "is_all_critical": {
+            "$ref": "#/components/schemas/CriticalStatusEnum"
+          },
+          "confidence": {
+            "type": "integer",
+            "title": "Confidence"
+          },
+          "table_number": {
+            "type": "integer",
+            "title": "Table Number"
+          },
+          "table_name": {
+            "type": "string",
+            "title": "Table Name"
+          },
+          "pointers": {
+            "$ref": "#/components/schemas/Pointers"
+          },
+          "original_table_name": {
+            "type": "string",
+            "title": "Original Table Name"
+          },
+          "data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "geometry": {
+            "type": "object",
+            "title": "Geometry"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "document_id",
+          "page_number",
+          "is_critical",
+          "is_all_critical",
+          "confidence",
+          "table_number",
+          "table_name",
+          "pointers",
+          "original_table_name",
+          "data",
+          "geometry"
+        ],
+        "title": "DocumentTableResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthCheckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Ready response model."
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "HealthCheckResponse"
+      },
+      "Mapping": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique identifier for the transformation."
+          },
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "Type of transformation."
+          },
+          "groupNumber": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Groupnumber",
+            "description": "Group number associated with the transformation."
+          },
+          "sourceTable": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceTable"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sourceField": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceField"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "transformationSyntax": {
+            "type": "string",
+            "title": "Transformationsyntax",
+            "description": "Syntax for the transformation logic."
+          },
+          "transformationStatus": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusEnum"
+              }
+            ],
+            "description": "status, e.g., 'Pass' or 'Fail'."
+          },
+          "sampleData": {
+            "type": "string",
+            "title": "Sampledata",
+            "description": "Sample data used for the transformation."
+          },
+          "targetValue": {
+            "type": "string",
+            "title": "Targetvalue",
+            "description": "Transformed target value."
+          },
+          "validationRuleSyntax": {
+            "type": "string",
+            "title": "Validationrulesyntax",
+            "description": "Validation rule syntax."
+          },
+          "validationStatus": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusEnum"
+              }
+            ],
+            "description": "Validation status, e.g., 'Pass' or 'Fail'."
+          },
+          "validationDescription": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validationdescription",
+            "description": "Description of the validation result."
+          },
+          "targetField": {
+            "type": "string",
+            "title": "Targetfield",
+            "description": "Target field for the transformation."
+          },
+          "orderColumn": {
+            "type": "integer",
+            "title": "Ordercolumn",
+            "description": "Order of the column."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "groupNumber",
+          "sourceTable",
+          "sourceField",
+          "transformationSyntax",
+          "transformationStatus",
+          "sampleData",
+          "targetValue",
+          "validationRuleSyntax",
+          "validationStatus",
+          "validationDescription",
+          "targetField",
+          "orderColumn"
+        ],
+        "title": "Mapping"
+      },
+      "PageInfo": {
+        "properties": {
+          "pageNumber": {
+            "type": "integer",
+            "title": "Pagenumber",
+            "description": "Current page number"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size",
+            "description": "Number of items per page"
+          },
+          "totalCount": {
+            "type": "integer",
+            "title": "Totalcount",
+            "description": "Total number of documents"
+          },
+          "totalPages": {
+            "type": "integer",
+            "title": "Totalpages",
+            "description": "Total number of pages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pageNumber",
+          "size",
+          "totalCount",
+          "totalPages"
+        ],
+        "title": "PageInfo"
+      },
+      "PasswordResetConfirm": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token",
+            "description": "Token provided for resetting password"
+          },
+          "new_password": {
+            "type": "string",
+            "title": "New Password",
+            "description": "New password for the user"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "new_password"
+        ],
+        "title": "PasswordResetConfirm",
+        "example": {
+          "new_password": "newsecurepassword123",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        }
+      },
+      "PasswordResetRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "User's email address for password reset request"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "title": "PasswordResetRequest",
+        "example": {
+          "email": "user@example.com"
+        }
+      },
+      "Pointers": {
+        "properties": {
+          "rowPointers": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Rowpointers"
+          },
+          "tablePointers": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Tablepointers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rowPointers",
+          "tablePointers"
+        ],
+        "title": "Pointers"
+      },
+      "PreviewTableRequest": {
+        "properties": {
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "PreviewTableRequest"
+      },
+      "PreviewTableResponse": {
+        "properties": {
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "PreviewTableResponse"
+      },
+      "ResponseWrapper_Any_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[Any]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_CriticalValuesResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CriticalValuesResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[CriticalValuesResponse]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_Dict_str__Any__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[Dict[str, Any]]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_Dict_str__str__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[Dict[str, str]]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_DocumentPaginatedResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentPaginatedResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[DocumentPaginatedResponse]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_DocumentResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[DocumentResponse]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_DocumentTableResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentTableResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[DocumentTableResponse]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_List_DocumentResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/DocumentResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[List[DocumentResponse]]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_List_DocumentTableResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/DocumentTableResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[List[DocumentTableResponse]]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_List_PreviewTableResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PreviewTableResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[List[PreviewTableResponse]]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_List_TemplateSchema__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TemplateSchema"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[List[TemplateSchema]]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_List_TransformationResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TransformationResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[List[TransformationResponse]]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_NoneType_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "type": "null",
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[NoneType]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_PreviewTableResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreviewTableResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[PreviewTableResponse]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_Token_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Token"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[Token]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_TransformationResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TransformationResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[TransformationResponse]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "ResponseWrapper_list_CriticalValuesResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ERROR",
+              "WARN",
+              "SUCCESS"
+            ],
+            "title": "Status",
+            "description": "Status of the response"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Descriptive message about the response"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/CriticalValuesResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Response payload containing requested data"
+          },
+          "error": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error details if the status is 'ERROR'"
+          },
+          "execution_id": {
+            "type": "string",
+            "title": "Execution Id",
+            "description": "Unique ID for tracking the execution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "ResponseWrapper[list[CriticalValuesResponse]]",
+        "example": {
+          "data": {
+            "example_field": "example_value"
+          },
+          "execution_id": "9f1b6e5d8a7c4b6f8d93e2a1f3a1a9e7",
+          "message": "Request processed successfully",
+          "status": "SUCCESS"
+        }
+      },
+      "SourceField": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "id"
+        ],
+        "title": "SourceField"
+      },
+      "SourceTable": {
+        "properties": {
+          "table_name": {
+            "type": "string",
+            "title": "Table Name"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "table_name",
+          "id"
+        ],
+        "title": "SourceTable"
+      },
+      "StatusEnum": {
+        "type": "string",
+        "enum": [
+          "Pass",
+          "Fail",
+          "Syntax-Error"
+        ],
+        "title": "StatusEnum"
+      },
+      "TableUpdateRequest": {
+        "properties": {
+          "is_critical": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CriticalStatusEnum"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "is_all_critical": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CriticalStatusEnum"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "table_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Table Name"
+          },
+          "pointers": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Pointers"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "original_table_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Table Name"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data"
+          },
+          "geometry": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Geometry"
+          }
+        },
+        "type": "object",
+        "title": "TableUpdateRequest"
+      },
+      "TemplateSchema": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "document_id"
+        ],
+        "title": "TemplateSchema"
+      },
+      "Token": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token",
+            "description": "Access token for authenticated requests"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "description": "Type of token, typically 'Bearer'"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "title": "Token",
+        "example": {
+          "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "token_type": "Bearer"
+        }
+      },
+      "TransformationRequest": {
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "is_reviewed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Reviewed"
+          },
+          "mappings": {
+            "items": {
+              "$ref": "#/components/schemas/Mapping"
+            },
+            "type": "array",
+            "title": "Mappings"
+          },
+          "preview_table": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreviewTableResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_id",
+          "name",
+          "is_reviewed",
+          "mappings",
+          "preview_table"
+        ],
+        "title": "TransformationRequest"
+      },
+      "TransformationResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "is_reviewed": {
+            "type": "boolean",
+            "title": "Is Reviewed"
+          },
+          "mappings": {
+            "items": {
+
+            },
+            "type": "array",
+            "title": "Mappings"
+          },
+          "preview_table": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreviewTableResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "document_id",
+          "name",
+          "is_reviewed",
+          "mappings",
+          "preview_table",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "TransformationResponse"
+      },
+      "UserLogin": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "User's email address"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password",
+            "description": "User's password for login"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "UserLogin",
+        "example": {
+          "email": "user@example.com",
+          "password": "securepassword123"
+        }
+      },
+      "UserSignUp": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "User's email address"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password",
+            "description": "User's password for account creation"
+          },
+          "first_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Name",
+            "description": "User's first name"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Name",
+            "description": "User's last name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "UserSignUp",
+        "example": {
+          "email": "user@example.com",
+          "first_name": "John",
+          "last_name": "Doe",
+          "password": "securepassword123"
+        }
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

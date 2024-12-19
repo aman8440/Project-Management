@@ -104,14 +104,14 @@
   content: "| Profile";
 }
 .sidebar-container:hover .imgContainer .mask::after {
-  content: "| Projects";
+  content: "| Extract";
 }
 .sidebar-container:hover .imgContainer .aws::after {
   content: "| Dashboard";
   margin-left: -4px;
 }
 .sidebar-container:hover .imgContainer .add::after {
-  content: "| Add Project";
+  content: "| Add Extract";
 }
 .sidebar-span{
   position: absolute;

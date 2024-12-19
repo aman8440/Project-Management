@@ -4,18 +4,16 @@ import { z } from "zod";
 import { UseFormRegister } from 'react-hook-form';
 import { TextFieldProps } from "@mui/material/TextField";
 import { GridApi, GridColDef, GridRowId, GridKeyValue } from "@mui/x-data-grid";
+import { DocumentStatusEnum } from "../swagger/api";
 
 export type SignInData = z.infer<typeof LoginSchema>;
 
 export interface UserData {
-  id: number
-  fname: string;
-  lname: string;
-  email: string;
-  gender: string;
-  phone: string;
-  status: string;
-  image_name?: string
+  created_at: string,
+  email: string,
+  first_name: string,
+  last_name: string,
+  updated_at: string
 }
 export interface FilterType {
   page: number;
@@ -49,21 +47,24 @@ export interface DialogProps {
   }[];
 }
 
+export interface TemplateProp{
+  id:string;
+  document_id:string;
+  name:string
+}
+
 export interface RowData {
-  id: number;
-  project_name: string;
-  project_tech: string;
-  project_startat: string;
-  project_deadline: string;
-  project_lead: string;
-  team_size: number;
-  project_client: string;
-  project_management_tool: string;
-  project_management_url: string;
-  project_description: string;
-  project_repo_tool: string;
-  project_repo_url: string;
-  project_status: string;
+  created_at: string;
+  document_name: string;
+  document_path: string;
+  extension: string;
+  is_data_published: boolean;
+  is_template: boolean;
+  is_template_apply: boolean;
+  template: TemplateProp | null;
+  updated_at: string;
+  id:string
+  processing_status:string
 }
 
 export interface ProjectData{
@@ -93,6 +94,13 @@ export interface FilterState {
   showTechField: boolean;
   toolSearch: string;
 }
+export interface ExtractFilterState {
+  visibleFilter: boolean;
+  selectedStatus: string;
+  selectedExtension: string;
+  selectedStartDate: Date | null;
+  selectedEndDate: Date | null;
+}
 
 export interface FilterSidebarProps {
   isOpen: boolean;
@@ -103,6 +111,25 @@ export interface FilterSidebarProps {
   setFilters: React.Dispatch<React.SetStateAction<FilterDataProp>>;
   filterState: FilterState;
   setFilterState: React.Dispatch<React.SetStateAction<FilterState>>;
+}
+
+export interface ExtractFilterDataProp{
+  processing_status?: DocumentStatusEnum | '';
+  extension?: string;
+  startDateAt?: Date | null;
+  endDateAt?: Date | null; 
+}
+
+export interface ExtractFilterProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onApply: (filters: ExtractFilterDataProp) => void;
+  onReset: () => void;
+  filter: ExtractFilterDataProp;
+  onRemoveFilter: (filterKey: keyof ExtractFilterState) => void;
+  setFilters: React.Dispatch<React.SetStateAction<ExtractFilterDataProp>>;
+  filterState: ExtractFilterState;
+  setFilterState: React.Dispatch<React.SetStateAction<ExtractFilterState>>;
 }
 
 export interface FilterDataProp{

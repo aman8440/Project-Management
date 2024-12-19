@@ -13,7 +13,7 @@ import {  setAuthToken } from "../../services/storage.service";
 import loginLogo from '../../assets/img/login_logo.svg';
 import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { AdminLoginRequest, AdminLoginResponse, AuthenticationService } from '../../swagger/api';
+import { AuthEndpointsService, ResponseWrapper_Token_, UserLogin } from '../../swagger/api';
 
 export default function Signin() {
   const navigate = useNavigate();
@@ -38,22 +38,16 @@ export default function Signin() {
     event.preventDefault();
   };
 
-  const onSubmit = async (data: AdminLoginRequest) => {
+  const onSubmit = async (data: UserLogin) => {
     setIsLoading(true);
     
     try {
-      const response : AdminLoginResponse = await AuthenticationService.postApiLogin(data)
-
-      const responseData: {
-        token?: string;
-        message?: string;
-        status?: string;
-      } = await response;
+      const response : ResponseWrapper_Token_ = await AuthEndpointsService.loginApiV1AuthLoginPost(data)
   
-      if (response.status === 'success' && responseData?.token) {
-        setAuthToken(responseData.token);
+      if (response.data?.access_token) {
+        setAuthToken(response.data.access_token);
         toast.success("Login successful!");
-        navigate("/dashboard/projects");
+        navigate("/dashboard/Extract");
       } else {
         // The interceptor will already handle toast for errors.
       }

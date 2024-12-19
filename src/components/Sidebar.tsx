@@ -1,37 +1,33 @@
 import logo from '../assets/img/logo.svg';
 import projectIcon from '../assets/img/project_icon.svg';
-import profileIcon from '../assets/img/profile_icon.svg';
-import dashboardIcon from '../assets/img/dashboard-icon.svg';
 import addProjectIcon from '../assets/img/add-project-icon.svg';
 import './Sidebar.css';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import projectIconActive from '../assets/img/project-icon-active.svg';
-import profileIconActive from '../assets/img/profile-icon-active.svg';
-import dashboardIconActive from '../assets/img/home-icon-active.svg';
 import addProjectIconACtive from '../assets/img/add-project-icon-active.svg';
 
 const Sidebar = () => {
   const location = useLocation();
-  const [isProjectsOpen, setIsProjectsOpen] = useState(false);
+  const [isExtractOpen, setIsExtractOpen] = useState(false);
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
 
-  const toggleProjectsSubmenu = () => setIsProjectsOpen(!isProjectsOpen);
+  const toggleExtractSubmenu = () => setIsExtractOpen(!isExtractOpen);
   const handleMouseEnterSidebar = () => setIsSidebarHovered(true);
   const handleMouseLeaveSidebar = () => setIsSidebarHovered(false);
   const isActive = (path: string) => location.pathname === path;
 
-  const projectsRoute = `/dashboard/projects${location.search}`;
+  const ExtractRoute = `/dashboard/Extract${location.search}`;
 
   useEffect(() => {
     if (
-      location.pathname.startsWith('/dashboard/projects/add-projects') &&
-      location.pathname !== `${projectsRoute}`
+      location.pathname.startsWith('/dashboard/Extract/add-Extract') &&
+      location.pathname !== `${ExtractRoute}`
     ) {
-      setIsProjectsOpen(true);
+      setIsExtractOpen(true);
     }
-  }, [location.pathname]);
+  }, [ExtractRoute, location.pathname]);
 
   return (
     <div className="sidebar-container text-white d-flex flex-column"
@@ -44,36 +40,26 @@ const Sidebar = () => {
           <img src={logo} alt="logo"/>
         </div>
         <hr className="line"/>
-        <Link className='text-decoration-none' to="/dashboard">   
-          <div className={`aws d-flex btn ${isActive("/dashboard") ? "active" : ""}`}>
-            <img src={isActive("/dashboard") ? dashboardIcon : dashboardIconActive} alt="dashboardIcon" height='25' width='25'/>
-          </div>
-        </Link>
-        <Link className='text-decoration-none' to="/dashboard/profile">
-          <div className={`home d-flex btn ${isActive("/dashboard/profile") ? "active" : ""}`}>
-            <img src={isActive("/dashboard/profile") ? profileIcon : profileIconActive} alt="profileIcon" height='20' width='20' />
-          </div>
-        </Link>
-        <Link className='text-decoration-none' to={projectsRoute}>   
+        <Link className='text-decoration-none' to={ExtractRoute}>   
           <div
-            className={`mask d-flex btn ${isActive("/dashboard/projects") ? "active" : ""}`}
+            className={`mask d-flex btn ${isActive("/dashboard/extract") ? "active" : ""}`}
             style={{ position:'relative'}}
             >
-            <img src={isActive("/dashboard/projects") ? projectIcon : projectIconActive} alt="projectIcon" height="20" width="20" />
+            <img src={isActive("/dashboard/extract") ? projectIcon : projectIconActive} alt="projectIcon" height="20" width="20" />
             {isSidebarHovered && (
-              <span onClick={toggleProjectsSubmenu} className='sidebar-span'>
-                {isProjectsOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
+              <span onClick={toggleExtractSubmenu} className='sidebar-span'>
+                {isExtractOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
               </span>
             )}
           </div>
         </Link>
-        {isProjectsOpen && (
+        {isExtractOpen && (
           <Link
             className="text-decoration-none ms-1"
-            to="/dashboard/projects/add-projects"
+            to="/dashboard/extract/add-extract"
           >
-            <div className={`add d-flex btn ${isActive("/dashboard/projects/add-projects") ? "active" : ""}`}>
-              <img src={isActive("/dashboard/projects/add-projects") ? addProjectIcon : addProjectIconACtive} alt="addProjectIcon" height='20' width='20'/>
+            <div className={`add d-flex btn ${isActive("/dashboard/extract/add-extract") ? "active" : ""}`}>
+              <img src={isActive("/dashboard/extract/add-extract") ? addProjectIcon : addProjectIconACtive} alt="addProjectIcon" height='20' width='20'/>
             </div>
           </Link>
         )}

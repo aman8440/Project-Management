@@ -171,6 +171,7 @@ const AddProjects = () => {
                     {...register("projectTech")}
                     label="Project Technologies"
                     name="projectTech"
+                    error={!!errors.projectTech} helperText={errors.projectTech?.message}
                   />
                 )}
                 getOptionLabel={(option) => option}

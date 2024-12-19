@@ -1,5 +1,4 @@
 import shell from 'shelljs';
-import { constVariables } from '../src/constants'
-const api = `npx openapi-typescript-codegen --input ${constVariables.swagger_url} --output ./src/swagger/api`;
+const api = `npx openapi-typescript-codegen --input ./console/openapi.json --output ./src/swagger/api`;
 
 shell.exec(api);

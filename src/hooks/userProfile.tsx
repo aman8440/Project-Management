@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useCallback } from "react";
 import { AuthProviderProps, UserData } from "../interfaces";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AuthenticationService } from "../swagger/api";
+import { AuthEndpointsService } from "../swagger/api";
 
 type UserProfileContextType = {
   userProfile?: UserData;
@@ -23,8 +23,8 @@ export const UserProfileProvider = ({ children }: AuthProviderProps) => {
   const fetchUserProfile = useCallback(async (): Promise<boolean> => {
     setIsProfileLoading(true);
     try {
-      const response = await AuthenticationService.getMe()
-      setUserProfile(response.admin);
+      const response = await AuthEndpointsService.readUsersMeApiV1AuthUsersMeGet()
+      setUserProfile(response.data as UserData);
       return true;
     } catch (error) {
       console.error("Error fetching user data:", error);

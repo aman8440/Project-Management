@@ -7,7 +7,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Logout } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
-import { constVariables } from '../constants';
 
 const Navbar = () => {
   const { userProfile }= useUserProfile();
@@ -38,10 +37,10 @@ const Navbar = () => {
         <div className="mx-2 d-flex align-items-center">
           <div
             className="nav-sub-container d-flex justify-content-center align-items-center rounded-circle bg-dark text-white me-2">
-           {userProfile?.image_name !== null ? <img src={`${constVariables.base_url}assets/images/uploads/` + userProfile?.image_name} alt="userProfile" width="40" height="40"/> : `${userProfile?.fname?.charAt(0)}${userProfile?.lname?.charAt(0)}`} 
+            {`${userProfile?.first_name?.charAt(0)}${userProfile?.last_name?.charAt(0)}`} 
           </div>
         </div>
-        <span>{`${userProfile?.fname}`}</span>
+        <span>{`${userProfile?.first_name}`}</span>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
