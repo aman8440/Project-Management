@@ -1,4 +1,4 @@
 export const constVariables = {
-  base_url: 'http://localhost/truck_management/',
-  swagger_url: 'http://localhost/truck_management/swagger.json'
+  base_url: 'http://127.0.0.1:9000/',
+  swagger_url: 'http://127.0.0.1:9000'
 }

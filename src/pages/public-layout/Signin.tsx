@@ -47,7 +47,7 @@ export default function Signin() {
       if (response.data?.access_token) {
         setAuthToken(response.data.access_token);
         toast.success("Login successful!");
-        navigate("/dashboard/Extract");
+        navigate("/Extract");
       } else {
         // The interceptor will already handle toast for errors.
       }

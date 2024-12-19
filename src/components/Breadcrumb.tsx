@@ -6,14 +6,14 @@ function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
   event.preventDefault();
 }
 
-const Breadcrumb = ({ projectName }: { projectName?: string }) => {
+const Breadcrumb = ({ documentName }: { documentName?: string }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const pathSegments = location.pathname.split('/').filter((segment) => segment && segment !== 'edit'); 
   if(parseInt(pathSegments[pathSegments.length-1])){
     pathSegments.pop()
-    pathSegments.push(projectName || "");
+    pathSegments.push(documentName || "");
   }
   
   const buildPath = (index: number) =>

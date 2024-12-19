@@ -18,11 +18,11 @@ const Sidebar = () => {
   const handleMouseLeaveSidebar = () => setIsSidebarHovered(false);
   const isActive = (path: string) => location.pathname === path;
 
-  const ExtractRoute = `/dashboard/Extract${location.search}`;
+  const ExtractRoute = `/Extract${location.search}`;
 
   useEffect(() => {
     if (
-      location.pathname.startsWith('/dashboard/Extract/add-Extract') &&
+      location.pathname.startsWith('/Extract/add-Extract') &&
       location.pathname !== `${ExtractRoute}`
     ) {
       setIsExtractOpen(true);
@@ -42,10 +42,10 @@ const Sidebar = () => {
         <hr className="line"/>
         <Link className='text-decoration-none' to={ExtractRoute}>   
           <div
-            className={`mask d-flex btn ${isActive("/dashboard/extract") ? "active" : ""}`}
+            className={`mask d-flex btn ${isActive("/extract") ? "active" : ""}`}
             style={{ position:'relative'}}
             >
-            <img src={isActive("/dashboard/extract") ? projectIcon : projectIconActive} alt="projectIcon" height="20" width="20" />
+            <img src={isActive("/extract") ? projectIcon : projectIconActive} alt="projectIcon" height="20" width="20" />
             {isSidebarHovered && (
               <span onClick={toggleExtractSubmenu} className='sidebar-span'>
                 {isExtractOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
@@ -56,10 +56,10 @@ const Sidebar = () => {
         {isExtractOpen && (
           <Link
             className="text-decoration-none ms-1"
-            to="/dashboard/extract/add-extract"
+            to="/extract/add-extract"
           >
-            <div className={`add d-flex btn ${isActive("/dashboard/extract/add-extract") ? "active" : ""}`}>
-              <img src={isActive("/dashboard/extract/add-extract") ? addProjectIcon : addProjectIconACtive} alt="addProjectIcon" height='20' width='20'/>
+            <div className={`add d-flex btn ${isActive("/extract/add-extract") ? "active" : ""}`}>
+              <img src={isActive("/extract/add-extract") ? addProjectIcon : addProjectIconACtive} alt="addProjectIcon" height='20' width='20'/>
             </div>
           </Link>
         )}

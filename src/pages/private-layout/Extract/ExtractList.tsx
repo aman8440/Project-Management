@@ -406,12 +406,12 @@ const ExtractList = () => {
   };
 
   const handleNavigateToAddProjects = () => {
-    navigate('/dashboard/extract/add-extract');
+    navigate('/extract/add-extract');
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleRowDoubleClick = (param:any) => {
-    navigate(`/dashboard/projects/${param.row.id}`);
+    navigate(`/extract/${param.row.id}`);
   };
   
   useEffect(() => {
