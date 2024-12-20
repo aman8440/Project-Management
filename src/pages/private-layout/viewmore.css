@@ -32,3 +32,30 @@
   font-size: 16px;
   font-weight: bold;
 }
+
+.pdf-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 800px;
+}
+.pdf-viewer{
+  width: 100%;
+}
+.pdf-document {
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.pdf-page {
+  max-width: 100%;
+  height: auto;
+}
+
+.pdf-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}

@@ -72,6 +72,32 @@ export const resetPasswordSchema = z
     }
   });
 
+export const DocumentStatusEnum = z.enum(['PROCESSING', 'FAILED', 'PROCESSED']);
+
+export const TemplateProp = z.object({
+  id: z.string().optional(),
+  document_id: z.string().optional(),
+  name: z.string().optional()
+});
+
+export const ExtractDetailDataSchema = z.object({
+  created_at: z.string().nullable().optional(),
+  created_by: z.string().nullable().optional(),
+  document_name: z.string().optional(),
+  document_path: z.string().optional(),
+  extension: z.string().optional(),
+  id: z.string().optional(),
+  is_data_published: z.boolean().optional(),
+  is_deleted: z.boolean().optional(),
+  is_template: z.boolean().optional(),
+  is_template_apply: z.boolean().optional(),
+  processed_at: z.string().nullable().optional(),
+  processing_status: DocumentStatusEnum.optional(),
+  template: TemplateProp.nullable().optional(),
+  textract_data_path: z.string().nullable().optional(),
+  updated_at: z.string().nullable().optional(),
+  updated_by: z.string().nullable().optional(),
+});
 
 export const editUserSchema = z.object({
   email: z

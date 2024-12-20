@@ -39,7 +39,8 @@ export interface DialogProps {
   open: boolean;
   onClose: () => void;
   title: string;
-  content: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content: any; 
   actions: {
     label: string;
     onClick: () => void;
@@ -81,6 +82,26 @@ export interface ProjectData{
   projectRepoTool: string;
   projectRepoUrl: string;
   projectStatus: string;
+}
+
+export interface ExtractDetailData{
+  created_at?: string | null;
+  created_by?: string | null;
+  document_name?: string;
+  document_path?:string;
+  extension?:string;
+  id?:string;
+  is_data_published?:boolean;
+  is_deleted?:boolean;
+  is_template?:boolean;
+  is_template_apply?:boolean;
+  processed_at?: string | null;
+  processing_status?:  DocumentStatusEnum | '';
+  published_by?: string | null;
+  template?: TemplateProp | null | undefined;
+  textract_data_path?: string | null;
+  updated_at?: string | null;
+  updated_by?: string | null;
 }
 
 export interface FilterState {

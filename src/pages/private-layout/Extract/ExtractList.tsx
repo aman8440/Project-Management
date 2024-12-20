@@ -7,7 +7,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import React from 'react';
 import useDebounce from '../../../hooks/useDebounce';
 import { useLoader } from '../../../hooks/loaderContext';
-import { Avatar, InputAdornment, Paper, TextField, Tooltip, tooltipClasses, Typography } from '@mui/material';
+import { Avatar, IconButton, InputAdornment, Paper, TextField, Tooltip, tooltipClasses, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -22,6 +22,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import AlertDialogSlide from '../../../components/AlertDialogSlide';
 import { toast } from 'react-toastify';
+import EditIcon from "@mui/icons-material/Edit";
 import ExtractFilter from '../../../components/ExtractFilter';
 
 function CustomToolbar() {
@@ -60,7 +61,7 @@ const ExtractList = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [paginationModel, setPaginationModel] = useState({
     pageNumber: parseInt(searchParams.get("pageNumber") || "1"),
-    size: parseInt(searchParams.get("size") || "10"),
+    size: parseInt(searchParams.get("size") || "20"),
   });
   const [sortModel, setSortModel] = useState<GridSortModel>([
     {
@@ -100,8 +101,8 @@ const ExtractList = () => {
         </div>
       ),
      },
-    { field: "id", headerName: "Document ID", width: 150 },
-    { field: "processing_status", headerName: "Status", width: 150,
+    { field: "id", headerName: "Document ID", width: 140 },
+    { field: "processing_status", headerName: "Status", width: 140,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       renderCell: (params:any) => (
         <div className='d-flex align-items-center'>
@@ -116,30 +117,50 @@ const ExtractList = () => {
         params.value ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />
       ),
      },
-    { field: "is_template", headerName: "Is template", width: 140,
+    { field: "is_template", headerName: "Is template", width: 130,
       renderCell: (params) => (
         params.value ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />
       ),
      },
-    { field: "is_template_apply", headerName: "Is Template Apply", width: 140,
+    { field: "is_template_apply", headerName: "Is Template Apply", width: 130,
       renderCell: (params) => (
         params.value ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />
       ),
      },
-    { field: "template", headerName: "Template Name", width: 150,
+    { field: "template", headerName: "Template Name", width: 140,
       renderCell: (params) => params.row.template?.name || ""
      },
-    { field: "document_path", headerName: "Document Path", width: 150 },
-    { field: "created_at", headerName: "Created At", width: 150,
+    { field: "document_path", headerName: "Document Path", width: 140 },
+    { field: "created_at", headerName: "Created At", width: 140,
       renderCell: (params) => (
         <span>{new Date(params.value).toUTCString()}</span>
       ),
      },
-    { field: "updated_at", headerName: "Updated At", width: 150,
+    { field: "updated_at", headerName: "Updated At", width: 140,
       renderCell: (params) => (
         <span>{new Date(params.value).toUTCString()}</span>
       ),
-     },
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 80,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      renderCell: (params:any) => {
+        const handleEdit = () => {
+          navigate(`/extract/edit/${params.row.id}`);
+        };
+        return (
+          <div>
+            <Tooltip title="Edit" arrow>
+              <IconButton color="secondary" onClick={handleEdit}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+        );
+      },
+    }
   ]);
 
   const handleClose = () => {
@@ -306,7 +327,7 @@ const ExtractList = () => {
     });
     setSearchParams({
       pageNumber: "1",
-      size: "10",
+      size: "20",
       sortColumn: "document_name",
       sortDirection: "asc",
     })
@@ -315,7 +336,7 @@ const ExtractList = () => {
     filters.processing_status = "";
     filters.extension = "";
     paginationModel.pageNumber = 1;
-    paginationModel.size = 10;
+    paginationModel.size = 20;
     sortModel[0].field = "document_name";
     sortModel[0].sort = "asc";
     searchText= "";
@@ -525,7 +546,7 @@ const ExtractList = () => {
               onRowDoubleClick={handleRowDoubleClick}
               onPaginationModelChange={(newModel) => setPaginationModel({
                 pageNumber: newModel.page + 1,
-                size: newModel.pageSize || 10,
+                size: newModel.pageSize || 20,
               })}
               onSortModelChange={(newModel) => setSortModel(newModel)}
               paginationModel={{
