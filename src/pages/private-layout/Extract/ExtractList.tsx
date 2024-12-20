@@ -60,7 +60,7 @@ const ExtractList = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]); 
   const [totalRows, setTotalRows] = useState(0);
   const [paginationModel, setPaginationModel] = useState({
-    pageNumber: parseInt(searchParams.get("pageNumber") || "1"),
+    pageNumber: parseInt(searchParams.get("pageNumber") || "0"),
     size: parseInt(searchParams.get("size") || "20"),
   });
   const [sortModel, setSortModel] = useState<GridSortModel>([
@@ -326,7 +326,7 @@ const ExtractList = () => {
       endDateAt: null,
     });
     setSearchParams({
-      pageNumber: "1",
+      pageNumber: "0",
       size: "20",
       sortColumn: "document_name",
       sortDirection: "asc",
@@ -335,7 +335,7 @@ const ExtractList = () => {
     filters.endDateAt = null;
     filters.processing_status = "";
     filters.extension = "";
-    paginationModel.pageNumber = 1;
+    paginationModel.pageNumber = 0;
     paginationModel.size = 20;
     sortModel[0].field = "document_name";
     sortModel[0].sort = "asc";
@@ -538,6 +538,7 @@ const ExtractList = () => {
           <Paper>
             <DataGrid
               rows={rows}
+              rowHeight={42}
               columns={columns}
               rowCount={totalRows}
               paginationMode="server"
@@ -545,12 +546,12 @@ const ExtractList = () => {
               checkboxSelection
               onRowDoubleClick={handleRowDoubleClick}
               onPaginationModelChange={(newModel) => setPaginationModel({
-                pageNumber: newModel.page + 1,
+                pageNumber: newModel.page,
                 size: newModel.pageSize || 20,
               })}
               onSortModelChange={(newModel) => setSortModel(newModel)}
               paginationModel={{
-                page: paginationModel.pageNumber - 1,
+                page: paginationModel.pageNumber,
                 pageSize: paginationModel.size
               }}
               rowSelectionModel={selectedRows}
