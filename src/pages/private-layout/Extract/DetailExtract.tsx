@@ -222,11 +222,11 @@ const DetailExtract = () => {
                                 className="table-details-tr"
                               >
                                 <td 
-                                  className="table-details-td py-3 px-4"
+                                  className="table-details-td-left py-3 px-4"
                                 >
                                   <span className="fw-medium text-dark">{detail.title}</span>
                                 </td>
-                                <td className="py-3 px-4">
+                                <td className="table-details-td-right py-3 px-4">
                                   <span className="text-secondary">{detail.content}</span>
                                 </td>
                               </tr>
