@@ -12,12 +12,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel'
-import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
-import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
+import TuneIcon from '@mui/icons-material/Tune';
+import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { DocumentDeleteRequest, DocumentEndpointsService, DocumentStatusEnum } from '../../../swagger/api';
 import Button from '../../../components/Button';
-import RestoreIcon from '@mui/icons-material/Restore';
 import CloseIcon from '@mui/icons-material/Close';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import AlertDialogSlide from '../../../components/AlertDialogSlide';
@@ -495,9 +495,9 @@ const ExtractList = () => {
                 />
               </Tooltip>
             </div>
-            <Button text={"Filter"} type={'button'} onClick={() => setSidebarOpen(true)} className='filter-btn' startIconPass={<FilterAltOutlinedIcon />} />
-            <Button text={"Refresh"} type={'button'} onClick={() => refershFunction()} className='filter-btn' startIconPass={<RestoreIcon />} />
-            <Button text={"Upload"} type={'button'} className='add-project-btn' onClick={handleNavigateToAddProjects} startIconPass={<CreateNewFolderOutlinedIcon />} />
+            <Button text={"Filter"} type={'button'} onClick={() => setSidebarOpen(true)} className='filter-btn' startIconPass={<TuneIcon />} />
+            <Button text={"Refresh"} type={'button'} onClick={() => refershFunction()} className='filter-btn' startIconPass={<RestartAltIcon />} />
+            <Button text={"Upload"} type={'button'} className='add-project-btn' onClick={handleNavigateToAddProjects} startIconPass={<UploadFileOutlinedIcon />} />
           </div>
         </div>
         {filterState.visibleFilter && (
