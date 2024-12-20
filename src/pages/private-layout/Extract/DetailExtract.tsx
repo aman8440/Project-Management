@@ -145,7 +145,6 @@ const DetailExtract = () => {
           'Content-Type': 'application/pdf'
         },
       });
-      console.log(response);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       setPdfUrl(url);
@@ -213,20 +212,27 @@ const DetailExtract = () => {
               <CustomTabPanel value={value} index={0}>
                 {formData ? (
                   <>
-                    <div className="tab-pane fade show active">
-                      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                        {extractDetails.map((detail, index) => (
-                          <div className={"col d-flex flex-column"} key={index}>
-                            <div className="card h-100">
-                              <div className="card-body">
-                                <h5 className="card-title text-primary">
-                                  {detail.title}
-                                </h5>
-                                <p className="card-text">{detail.content}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
+                    <div className="card shadow-sm">
+                      <div className="card-body p-0">
+                        <table className="table table-borderless m-0">
+                          <tbody>
+                            {extractDetails.map((detail, index) => (
+                              <tr 
+                                key={index} 
+                                className="table-details-tr"
+                              >
+                                <td 
+                                  className="table-details-td py-3 px-4"
+                                >
+                                  <span className="fw-medium text-dark">{detail.title}</span>
+                                </td>
+                                <td className="py-3 px-4">
+                                  <span className="text-secondary">{detail.content}</span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </>

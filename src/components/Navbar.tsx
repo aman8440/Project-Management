@@ -1,16 +1,14 @@
 import './navbar.css';
 import searchIcon from '../assets/img/search_icon.svg';
 import { useLogout, useUserProfile } from "../hooks/userProfile";
-import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
+import { IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Logout } from "@mui/icons-material";
-import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const { userProfile }= useUserProfile();
-  const navigate= useNavigate();
   const logout = useLogout();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [icon, setIcon] = useState(true);
@@ -67,10 +65,6 @@ const Navbar = () => {
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-          <MenuItem onClick={()=> {handleClose(); navigate("/dashboard/profile");}}>
-            <Avatar/>Profile
-          </MenuItem>
-          <Divider />
           <MenuItem onClick={() => {handleClose(); logout();}}>
             <ListItemIcon>
               <Logout fontSize="small" />

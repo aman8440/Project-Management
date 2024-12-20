@@ -1,12 +1,12 @@
 import logo from '../assets/img/logo.svg';
-import projectIcon from '../assets/img/project_icon.svg';
 import addProjectIcon from '../assets/img/add-project-icon.svg';
 import './Sidebar.css';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import projectIconActive from '../assets/img/project-icon-active.svg';
 import addProjectIconACtive from '../assets/img/add-project-icon-active.svg';
+import activeExtractIcon from '../assets/img/active_extract.svg';
+import extractIcon from '../assets/img/extract_icon.svg';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -18,7 +18,7 @@ const Sidebar = () => {
   const handleMouseLeaveSidebar = () => setIsSidebarHovered(false);
   const isActive = (path: string) => location.pathname === path;
 
-  const ExtractRoute = `/Extract${location.search}`;
+  const ExtractRoute = `/extract${location.search}`;
 
   useEffect(() => {
     if (
@@ -45,7 +45,7 @@ const Sidebar = () => {
             className={`mask d-flex btn ${isActive("/extract") ? "active" : ""}`}
             style={{ position:'relative'}}
             >
-            <img src={isActive("/extract") ? projectIcon : projectIconActive} alt="projectIcon" height="20" width="20" />
+            <img src={isActive("/extract") ? activeExtractIcon : extractIcon} alt="projectIcon" height="20" width="20" />
             {isSidebarHovered && (
               <span onClick={toggleExtractSubmenu} className='sidebar-span'>
                 {isExtractOpen ? <FaChevronUp className="ms-auto" /> : <FaChevronDown className="ms-auto" />}
