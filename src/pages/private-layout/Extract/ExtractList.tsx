@@ -1,5 +1,4 @@
 import '../projectList.css';
-import Breadcrumb from "../../../components/Breadcrumb";
 import { DataGrid, GridSortDirection, GridSortModel, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { ExtractFilterDataProp, ExtractFilterState, RowData } from '../../../interfaces';
@@ -70,7 +69,7 @@ const ExtractList = () => {
     },
   ]);
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  let searchText = useDebounce(search, 2000);
+  let searchText = useDebounce(search, 400);
   const [searchError, setSearchError] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filterState, setFilterState] = useState<ExtractFilterState>({
@@ -351,9 +350,13 @@ const ExtractList = () => {
     fetchData();
   }
 
-  const fetchData = async () => {
+  const fetchData = async (isSearch?:boolean) => {
     const { pageNumber, size } = paginationModel;
-    setLoading(true);
+    const isSearching = searchText.length >= 3;
+
+    if (!isSearch ) {
+      setLoading(true);
+    }
     const sortColumn = sortModel[0]?.field || 'document_name';
     const sortDirection = sortModel[0]?.sort || 'asc';
     try {
@@ -377,7 +380,7 @@ const ExtractList = () => {
       const response = await DocumentEndpointsService.getDocumentsApiV1DocumentDocumentsGet(
         pageNumber,
         size,
-        searchText.length >= 3 ? searchText.trim() : undefined,
+        isSearching ? searchText.trim() : undefined,
         sortColumn as string || undefined,
         sortDirection as "asc" | "desc" || undefined,
         orFields,
@@ -397,7 +400,7 @@ const ExtractList = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-      setLoading(false);
+        setLoading(true);
     }
   };
 
@@ -435,14 +438,15 @@ const ExtractList = () => {
   };
   
   useEffect(() => {
-    fetchData();
-  }, [paginationModel, sortModel, searchText]);
+    fetchData(false);
+  }, [paginationModel, sortModel]);
+
+  useEffect(() => {
+    fetchData(true);
+  }, [searchText]); 
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center w-full">
-      <div className="d-flex justify-content-start breadcrum-position">
-        <Breadcrumb/>
-      </div>
       <div className="w-full align-items-center w-full list-container">
         <div className="d-flex justify-content-between w-full align-items-start mb-4">
           <div className="d-flex">

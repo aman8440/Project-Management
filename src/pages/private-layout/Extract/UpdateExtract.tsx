@@ -114,7 +114,6 @@ const UpdateExtract = () => {
   const onSubmit: SubmitHandler<ExtractDetailData> = async (data) => {
     setIsLoading(true);
     try {
-      const response = JSON.stringify(data);
       setOpen(true);
       setUpdatedData({
         id: data.id,
@@ -128,7 +127,6 @@ const UpdateExtract = () => {
         is_data_published: data.is_data_published,
         published_by: data.published_by
       });
-      console.log(response);
       toast.success("Data updated successful!");
     } catch (error) {
       console.log(error);
@@ -291,7 +289,7 @@ const UpdateExtract = () => {
             open={open}
             onClose={()=> (setOpen(false))}
             title="Updated Data"
-            content={JSON.stringify(updatedData)}
+            content={updatedData}
             actions={[
               { label: 'Ok', onClick: (()=>navigate('/extract')),  color: "primary"},
             ]}

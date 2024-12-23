@@ -39,8 +39,7 @@ export interface DialogProps {
   open: boolean;
   onClose: () => void;
   title: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content: any; 
+  content: string | ExtractDetailData; 
   actions: {
     label: string;
     onClick: () => void;

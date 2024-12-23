@@ -26,6 +26,17 @@ export default function AlertDialogSlide({
   content,
   actions,
 }: DialogProps) {
+
+  const renderContent = () => {
+    if (typeof content === 'string') {
+      return content;
+    }
+    if (content && typeof content === 'object') {
+      return <pre><code>{JSON.stringify(content, null, 2)}</code></pre>;
+    }
+    return null;
+  };
+
   return (
     <Dialog
       open={open}
@@ -36,8 +47,8 @@ export default function AlertDialogSlide({
     >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-slide-description">
-          {content}
+        <DialogContentText id="alert-dialog-slide-description" component="div">
+          {renderContent()}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
