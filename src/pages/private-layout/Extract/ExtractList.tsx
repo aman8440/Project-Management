@@ -145,8 +145,7 @@ const ExtractList = () => {
       field: "action",
       headerName: "Action",
       width: 80,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      renderCell: (params:any) => {
+      renderCell: (params) => {
         const handleEdit = () => {
           navigate(`/extract/edit/${params.row.id}`);
         };
@@ -378,7 +377,7 @@ const ExtractList = () => {
       const response = await DocumentEndpointsService.getDocumentsApiV1DocumentDocumentsGet(
         pageNumber,
         size,
-        searchText as string || undefined,
+        searchText.length >= 3 ? searchText.trim() : undefined,
         sortColumn as string || undefined,
         sortDirection as "asc" | "desc" || undefined,
         orFields,
