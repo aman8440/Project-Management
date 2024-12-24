@@ -1,10 +1,9 @@
 import '../projectList.css';
-import { DataGrid, GridSortDirection, GridSortModel, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
+import { DataGrid, GridSortDirection, GridSortModel } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { ExtractFilterDataProp, ExtractFilterState, RowData } from '../../../interfaces';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import React from 'react';
-import useDebounce from '../../../hooks/useDebounce';
+import { useDebounce } from 'use-debounce';
 import { useLoader } from '../../../hooks/loaderContext';
 import { Avatar, IconButton, InputAdornment, Paper, TextField, Tooltip, tooltipClasses, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -23,21 +22,10 @@ import AlertDialogSlide from '../../../components/AlertDialogSlide';
 import { toast } from 'react-toastify';
 import EditIcon from "@mui/icons-material/Edit";
 import ExtractFilter from '../../../components/ExtractFilter';
-
-function CustomToolbar() {
-  return (
-    <div className="custom-toolbar d-flex w-full">
-      <GridToolbarContainer>
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    </div>
-  );
-}
+import React from 'react';
 
 const convertDate = (dateString: string | null) => {
   const date = new Date(dateString as string);
-
-  // Format date parts
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -69,7 +57,7 @@ const ExtractList = () => {
     },
   ]);
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  let searchText = useDebounce(search, 400);
+  let [searchText] = useDebounce(search, 300);
   const [searchError, setSearchError] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filterState, setFilterState] = useState<ExtractFilterState>({
@@ -337,7 +325,7 @@ const ExtractList = () => {
     paginationModel.size = 20;
     sortModel[0].field = "document_name";
     sortModel[0].sort = "asc";
-    searchText= "";
+    searchText = "";
     setSearch(searchText);
     setFilterState({
       ...filterState,
@@ -561,9 +549,6 @@ const ExtractList = () => {
               onRowSelectionModelChange={(selectedIds) => setSelectedRows(selectedIds as string[])}
               pageSizeOptions={[10, 20, 30]}
               sx={{ border: 0 }}
-              slots={{
-                toolbar: CustomToolbar,
-              }}
             />
           </Paper>
           <AlertDialogSlide
@@ -591,7 +576,7 @@ const ExtractList = () => {
       {selectedRows.length > 0 && (
         <div className='select-info-bar d-flex align-items-center justify-content-between w-full bg-white'>
           <Typography>
-            You have selected <b>{selectedRows.length}</b> {selectedRows.length > 1 ? 'files' : 'file'}
+            You have selected <b>{selectedRows.length}</b> {selectedRows.length > 1 ? 'files.' : 'file.'}
           </Typography>
           <div className='action-buttons d-flex'>
             <Button

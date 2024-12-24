@@ -3,6 +3,11 @@
   text-transform: none !important;
 }
 .sidebar-btn .css-qxc2i0-MuiButtonBase-root-MuiButton-root{
-  background-color: #0145FE; 
+  background-color: #3B82F6; 
   color: #FFFFFF; 
+}
+.sidebar-btn .css-qxc2i0-MuiButtonBase-root-MuiButton-root:not(:disabled):hover {
+  background: #2164f4;
+  color: #ffffff;
+  border-color: #2563eb;
 }

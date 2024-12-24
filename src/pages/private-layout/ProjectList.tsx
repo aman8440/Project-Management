@@ -20,7 +20,7 @@ import AlertDialogSlide from "../../components/AlertDialogSlide";
 import { toast } from 'react-toastify';
 import { ProjectManagementService } from '../../swagger/api';
 import { useLoader } from '../../hooks/loaderContext';
-import useDebounce from '../../hooks/useDebounce';
+import { useDebounce } from 'use-debounce';
 import CloseIcon from '@mui/icons-material/Close';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 
@@ -51,7 +51,7 @@ const ProjectList = () => {
     },
   ]);
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  const debouncedSearch = useDebounce(search, 2000);
+  const [debouncedSearch] = useDebounce(search, 300);
   const [searchError, setSearchError] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filterState, setFilterState] = useState<FilterState>({
