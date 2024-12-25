@@ -153,7 +153,6 @@ export default function AlertDialogSlide({
 
   const handleCropComplete = (_croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
-    setIsDisabled(false);
   };
 
   const handleUpload = async () => {
