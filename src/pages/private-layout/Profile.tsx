@@ -5,46 +5,61 @@ import { useUserProfile } from "../../hooks/userProfile";
 import { CloudUpload, Delete } from "@mui/icons-material";
 import { Facebook, Twitter, LinkedIn, Instagram } from "@mui/icons-material";
 import coverImage from '../../assets/img/cover_img.webp';
-import { ChangeEvent, useState } from "react";
+import {  useState } from "react";
 import { constVariables } from "../../constants";
 import { toast } from 'react-toastify';
-import { FileManagementService, ProfileImageUploadRequest } from '../../swagger/api';
+import { FileManagementService } from '../../swagger/api';
 import { useLoader } from '../../hooks/loaderContext';
+import AlertDialogSlide from '../../components/AlertDialogSlide';
 
 const Profile = () => {
   const {userProfile}= useUserProfile();
   const [hover, setHover] = useState(false);
   const { loading, setLoading } = useLoader();
   const [, setProfileImage] = useState<string | null>(null);
-  const [coverImageSet, setCoverImage] =  useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
-  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>, type: "profile" | "cover") => {
+  const [enableCrop, setEnableCrop] = useState(false);
 
+  const handleImageUploadClick = () => {
+    setEnableCrop(true);
+    setOpen(true);
+  };
+
+  const handleImageUpload = async (mainFile: File, thumbnailFile: File) => {
     setLoading(true);
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif','image/jpg','image/webp', 'image/svg'];
+    const allowedTypes = ['image/jpeg','image/jpg'];
+    const allowedExtensions = ['.jpg', '.jpeg', '.png'];
     const maxSize = 5 * 1024 * 1024;
-
-    if (!allowedTypes.includes(file.type)) {
+    if (!allowedTypes.includes(mainFile.type)) {
       toast.error("Invalid file type. Please upload an image.");
       setLoading(false);
       return;
     }
-    if (file.size > maxSize) {
+
+    const fileExtension = mainFile.name.toLowerCase().split('.').pop();
+    if (!allowedExtensions.includes(`.${fileExtension}`)) {
+      toast.error("Invalid file extension. Please upload a JPEG and PNG image.");
+      setLoading(false);
+      return;
+    }
+
+    if (mainFile.size > maxSize) {
       toast.error("File is too large. Maximum size is 5MB.");
       setLoading(false);
       return;
     }
-    const formData: ProfileImageUploadRequest = {
+
+    const formData = {
       id: userProfile?.id ?? 0,
-      file: file,
+      file: mainFile,
+      thumbnail: thumbnailFile
     };
     try {
       const response = await FileManagementService.postMeProfile(formData);
       if(response.status === "success"){
-        if (type === "profile") setProfileImage(response.image_name);
-        if (type === "cover") setCoverImage(response.image_name);
+        setProfileImage(`${response.image_name}?t=${new Date().getTime()}`);
+        setOpen(false);
         window.location.reload(); 
         toast.success("Image Uploaded Sucessfully!");
       }
@@ -55,14 +70,14 @@ const Profile = () => {
     }
   };
 
-  const handleImageDelete = async (type: "profile" | "cover") => {
+  const handleImageDelete = async () => {
     setLoading(true);
     try {
       const data = { id: userProfile?.id ?? 0 };
       await FileManagementService.postMeProfileDelete(data);
 
-      if (type === "profile") setProfileImage(null);
-      if (type === "cover") setCoverImage(null);
+      setProfileImage(null);
+      setOpen(false);
       window.location.reload(); 
       toast.success("Image Deleted Sucessfully!");
     } catch (error) {
@@ -71,7 +86,6 @@ const Profile = () => {
       setLoading(false);
     }
   };
-  const coverImageUrl = coverImageSet !==null ? `${constVariables.base_url}assets/images/uploads/`+coverImageSet : coverImage;
   return (
     <div className="main-container d-flex flex-column">
       <div className="sub-container d-flex justify-content-start">
@@ -82,7 +96,7 @@ const Profile = () => {
           <Box className="cover-image">
             <Paper
               sx={{
-                backgroundImage: `url(${coverImageUrl})`,
+                backgroundImage: `url(${coverImage})`,
               }}
             >
             </Paper>
@@ -98,29 +112,19 @@ const Profile = () => {
                     className='avatar-img'
                     src={
                       userProfile?.image_name !== null
-                        ? `${constVariables.base_url}assets/images/uploads/` + userProfile?.image_name
+                        ? `${constVariables.base_url}assets/images/uploads/thumbnail/` + userProfile?.image_name
                         : "/default-avatar.png"
                     }
                   />
                   {hover && !loading && (
                     <Box className="user-box">
                       <Box className="user-sub-box">
-                        <IconButton color="primary">
-                          <label htmlFor="upload-profile-image">
-                            <CloudUpload />
-                          </label>
-                          <input
-                            id="upload-profile-image"
-                            type="file"
-                            hidden
-                            onChange={(e) =>
-                              handleImageUpload(e as React.ChangeEvent<HTMLInputElement>, "profile")
-                            }
-                          />
-                        </IconButton>
+                      <IconButton color="primary" onClick={handleImageUploadClick}>
+                        <CloudUpload />
+                      </IconButton>
                         <IconButton
                           className='delete-image'
-                          onClick={() => handleImageDelete("profile")}
+                          onClick={() => handleImageDelete()}
                         >
                           <Delete />
                         </IconButton>
@@ -208,6 +212,24 @@ const Profile = () => {
             </Box>
           </Grid>
         </Grid>
+        <AlertDialogSlide
+          open={open}
+          onClose={() => setOpen(false)}
+          title="Upload Profile Image"
+          aspectRatio={1}
+          enableCrop={enableCrop}
+          dialogType="imageCropper"
+          initialImage={
+            userProfile?.image_name
+              ? `${constVariables.base_url}assets/images/uploads/${userProfile.image_name}`
+              : undefined
+          }
+          onUpload={handleImageUpload}
+          actions={[
+            { label: 'Cancel', onClick: () => setOpen(false), color: "secondary" }
+          ]}
+          onDelete={handleImageDelete}
+        />
       </div>
     </div>
   )

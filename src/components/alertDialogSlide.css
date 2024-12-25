@@ -1,0 +1,18 @@
+.crop-image-box{
+  position: relative;
+  height: 400px;
+}
+.crop-image-box .sub-crop-image-box{
+  position: absolute;
+  bottom: -32px;
+  left: 0;
+  right: 0;
+}
+.crop-image-box .sub-crop-image-box .profile-image-main{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.typo-drag-drop{
+  z-index: 0;
+}
