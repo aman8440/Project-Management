@@ -37,16 +37,31 @@ export interface UploadResponse {
 export interface deleteResponse {
   id: string;
 }
+
+export interface DialogAction {
+  label: string;
+  onClick: () => void;
+  color?: 'primary' | 'secondary' | 'error' | 'success' | 'warning' | 'info';
+}
+
 export interface DialogProps {
   open: boolean;
   onClose: () => void;
   title: string;
-  content: string;
-  actions: {
-    label: string;
-    onClick: () => void;
-    color?: string;
-  }[];
+  content?: string;
+  actions: DialogAction[];
+  initialImage?: string;
+  aspectRatio?: number;
+  enableCrop?: boolean;
+  onUpload?: (file: File, croppedImage: File) => void;
+  dialogType?: 'default' | 'imageCropper';
+  onDelete?:()=>void;
+}
+export interface ProfileImageUploadRequest {
+  id: number;
+  file: File;
+  thumbnail: File;
+  crop: boolean;
 }
 
 export interface RowData {
