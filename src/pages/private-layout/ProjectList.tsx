@@ -42,7 +42,7 @@ const ProjectList = () => {
     },
   ]);
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  const debouncedSearch = useDebounce(search, 2000);
+  let debouncedSearch = useDebounce(search, 300);
   const [searchError, setSearchError] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filterState, setFilterState] = useState<FilterState>({
@@ -190,7 +190,7 @@ const ProjectList = () => {
     setSearchParams({
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
-      search: debouncedSearch.trim(),
+      search: debouncedSearch,
       sort: sortModel[0]?.field || "id",
       order: sortModel[0]?.sort || "asc",
     })
@@ -300,10 +300,13 @@ const ProjectList = () => {
     if (filters.projectManagementTool) {
       filterParams.project_management_tool = filters.projectManagementTool;
     }
+    if(debouncedSearch.trim() && debouncedSearch.length >=3){
+      debouncedSearch = debouncedSearch.trim();
+    }
     setSearchParams({
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
-      search: debouncedSearch.trim(),
+      search: debouncedSearch,
       sort: sortModel[0]?.field || "id",
       order: sortModel[0]?.sort || "asc",
       ...filterParams,
@@ -331,7 +334,7 @@ const ProjectList = () => {
     setSearchParams({
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
-      search: debouncedSearch.trim(),
+      search: debouncedSearch,
       sort: sortModel[0]?.field || "id",
       order: sortModel[0]?.sort || "asc",
       projectManagementTool: filters.projectManagementTool ?? '',
@@ -367,7 +370,7 @@ const ProjectList = () => {
     setSearchParams({
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
-      search: debouncedSearch.trim(),
+      search: debouncedSearch,
       sort: sortModel[0]?.field || "id",
       order: sortModel[0]?.sort || "asc",
       projectStartAt: formatDate(filters.projectStartAt?.toISOString() ?? '') ?? '',
