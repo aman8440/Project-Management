@@ -32,8 +32,8 @@ const ProjectList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [totalRows, setTotalRows] = useState(0);
   const [paginationModel, setPaginationModel] = useState({
-    page: parseInt(searchParams.get("page") || "1"),
-    pageSize: parseInt(searchParams.get("limit") || "10"),
+    page: parseInt(searchParams.get("page") || "0"),
+    pageSize: parseInt(searchParams.get("limit") || "15"),
   });
   const [sortModel, setSortModel] = useState<GridSortModel>([
     {
@@ -511,12 +511,12 @@ const ProjectList = () => {
             checkboxSelection
             onRowDoubleClick={handleRowDoubleClick}
             onPaginationModelChange={(newModel) => setPaginationModel({
-              page: newModel.page + 1,
-              pageSize: newModel.pageSize || 10,
+              page: newModel.page,
+              pageSize: newModel.pageSize || 15,
             })}
             onSortModelChange={(newModel) => setSortModel(newModel)}
             paginationModel={{
-              page: paginationModel.page - 1,
+              page: paginationModel.page,
               pageSize: paginationModel.pageSize
             }}
             pageSizeOptions={[10, 15, 20]}
