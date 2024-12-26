@@ -24,15 +24,6 @@ import useDebounce from '../../hooks/useDebounce';
 import CloseIcon from '@mui/icons-material/Close';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 
-function CustomToolbar() {
-  return (
-    <div className="custom-toolbar d-flex w-full">
-      <GridToolbarContainer>
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    </div>
-  );
-}
 
 const ProjectList = () => {
   const [rows, setRows] = useState<RowData[]>([]); 
@@ -92,6 +83,7 @@ const ProjectList = () => {
     {
       field: "action",
       headerName: "Action",
+      exportable: false,
       width: 180,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       renderCell: (params:any) => {
@@ -133,6 +125,24 @@ const ProjectList = () => {
     setOpen(false);
     setRowToDelete(null);
   };
+
+  const CustomToolbar = ()=> {
+    const getFilteredColumns = () => {
+      return columns.filter(col => col.field !== 'action');
+    };
+    return (
+      <div className="custom-toolbar d-flex w-full">
+        <GridToolbarContainer>
+          <GridToolbarExport
+             csvOptions={{
+              fields: getFilteredColumns().map(col => col.field)
+            }}
+            printOptions={{ disableToolbarButton: true }}
+          />
+        </GridToolbarContainer>
+      </div>
+    );
+  }
 
   const confirmDelete = () => {
     ProjectManagementService.deleteApiProjectDelete(rowToDelete || 0)

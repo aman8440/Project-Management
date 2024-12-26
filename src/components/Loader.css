@@ -17,7 +17,7 @@
   backdrop-filter: blur(1px);
 }
 .loader-final {
-  --color: #f5f5f5ab;
+  --color: #0145FE;
   --size: 70px;
   width: var(--size);
   height: var(--size);
