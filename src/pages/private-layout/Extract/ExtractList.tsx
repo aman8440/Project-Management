@@ -406,10 +406,13 @@ const ExtractList = () => {
     if (filters.extension) {
       filterParams.extension = filters.extension;
     }
+    if(searchText.trim() && searchText.length >=3){
+      searchText = searchText.trim();
+    }
     setSearchParams({
       pageNumber: paginationModel.pageNumber.toString(),
       size: paginationModel.size.toString(),
-      search: searchText.trim(),
+      search: searchText,
       sortColumn: sortModel[0]?.field || "document_name",
       sortDirection: sortModel[0]?.sort || "asc",
       ...filterParams,
