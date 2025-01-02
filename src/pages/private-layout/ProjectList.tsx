@@ -130,6 +130,9 @@ const ProjectList = () => {
     const getFilteredColumns = () => {
       return columns.filter(col => col.field !== 'action');
     };
+    const getFilteredColumnsPrint = () => {
+      return columns.filter(col => col.field !== 'project_description' && col.field !== 'action');
+    };
     return (
       <div className="custom-toolbar d-flex w-full">
         <GridToolbarContainer>
@@ -137,7 +140,19 @@ const ProjectList = () => {
              csvOptions={{
               fields: getFilteredColumns().map(col => col.field)
             }}
-            printOptions={{ disableToolbarButton: true }}
+            printOptions={{ 
+              fields: getFilteredColumnsPrint().map(col => col.field),
+              hideFooter: true, 
+              hideToolbar: true,
+              disableToolbarButton: false,
+              allColumns: true,
+              pageStyle: `
+                @page { size: landscape A3; margin: 0mm; }
+                table, th, td {
+                  font-size: 10px;
+                }
+              `
+            }}
           />
         </GridToolbarContainer>
       </div>
@@ -237,9 +252,11 @@ const ProjectList = () => {
     }
   };
 
-  const fetchData = async () => {
+  const fetchData = async (isSearch?:boolean) => {
     const { page, pageSize } = paginationModel;
-    setLoading(true);
+    if (!isSearch ) {
+      setLoading(true);
+    }
     const sort = sortModel[0]?.field || 'id';
     const order = sortModel[0]?.sort || 'asc';
     try {
@@ -394,9 +411,12 @@ const ProjectList = () => {
   };
 
   useEffect(() => {
-    updateQueryParams();
-    fetchData();
-  }, [paginationModel, sortModel, debouncedSearch]);
+    fetchData(false);
+  }, [paginationModel, sortModel]);
+
+  useEffect(() => {
+    fetchData(true);
+  }, [debouncedSearch]); 
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center w-full">
