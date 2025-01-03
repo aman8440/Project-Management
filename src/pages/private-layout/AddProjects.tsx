@@ -160,7 +160,6 @@ const AddProjects = () => {
                 options={filteredTechOptions}
                 onChange={(_event, newValue) => {
                   handleChange('projectTech', newValue);
-                  setValue('projectTech', newValue, { shouldValidate: true });
                 }}
                 inputValue={techSearch}
                 onInputChange={(_event, newInputValue) => setTechSearch(newInputValue)}
@@ -171,6 +170,8 @@ const AddProjects = () => {
                     {...register("projectTech")}
                     label="Project Technologies"
                     name="projectTech"
+                    error={!!errors.projectTech}
+                    helperText={errors.projectTech?.message}
                   />
                 )}
                 getOptionLabel={(option) => option}
