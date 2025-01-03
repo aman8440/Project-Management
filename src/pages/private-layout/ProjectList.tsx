@@ -49,7 +49,7 @@ const ProjectList = () => {
   });
   const [sortModel, setSortModel] = useState<GridSortModel>([
     {
-      field: searchParams.get("sort") || "id",
+      field: searchParams.get("sort") || "project_name",
       sort: (searchParams.get("order") as GridSortDirection) || "asc",
     },
   ]);
@@ -82,7 +82,7 @@ const ProjectList = () => {
       field: "serial",
       headerName: "Serial No.",
       width: 90,
-      sortable: true,
+      sortable: false,
       value: "1",
     },
     { field: "project_name", headerName: "Project Name", width: 150 },
@@ -242,7 +242,7 @@ const ProjectList = () => {
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
       search: debouncedSearch,
-      sort: sortModel[0]?.field || "id",
+      sort: sortModel[0]?.field || "project_name",
       order: sortModel[0]?.sort || "asc",
     });
     filters.projectStartAt = null;
@@ -294,7 +294,7 @@ const ProjectList = () => {
     if (!isSearch) {
       setLoading(true);
     }
-    const sort = sortModel[0]?.field || "id";
+    const sort = sortModel[0]?.field || "project_name";
     const order = sortModel[0]?.sort || "asc";
     try {
       const formattedStartAt = filters.projectStartAt
@@ -371,7 +371,7 @@ const ProjectList = () => {
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
       search: debouncedSearch,
-      sort: sortModel[0]?.field || "id",
+      sort: sortModel[0]?.field || "project_name",
       order: sortModel[0]?.sort || "asc",
       ...filterParams,
     });
@@ -399,7 +399,7 @@ const ProjectList = () => {
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
       search: debouncedSearch,
-      sort: sortModel[0]?.field || "id",
+      sort: sortModel[0]?.field || "project_name",
       order: sortModel[0]?.sort || "asc",
       projectManagementTool: filters.projectManagementTool ?? "",
     });
@@ -435,7 +435,7 @@ const ProjectList = () => {
       page: paginationModel.page.toString(),
       limit: paginationModel.pageSize.toString(),
       search: debouncedSearch,
-      sort: sortModel[0]?.field || "id",
+      sort: sortModel[0]?.field || "project_name",
       order: sortModel[0]?.sort || "asc",
       projectStartAt:
         formatDate(filters.projectStartAt?.toISOString() ?? "") ?? "",
