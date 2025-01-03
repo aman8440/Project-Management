@@ -79,7 +79,7 @@ const ProjectList = () => {
   const navigate = useNavigate();
   const [columns] = useState([
     {
-      field: "id",
+      field: "serial",
       headerName: "Serial No.",
       width: 90,
       sortable: true,
@@ -328,9 +328,9 @@ const ProjectList = () => {
       );
       const rowsWithIndex: RowData[] =
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        response.data?.projects?.map((row: any) => ({
+        response.data?.projects?.map((row : any, index : number) => ({
           ...row,
-          // id: (page - 1) * pageSize + index + 1
+          serial: (page) * pageSize + index + 1
         })) || [];
       setRows(rowsWithIndex);
       setTotalRows(response.data?.total as number);
@@ -606,7 +606,7 @@ const ProjectList = () => {
             paginationMode="server"
             sortingMode="server"
             checkboxSelection
-            onRowDoubleClick={()=>handleRowDoubleClick}
+            onRowDoubleClick={handleRowDoubleClick}
             onPaginationModelChange={(newModel) => {
               setPaginationModel({
                 page: newModel.page,
