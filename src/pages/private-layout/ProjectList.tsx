@@ -88,7 +88,7 @@ const ProjectList = () => {
     { field: "project_name", headerName: "Project Name", width: 150 },
     { field: "project_tech", headerName: "Technology", width: 150 },
     { field: "project_startat", headerName: "Start Date", width: 120 },
-    { field: "project_deadline", headerName: "Deadline", width: 120 },
+    { field: "project_deadline", headerName: "Project Deadline", width: 140 },
     { field: "project_lead", headerName: "Lead", width: 120 },
     { field: "team_size", headerName: "Team Size", width: 120 },
     { field: "project_client", headerName: "Client", width: 120 },
@@ -169,7 +169,7 @@ const ProjectList = () => {
         <GridToolbarContainer>
           <GridToolbarExport
             csvOptions={{
-              fields: getFilteredColumns().map((col) => col.field),
+              fields: getFilteredColumns().map((col) => col.field)
             }}
             printOptions={{
               fields: getFilteredColumnsPrint().map((col) => col.field),
