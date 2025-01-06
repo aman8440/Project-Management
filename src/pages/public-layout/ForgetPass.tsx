@@ -1,12 +1,14 @@
+import './signin.css';
 import { useState } from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { emailSchema } from "../../schema";
-import ErrorMessage from "../../components/ErrorMessage";
-import { useNavigate } from "react-router-dom";
+import loginLogo from '../../assets/img/login_logo.svg';
+import { Link, useNavigate } from "react-router-dom";
 import { AuthenticationService, ForgetPassRequest } from "../../swagger/api";
+import { toast } from 'react-toastify';
 
 interface FormValues {
   email: string;
@@ -14,7 +16,6 @@ interface FormValues {
 
 const ForgetPass = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(emailSchema),
@@ -25,41 +26,58 @@ const ForgetPass = () => {
       const response = await AuthenticationService.postForgotPassword(data);
       const responseData = await response;
       if (response.status === 'success') {
-        setMessage("Password reset link has been sent to your email.");
+        toast.success(response.message);
         setTimeout(() => navigate("/login"), 3000);
         console.log(responseData);
-      } else {
-        setMessage("Error sending password reset email. Please try again.");
       }
     } catch (error) {
       console.error("Error occurred:", error);
-      setMessage("An error occurred. Please try again later.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-[430px] h-auto bg-white p-6 rounded-lg">
-        <div className="text-center mb-3">
-          <div className="font-sans text-4xl font-bold">Forgot Password</div>
-        </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <Input
-            label="Email"
-            placeholder="Enter your Email"
-            type="email"
-            name="email"
-            register={register}
-          />
-          {errors.email?.message && <ErrorMessage text={String(errors.email.message)} />}
-
-          {message && <p className={`text-sm ${message.includes("sent") ? "text-green-500" : "text-red-500"}`}>{message}</p>}
-
-          <Button text={isLoading ? "Sending..." : "Send Reset Link"} type="submit" disabled={isLoading} />
-        </form>
+    <div className="login-main-container d-flex justify-content-center align-items-center">
+        <div className="login-container d-flex w-full justify-content-between bg-white">
+          <div className="login-sub-container d-flex flex-column p-4 rounded-lg">
+            <div className="text-center mb-3">
+              <img src={loginLogo} alt="loginLogo" width="40" height="40"/>
+              <div className="font-sans display-4 font-weight-bold">Forget Password</div>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="login-form space-y-4 mt-2">
+              <Input
+                label="Email Address"
+                type="text"
+                name="email"
+                register={register}
+                error={errors.email}
+              />
+              <p className="mt-2 text-muted">
+                <Link className="text-decoration-underline" to="/login">
+                  Back to Login
+                </Link>
+              </p>
+              <Button text={isLoading ? "Sending in..." : "Send"} type="submit" disabled={isLoading} />
+            </form>
+          </div>
+          <div className="sub-div d-flex flex-column">
+            <div className="login-logo d-flex justify-content-start w-full">
+              <img src={loginLogo} alt="loginLogo" width="40" height="40" />
+              <h4 className='head'>Search Portal</h4>
+            </div>
+            <div className="login-heading">
+              <h1 className='header'>Welcome Back, Please enter email to send a link</h1>
+            </div>
+            <div className="login-para">
+              <p className='para'>Maybe some text here will help me see it better. Oh God. Oke, let's do it then. </p>
+            </div>
+            <div className="login-image d-flex">
+              <div className="login-sub-img"></div>
+            </div>
+          </div>
+          <div className="right-content">
+          </div>
         </div>
       </div>
   );

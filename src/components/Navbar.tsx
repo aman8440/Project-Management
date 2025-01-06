@@ -58,7 +58,6 @@ const Navbar = () => {
           id="account-menu"
           open={open}
           onClose={handleClose}
-          onClick={handleClose}
           className="menu-list"
           slotProps={{
             paper: {
