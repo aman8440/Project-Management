@@ -51,7 +51,7 @@ export default function Signin() {
       } = await response;
   
       if (response.status === 'success' && responseData?.token) {
-        setAuthToken(responseData.token);
+        setAuthToken(response.token);
         toast.success("Login successful!");
         navigate("/dashboard/projects");
       } else {
