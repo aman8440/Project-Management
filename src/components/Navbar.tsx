@@ -1,6 +1,5 @@
 import './navbar.css';
 import searchIcon from '../assets/img/search_icon.svg';
-import { useLogout, useUserProfile } from "../hooks/userProfile";
 import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -8,11 +7,15 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Logout } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 import { constVariables } from '../constants';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { useAppDispatch } from '../hooks/authHook';
+import { logout } from '../features/auth/authSlice';
 
 const Navbar = () => {
-  const { userProfile }= useUserProfile();
+  const user = useSelector((state: RootState) => state.auth.user);
   const navigate= useNavigate();
-  const logout = useLogout();
+  const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [icon, setIcon] = useState(true);
   const open = Boolean(anchorEl);
@@ -23,6 +26,11 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
     setIcon(true);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
   };
 
   return (
@@ -38,10 +46,10 @@ const Navbar = () => {
         <div className="mx-2 d-flex align-items-center">
           <div
             className="nav-sub-container d-flex justify-content-center align-items-center rounded-circle bg-dark text-white me-2">
-           {userProfile?.image_name !== null ? <img src={`${constVariables.base_url}assets/images/uploads/` + userProfile?.image_name} alt="userProfile" width="40" height="40"/> : `${userProfile?.fname?.charAt(0)}${userProfile?.lname?.charAt(0)}`} 
+           {user?.image_name !== null ? <img src={`${constVariables.base_url}assets/images/uploads/` + user?.image_name} alt="userProfile" width="40" height="40"/> : `${user?.fname?.charAt(0)}${user?.lname?.charAt(0)}`} 
           </div>
         </div>
-        <span>{`${userProfile?.fname}`}</span>
+        <span>{`${user?.fname}`}</span>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
@@ -71,7 +79,7 @@ const Navbar = () => {
             <Avatar/>Profile
           </MenuItem>
           <Divider />
-          <MenuItem onClick={() => {handleClose(); logout();}}>
+          <MenuItem onClick={() => {handleClose(); handleLogout();}}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>

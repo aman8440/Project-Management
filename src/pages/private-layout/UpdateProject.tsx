@@ -15,10 +15,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema } from "../../schema";
 import { useNavigate, useParams } from "react-router-dom";
-import { useUserProfile } from "../../hooks/userProfile";
 import { toast } from "react-toastify";
 import { GetProjectDataByIdResponse, ProjectManagementService, UpdateProjectRequest } from '../../swagger/api';
 import { format } from 'date-fns';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const TECH_OPTIONS = [
   'React', 'Angular', 'Vue', 'Node.js', 'Python', 
@@ -41,7 +42,7 @@ const PROJECT_MANAGEMENT_TOOLS = [
 ];
 
 const UpdateProject = () => {
-  const { userProfile }= useUserProfile();
+  const user = useSelector((state: RootState) => state.auth.user);
   const navigate = useNavigate();
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -147,7 +148,7 @@ const UpdateProject = () => {
       project_repo_tool: data.projectRepoTool,
       project_repo_url: data.projectRepoUrl,
       project_status: data.projectStatus,
-      updated_by: userProfile?.fname || "",
+      updated_by: user?.fname || "",
     };
     try {
       await ProjectManagementService.putApiProjectUpdate(parseInt(id as string),payload)

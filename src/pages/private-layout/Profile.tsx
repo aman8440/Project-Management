@@ -1,7 +1,6 @@
 import './profile.css';
 import { Avatar, Box, Grid, IconButton, Paper, TextField, Typography } from "@mui/material";
 import Breadcrumb from "../../components/Breadcrumb";
-import { useUserProfile } from "../../hooks/userProfile";
 import { CloudUpload, Delete } from "@mui/icons-material";
 import { Facebook, Twitter, LinkedIn, Instagram } from "@mui/icons-material";
 import coverImage from '../../assets/img/cover_img.webp';
@@ -11,9 +10,11 @@ import { toast } from 'react-toastify';
 import { FileManagementService } from '../../swagger/api';
 import { useLoader } from '../../hooks/loaderContext';
 import AlertDialogSlide from '../../components/AlertDialogSlide';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const Profile = () => {
-  const {userProfile}= useUserProfile();
+  const user = useSelector((state: RootState) => state.auth.user);
   const [hover, setHover] = useState(false);
   const { loading, setLoading } = useLoader();
   const [, setProfileImage] = useState<string | null>(null);
@@ -51,7 +52,7 @@ const Profile = () => {
     }
 
     const formData = {
-      id: userProfile?.id ?? 0,
+      id: user?.id ?? 0,
       file: mainFile,
       thumbnail: thumbnailFile
     };
@@ -73,7 +74,7 @@ const Profile = () => {
   const handleImageDelete = async () => {
     setLoading(true);
     try {
-      const data = { id: userProfile?.id ?? 0 };
+      const data = { id: user?.id ?? 0 };
       await FileManagementService.postMeProfileDelete(data);
 
       setProfileImage(null);
@@ -111,8 +112,8 @@ const Profile = () => {
                   <Avatar
                     className='avatar-img'
                     src={
-                      userProfile?.image_name !== null
-                        ? `${constVariables.base_url}assets/images/uploads/thumbnail/` + userProfile?.image_name
+                      user?.image_name !== null
+                        ? `${constVariables.base_url}assets/images/uploads/thumbnail/` + user?.image_name
                         : "/default-avatar.png"
                     }
                   />
@@ -133,7 +134,7 @@ const Profile = () => {
                   )}
                 </Box>
               </div>
-              <span  className='user-name'>{`${userProfile?.fname} ${userProfile?.lname}`}</span>
+              <span  className='user-name'>{`${user?.fname} ${user?.lname}`}</span>
               <span className='main-heading'></span>
             </div>
             <Typography variant="h5">Profile Information</Typography>
@@ -179,35 +180,35 @@ const Profile = () => {
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                value={userProfile?.fname}
+                value={user?.fname}
               />
               <TextField
                 label="Last Name"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                value={userProfile?.lname}
+                value={user?.lname}
               />
               <TextField
                 label="Gender"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                value={userProfile?.gender}
+                value={user?.gender}
               />
               <TextField
                 label="Email"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                value={userProfile?.email}
+                value={user?.email}
               />
               <TextField
                 label="Phone Number"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                value={userProfile?.phone}
+                value={user?.phone}
               />
             </Box>
           </Grid>
@@ -220,8 +221,8 @@ const Profile = () => {
           enableCrop={enableCrop}
           dialogType="imageCropper"
           initialImage={
-            userProfile?.image_name
-              ? `${constVariables.base_url}assets/images/uploads/${userProfile.image_name}`
+            user?.image_name
+              ? `${constVariables.base_url}assets/images/uploads/${user.image_name}`
               : undefined
           }
           onUpload={handleImageUpload}
